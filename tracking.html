@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Tracking - Bauchi Election Monitor</title>
+    <title>Real-Time Tracking - Bauchi Election Monitor</title>
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="styles/tracking.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     
-    <!-- Leaflet -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 </head>
 <body>
     <!-- ===== NAVBAR ===== -->
@@ -32,11 +34,14 @@
             <span class="ai-model">
                 Agents Online: <span id="agentsOnline">47</span>
             </span>
+            <span class="ai-model">
+                PUs Tracked: <span id="pusTracked">2,984</span>
+            </span>
         </div>
         <div class="ai-status-right">
             <span class="ai-processing">
                 <i class="fas fa-map-marker-alt fa-pulse"></i>
-                Tracking: <span id="trackingCount">20 LGAs</span>
+                Live Updates: <span id="liveUpdates">12/sec</span>
             </span>
             <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
                 <i class="fas fa-microphone"></i> Voice
@@ -45,155 +50,177 @@
     </div>
 
     <!-- ===== MAIN CONTENT ===== -->
-    <main class="main-content">
+    <main class="main-content tracking-main">
         <!-- Tracking Controls -->
         <div class="tracking-controls">
             <div class="controls-left">
                 <button class="btn-control active" onclick="setViewMode('map')">
-                    <i class="fas fa-map"></i> Map View
+                    <i class="fas fa-map"></i> Map
                 </button>
-                <button class="btn-control" onclick="setViewMode('list')">
-                    <i class="fas fa-list"></i> List View
+                <button class="btn-control" onclick="setViewMode('satellite')">
+                    <i class="fas fa-globe"></i> Satellite
                 </button>
-                <button class="btn-control" onclick="setViewMode('grid')">
-                    <i class="fas fa-th"></i> Grid View
+                <button class="btn-control" onclick="setViewMode('3d')">
+                    <i class="fas fa-cube"></i> 3D
                 </button>
                 <button class="btn-control" onclick="setViewMode('heatmap')">
                     <i class="fas fa-fire"></i> Heatmap
                 </button>
+                <button class="btn-control" onclick="toggleLiveTracking()">
+                    <i class="fas fa-play-circle"></i> Live
+                </button>
             </div>
             <div class="controls-right">
                 <div class="filter-group">
-                    <select id="lgaFilterTracking" onchange="filterTracking()">
+                    <select id="lgaFilterTrack" onchange="filterByLGA()">
                         <option value="all">All LGAs</option>
                     </select>
-                    <select id="statusFilterTracking" onchange="filterTracking()">
+                    <select id="wardFilterTrack" onchange="filterByWard()">
+                        <option value="all">All Wards</option>
+                    </select>
+                    <select id="puFilterTrack" onchange="filterByPU()">
+                        <option value="all">All PUs</option>
+                    </select>
+                    <select id="statusFilterTrack" onchange="filterByStatus()">
                         <option value="all">All Status</option>
                         <option value="completed">Completed</option>
                         <option value="counting">Counting</option>
                         <option value="pending">Pending</option>
-                        <option value="incident">Incident</option>
-                    </select>
-                    <select id="aiFilterTracking" onchange="filterTracking()">
-                        <option value="all">AI Analysis</option>
-                        <option value="high_risk">High Risk</option>
-                        <option value="medium_risk">Medium Risk</option>
-                        <option value="low_risk">Low Risk</option>
+                        <option value="incident">⚠ Incident</option>
                     </select>
                 </div>
-                <button class="btn-refresh" onclick="refreshTracking()">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+                <div class="search-group">
+                    <input type="text" id="searchLocation" placeholder="Search location..." oninput="searchLocation()" />
+                    <button class="btn-refresh" onclick="refreshTracking()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn-locate" onclick="locateUser()">
+                        <i class="fas fa-location-arrow"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Tracking Container -->
-        <div class="tracking-container" id="trackingContainer">
-            <!-- Map View -->
-            <div class="map-view active" id="mapView">
+        <div class="tracking-container">
+            <div class="map-wrapper">
+                <!-- Map -->
                 <div id="electionMap"></div>
-                <div class="map-legend">
-                    <div class="legend-item">
-                        <span class="legend-dot completed"></span>
-                        Completed
+
+                <!-- Map Overlays -->
+                <div class="map-overlays">
+                    <!-- Legend -->
+                    <div class="map-legend">
+                        <div class="legend-title">📍 Legend</div>
+                        <div class="legend-item">
+                            <span class="legend-dot completed"></span>
+                            Completed
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot counting"></span>
+                            Counting
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot pending"></span>
+                            Pending
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot incident"></span>
+                            ⚠ Incident
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot agent-active"></span>
+                            Agent Active
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot ai-warning"></span>
+                            AI Warning
+                        </div>
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot counting"></span>
-                        Counting
+
+                    <!-- Mini Stats -->
+                    <div class="map-mini-stats">
+                        <div class="mini-stat">
+                            <span class="mini-label">Total PUs</span>
+                            <span class="mini-value" id="miniTotalPUs">2,984</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-label">Reported</span>
+                            <span class="mini-value" id="miniReported">2,347</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-label">Pending</span>
+                            <span class="mini-value" id="miniPending">637</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-label">Incidents</span>
+                            <span class="mini-value" id="miniIncidents">23</span>
+                        </div>
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot pending"></span>
-                        Pending
+
+                    <!-- Zoom Controls -->
+                    <div class="map-zoom-controls">
+                        <button onclick="zoomIn()"><i class="fas fa-plus"></i></button>
+                        <button onclick="zoomOut()"><i class="fas fa-minus"></i></button>
+                        <button onclick="resetView()"><i class="fas fa-home"></i></button>
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot incident"></span>
-                        Incident
+
+                    <!-- Live Indicator -->
+                    <div class="live-indicator" id="liveIndicator">
+                        <span class="pulse-dot"></span>
+                        <span>LIVE</span>
+                        <span class="update-time" id="updateTime">Updating...</span>
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot agent"></span>
-                        Agent Active
+                </div>
+
+                <!-- Info Panel -->
+                <div class="info-panel" id="infoPanel">
+                    <div class="info-panel-header">
+                        <h4 id="infoTitle">Select a location</h4>
+                        <button class="info-close" onclick="closeInfoPanel()">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot ai-warning"></span>
-                        AI Warning
+                    <div class="info-panel-body" id="infoBody">
+                        <p>Click on any marker to view details</p>
                     </div>
                 </div>
             </div>
 
-            <!-- List View -->
-            <div class="list-view" id="listView">
-                <div class="list-header">
-                    <span>LGA</span>
-                    <span>Wards</span>
-                    <span>PUs</span>
-                    <span>Status</span>
-                    <span>Votes</span>
-                    <span>Turnout</span>
-                    <span>Agents</span>
-                    <span>AI Risk</span>
+            <!-- Sidebar -->
+            <div class="tracking-sidebar">
+                <!-- Hierarchy Browser -->
+                <div class="hierarchy-browser">
+                    <div class="browser-header">
+                        <h4><i class="fas fa-sitemap"></i> Location Hierarchy</h4>
+                        <button class="btn-collapse" onclick="toggleHierarchy()">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+                    </div>
+                    <div class="browser-body" id="hierarchyBody">
+                        <!-- Rendered by JS -->
+                    </div>
                 </div>
-                <div id="listContent">
-                    <!-- Rendered by JS -->
-                </div>
-            </div>
 
-            <!-- Grid View -->
-            <div class="grid-view" id="gridView">
-                <div id="gridContent">
-                    <!-- Rendered by JS -->
+                <!-- Real-time Feed -->
+                <div class="realtime-feed">
+                    <div class="feed-header">
+                        <h4><i class="fas fa-bolt"></i> Live Feed</h4>
+                        <span class="feed-count" id="feedCount">0 updates</span>
+                    </div>
+                    <div class="feed-body" id="feedBody">
+                        <!-- Rendered by JS -->
+                    </div>
                 </div>
-            </div>
 
-            <!-- Heatmap View -->
-            <div class="heatmap-view" id="heatmapView">
-                <div id="heatmapContent">
-                    <!-- Rendered by JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- AI Tracking Summary -->
-        <div class="tracking-summary">
-            <div class="summary-card">
-                <i class="fas fa-flag-checkered"></i>
-                <div>
-                    <span class="summary-label">Total LGAs</span>
-                    <span class="summary-value">20</span>
-                </div>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <span class="summary-label">Completed</span>
-                    <span class="summary-value" id="summaryCompleted">0</span>
-                </div>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-clock"></i>
-                <div>
-                    <span class="summary-label">In Progress</span>
-                    <span class="summary-value" id="summaryProgress">0</span>
-                </div>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <span class="summary-label">AI Warnings</span>
-                    <span class="summary-value" id="summaryWarnings">0</span>
-                </div>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-users"></i>
-                <div>
-                    <span class="summary-label">Active Agents</span>
-                    <span class="summary-value" id="summaryAgents">0</span>
-                </div>
-            </div>
-            <div class="summary-card">
-                <i class="fas fa-robot"></i>
-                <div>
-                    <span class="summary-label">AI Confidence</span>
-                    <span class="summary-value" id="summaryConfidence">94%</span>
+                <!-- Tracking Summary -->
+                <div class="tracking-summary-side">
+                    <div class="summary-header">
+                        <h4><i class="fas fa-chart-pie"></i> Summary</h4>
+                    </div>
+                    <div class="summary-body" id="summaryBody">
+                        <!-- Rendered by JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,7 +229,9 @@
     <!-- ===== FOOTER ===== -->
     <div id="footer-container"></div>
 
+    <!-- ===== SCRIPTS ===== -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script type="module" src="js/tracking.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script type="module" src="js/tracking-advanced.js"></script>
 </body>
 </html>
