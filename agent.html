@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Agents Management - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== AI STATUS BAR ===== -->
+    <div class="ai-status-bar">
+        <div class="ai-status-left">
+            <span class="ai-badge">
+                <i class="fas fa-users-cog"></i>
+                Agents: <span id="agentStatus">47 Online</span>
+            </span>
+            <span class="ai-confidence">
+                AI Matching: <span id="agentMatch">92%</span>
+            </span>
+            <span class="ai-model">
+                Active Tasks: <span id="activeTasks">156</span>
+            </span>
+        </div>
+        <div class="ai-status-right">
+            <span class="ai-processing">
+                <i class="fas fa-user-check fa-pulse"></i>
+                Verified: <span id="verifiedAgents">43</span>
+            </span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
+                <i class="fas fa-microphone"></i> Voice
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- Agents Stats -->
+        <section class="agent-stats">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Agents</span>
+                    <span class="stat-value" id="totalAgents">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Active</span>
+                    <span class="stat-value" id="activeAgents">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Pending Verification</span>
+                    <span class="stat-value" id="pendingAgents">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">AI Performance</span>
+                    <span class="stat-value" id="agentPerformance">94%</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Top Agents</span>
+                    <span class="stat-value" id="topAgents">12</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">AI Flagged</span>
+                    <span class="stat-value" id="flaggedAgents">3</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Agents Controls -->
+        <section class="agents-controls">
+            <div class="controls-left">
+                <button class="btn-primary" onclick="showAddAgent()">
+                    <i class="fas fa-user-plus"></i> Add Agent
+                </button>
+                <button class="btn-secondary" onclick="exportAgents()">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <button class="btn-secondary" onclick="runAIAnalysis()">
+                    <i class="fas fa-robot"></i> AI Analyze
+                </button>
+            </div>
+            <div class="controls-right">
+                <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" />
+                <select id="agentFilter" onchange="filterAgents()">
+                    <option value="all">All Agents</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="flagged">AI Flagged</option>
+                    <option value="top">Top Performers</option>
+                </select>
+                <select id="lgaFilterAgents" onchange="filterAgents()">
+                    <option value="all">All LGAs</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Agents Grid -->
+        <section class="agents-grid" id="agentsGrid">
+            <!-- Rendered by JS -->
+        </section>
+
+        <!-- AI Agent Insights -->
+        <section class="ai-agent-insights">
+            <div class="insights-header">
+                <h2><i class="fas fa-lightbulb"></i> AI Agent Insights</h2>
+                <span class="badge">Updated: <span id="agentInsightTime">Just now</span></span>
+            </div>
+            <div class="insights-grid" id="agentInsights">
+                <!-- AI-generated agent insights -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-container"></div>
+
+    <!-- Add Agent Modal -->
+    <div class="modal" id="addAgentModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> AI-Assisted Agent Registration</h3>
+                <button class="modal-close" onclick="closeAddAgent()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addAgentForm" onsubmit="submitAgent(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" id="agentFullName" required placeholder="Enter full name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" id="agentEmail" required placeholder="agent@example.com" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone <span class="required">*</span></label>
+                        <input type="tel" id="agentPhone" required placeholder="080XXXXXXXX" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="agentPassword" required placeholder="Min 8 characters" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>LGA <span class="required">*</span></label>
+                        <select id="agentLGA" required onchange="updateAgentWards()">
+                            <option value="">Select LGA...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ward <span class="required">*</span></label>
+                        <select id="agentWard" required onchange="updateAgentPUs()">
+                            <option value="">Select Ward...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Polling Unit <span class="required">*</span></label>
+                        <select id="agentPU" required>
+                            <option value="">Select Polling Unit...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Party <span class="required">*</span></label>
+                        <select id="agentParty" required>
+                            <option value="">Select Party...</option>
+                            <option value="APC">APC</option>
+                            <option value="PDP">PDP</option>
+                            <option value="NNPP">NNPP</option>
+                            <option value="APGA">APGA</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Role <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-card">
+                            <input type="radio" name="agentRole" value="LGA_AGENT" checked />
+                            <div class="radio-content">
+                                <i class="fas fa-map-pin"></i>
+                                <span>LGA Agent</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="agentRole" value="PU_AGENT" />
+                            <div class="radio-content">
+                                <i class="fas fa-flag"></i>
+                                <span>PU Agent</span>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="agentRole" value="COLLATION_OFFICER" />
+                            <div class="radio-content">
+                                <i class="fas fa-clipboard-check"></i>
+                                <span>Collation Officer</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="ai-suggestion" id="aiSuggestion">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Suggestion: Based on location, recommend assigning to <strong id="aiRecommendLGA">Bauchi</strong></span>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAddAgent()">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Register Agent
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/agents.js"></script>
+</body>
+</html>
