@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Bauchi Election Monitor</title>
+    
+    <link rel="stylesheet" href="../styles/brand.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-cloud"></i>
+            <span>WebHotel<span>.Cloud</span></span>
+            <small>Admin Panel</small>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="active" data-page="dashboard">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" data-page="tracking">
+                <i class="fas fa-map-marked-alt"></i> Tracking
+            </a>
+            <a href="#" data-page="agents">
+                <i class="fas fa-user-check"></i> Agents
+            </a>
+            <a href="#" data-page="register">
+                <i class="fas fa-user-plus"></i> Register Agent
+            </a>
+            <a href="#" data-page="lgas">
+                <i class="fas fa-map-pin"></i> LGAs
+            </a>
+            <a href="#" data-page="wards">
+                <i class="fas fa-layer-group"></i> Wards
+            </a>
+            <a href="#" data-page="polling-units">
+                <i class="fas fa-flag"></i> Polling Units
+            </a>
+            <a href="#" data-page="results">
+                <i class="fas fa-vote-yea"></i> Results
+            </a>
+            <a href="#" data-page="incidents">
+                <i class="fas fa-exclamation-triangle"></i> Incidents
+            </a>
+            <a href="#" data-page="settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="admin-main">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="pageTitle">Dashboard</h1>
+                <span class="page-subtitle" id="pageSubtitle">Overview</span>
+            </div>
+            <div class="header-right">
+                <span class="admin-status">
+                    <span class="status-dot"></span> Online
+                </span>
+                <span class="admin-time" id="adminTime">--:--:--</span>
+                <div class="admin-user">
+                    <div class="avatar"><i class="fas fa-user"></i></div>
+                    <span id="adminName">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== PAGE: DASHBOARD ===== -->
+        <section class="admin-page active" id="page-dashboard">
+            <!-- Stats -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-flag-checkered"></i></div>
+                    <div>
+                        <span class="stat-label">Total LGAs</span>
+                        <span class="stat-value">20</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                    <div>
+                        <span class="stat-label">Completed</span>
+                        <span class="stat-value" id="adminCompleted">0/20</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fas fa-vote-yea"></i></div>
+                    <div>
+                        <span class="stat-label">Total Votes</span>
+                        <span class="stat-value" id="adminVotes">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fas fa-users"></i></div>
+                    <div>
+                        <span class="stat-label">Agents</span>
+                        <span class="stat-value" id="adminAgents">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon yellow"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <span class="stat-label">Turnout</span>
+                        <span class="stat-value" id="adminTurnout">0%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div>
+                        <span class="stat-label">Incidents</span>
+                        <span class="stat-value" id="adminIncidents">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="admin-charts">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar"></i> Party Results</h3>
+                    <canvas id="adminBarChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie"></i> Party Share</h3>
+                    <canvas id="adminPieChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="admin-activity">
+                <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                <div class="activity-list" id="activityList">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PAGE: TRACKING ===== -->
+        <section class="admin-page" id="page-tracking">
+            <div class="tracking-controls">
+                <div class="controls-left">
+                    <button class="btn-control active" onclick="setTrackView('map')">
+                        <i class="fas fa-map"></i> Map
+                    </button>
+                    <button class="btn-control" onclick="setTrackView('list')">
+                        <i class="fas fa-list"></i> List
+                    </button>
+                    <button class="btn-control" onclick="setTrackView('grid')">
+                        <i class="fas fa-th"></i> Grid
+                    </button>
+                </div>
+                <div class="controls-right">
+                    <select id="trackLGAFilter" onchange="filterTracking()">
+                        <option value="all">All LGAs</option>
+                    </select>
+                    <select id="trackStatusFilter" onchange="filterTracking()">
+                        <option value="all">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="counting">Counting</option>
+                        <option value="pending">Pending</option>
+                        <option value="incident">Incident</option>
+                    </select>
+                    <input type="text" id="trackSearch" placeholder="Search..." oninput="searchTracking()" />
+                </div>
+            </div>
+            <div class="tracking-container">
+                <div class="map-view active" id="trackMap">
+                    <div id="adminMap"></div>
+                </div>
+                <div class="list-view" id="trackList">
+                    <div class="list-header">
+                        <span>LGA</span><span>Wards</span><span>PUs</span>
+                        <span>Status</span><span>Votes</span><span>Turnout</span><span>Agents</span>
+                    </div>
+                    <div id="trackListContent"></div>
+                </div>
+                <div class="grid-view" id="trackGrid">
+                    <div id="trackGridContent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PAGE: AGENTS ===== -->
+        <section class="admin-page" id="page-agents">
+            <div class="agents-controls">
+                <button class="btn-primary" onclick="showAddAgent()">
+                    <i class="fas fa-user-plus"></i> Add Agent
+                </button>
+                <button class="btn-secondary" onclick="exportAgents()">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <div class="search-group">
+                    <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" />
+                    <select id="agentStatusFilter" onchange="filterAgents()">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="flagged">Flagged</option>
+                    </select>
+                    <select id="agentLGAFilter" onchange="filterAgents()">
+                        <option value="all">All LGAs</option>
+                    </select>
+                </div>
+            </div>
+            <div class="agents-grid" id="agentsGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- ===== PAGE: REGISTER AGENT ===== -->
+        <section class="admin-page" id="page-register">
+            <div class="register-container">
+                <div class="register-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-plus"></i> Register New Agent</h3>
+                        <p>AI-powered registration with real-time validation</p>
+                    </div>
+                    <form id="adminRegisterForm" onsubmit="adminRegisterAgent(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name <span class="required">*</span></label>
+                                <input type="text" id="regFullName" required placeholder="Enter full name" />
+                            </div>
+                            <div class="form-group">
+                                <label>Email <span class="required">*</span></label>
+                                <input type="email" id="regEmail" required placeholder="agent@example.com" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone <span class="required">*</span></label>
+                                <input type="tel" id="regPhone" required placeholder="080XXXXXXXX" />
+                            </div>
+                            <div class="form-group">
+                                <label>Password <span class="required">*</span></label>
+                                <input type="password" id="regPassword" required placeholder="Min 8 characters" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>LGA <span class="required">*</span></label>
+                                <select id="regLGA" required onchange="updateRegWards()">
+                                    <option value="">Select LGA...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Ward <span class="required">*</span></label>
+                                <select id="regWard" required onchange="updateRegPUs()">
+                                    <option value="">Select Ward...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Polling Unit <span class="required">*</span></label>
+                                <select id="regPU" required>
+                                    <option value="">Select Polling Unit...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Party <span class="required">*</span></label>
+                                <select id="regParty" required>
+                                    <option value="">Select Party...</option>
+                                    <option value="APC">APC</option>
+                                    <option value="PDP">PDP</option>
+                                    <option value="NNPP">NNPP</option>
+                                    <option value="APGA">APGA</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Role <span class="required">*</span></label>
+                            <select id="regRole" required>
+                                <option value="LGA_AGENT">LGA Agent</option>
+                                <option value="PU_AGENT">PU Agent</option>
+                                <option value="COLLATION_OFFICER">Collation Officer</option>
+                                <option value="SUPERVISOR">Supervisor</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="clearRegisterForm()">Clear</button>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-user-plus"></i> Register Agent
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PAGE: LGAs ===== -->
+        <section class="admin-page" id="page-lgas">
+            <div class="lga-controls">
+                <input type="text" id="lgaSearch" placeholder="Search LGA..." oninput="filterLGAs()" />
+                <select id="lgaStatusFilter" onchange="filterLGAs()">
+                    <option value="all">All Status</option>
+                    <option value="completed">Completed</option>
+                    <option value="counting">Counting</option>
+                    <option value="pending">Pending</option>
+                    <option value="incident">Incident</option>
+                </select>
+                <button class="btn-primary" onclick="refreshLGAs()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="lga-grid" id="lgaGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- ===== PAGE: WARDS ===== -->
+        <section class="admin-page" id="page-wards">
+            <div class="wards-controls">
+                <select id="wardLGAFilter" onchange="filterWards()">
+                    <option value="all">All LGAs</option>
+                </select>
+                <input type="text" id="wardSearch" placeholder="Search Ward..." oninput="filterWards()" />
+                <button class="btn-primary" onclick="refreshWards()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="wards-grid" id="wardsGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- ===== PAGE: POLLING UNITS ===== -->
+        <section class="admin-page" id="page-polling-units">
+            <div class="pu-controls">
+                <select id="puLGAFilter" onchange="filterPUs()">
+                    <option value="all">All LGAs</option>
+                </select>
+                <select id="puWardFilter" onchange="filterPUs()">
+                    <option value="all">All Wards</option>
+                </select>
+                <input type="text" id="puSearch" placeholder="Search PU..." oninput="filterPUs()" />
+                <button class="btn-primary" onclick="refreshPUs()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="pu-grid" id="puGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- ===== PAGE: RESULTS ===== -->
+        <section class="admin-page" id="page-results">
+            <div class="results-controls">
+                <select id="resultLGAFilter" onchange="filterResults()">
+                    <option value="all">All LGAs</option>
+                </select>
+                <select id="resultPartyFilter" onchange="filterResults()">
+                    <option value="all">All Parties</option>
+                    <option value="APC">APC</option>
+                    <option value="PDP">PDP</option>
+                    <option value="NNPP">NNPP</option>
+                    <option value="APGA">APGA</option>
+                    <option value="Others">Others</option>
+                </select>
+                <button class="btn-primary" onclick="exportResults()">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <button class="btn-secondary" onclick="refreshResults()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="results-table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>LGA</th>
+                            <th>Ward</th>
+                            <th>PU</th>
+                            <th>Party</th>
+                            <th>Votes</th>
+                            <th>Status</th>
+                            <th>Verified</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== PAGE: INCIDENTS ===== -->
+        <section class="admin-page" id="page-incidents">
+            <div class="incidents-controls">
+                <button class="btn-primary" onclick="showReportIncident()">
+                    <i class="fas fa-plus"></i> Report Incident
+                </button>
+                <select id="incidentSeverityFilter" onchange="filterIncidents()">
+                    <option value="all">All Severity</option>
+                    <option value="HIGH">High</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LOW">Low</option>
+                </select>
+                <select id="incidentStatusFilter" onchange="filterIncidents()">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+                <button class="btn-secondary" onclick="refreshIncidents()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="incidents-list" id="incidentsList">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- ===== PAGE: SETTINGS ===== -->
+        <section class="admin-page" id="page-settings">
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3><i class="fas fa-palette"></i> Appearance</h3>
+                    <div class="settings-group">
+                        <label>Theme</label>
+                        <select id="settingsTheme" onchange="changeAdminTheme(this.value)">
+                            <option value="dark">Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="settings-group">
+                        <label><input type="checkbox" id="notifyResults" checked /> Results Updates</label>
+                        <label><input type="checkbox" id="notifyIncidents" checked /> Incident Alerts</label>
+                        <label><input type="checkbox" id="notifyAgents" /> Agent Activity</label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3><i class="fas fa-database"></i> Data Management</h3>
+                    <div class="settings-group">
+                        <button class="btn-secondary" onclick="backupData()">
+                            <i class="fas fa-download"></i> Backup Data
+                        </button>
+                        <button class="btn-secondary" onclick="restoreData()">
+                            <i class="fas fa-upload"></i> Restore Data
+                        </button>
+                        <button class="btn-danger" onclick="clearData()">
+                            <i class="fas fa-trash"></i> Clear Test Data
+                        </button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    <div class="settings-group">
+                        <button class="btn-secondary" onclick="changePassword()">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <button class="btn-secondary" onclick="enable2FA()">
+                            <i class="fas fa-mobile-alt"></i> Enable 2FA
+                        </button>
+                        <button class="btn-secondary" onclick="viewAuditLog()">
+                            <i class="fas fa-history"></i> View Audit Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Incident Report Modal -->
+    <div class="modal" id="incidentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Report Incident</h3>
+                <button class="modal-close" onclick="closeIncidentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="incidentForm" onsubmit="submitIncident(event)">
+                <div class="form-group">
+                    <label>LGA <span class="required">*</span></label>
+                    <select id="incidentLGA" required>
+                        <option value="">Select LGA...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Incident Type <span class="required">*</span></label>
+                    <select id="incidentType" required>
+                        <option value="">Select type...</option>
+                        <option value="Ballot Box Snatching">Ballot Box Snatching</option>
+                        <option value="Voter Intimidation">Voter Intimidation</option>
+                        <option value="Result Manipulation">Result Manipulation</option>
+                        <option value="Violence">Violence</option>
+                        <option value="Logistics Issue">Logistics Issue</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea id="incidentDescription" required placeholder="Describe the incident..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Severity <span class="required">*</span></label>
+                    <select id="incidentSeverity" required>
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeIncidentModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../js/admin.js"></script>
+</body>
+</html>
