@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Registration - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="styles/register.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== AI STATUS BAR ===== -->
+    <div class="ai-status-bar">
+        <div class="ai-status-left">
+            <span class="ai-badge">
+                <i class="fas fa-brain"></i>
+                AI Assistant: <span id="regAIStatus">Active</span>
+            </span>
+            <span class="ai-confidence">
+                Validation: <span id="regValidation">100%</span>
+            </span>
+            <span class="ai-model">
+                Fraud Detection: <span id="regFraud">Clear</span>
+            </span>
+        </div>
+        <div class="ai-status-right">
+            <span class="ai-processing">
+                <i class="fas fa-spinner fa-spin"></i>
+                Processing: <span id="regProcessing">Ready</span>
+            </span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
+                <i class="fas fa-microphone"></i> Voice
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <div class="register-container">
+            <div class="register-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-plus"></i> Smart Agent Registration</h2>
+                    <p>AI-powered registration with real-time validation</p>
+                </div>
+
+                <form id="registerForm" onsubmit="registerAgent(event)">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name <span class="required">*</span></label>
+                                <input type="text" id="fullName" required placeholder="Enter full name" oninput="validateName()" />
+                                <div class="validation-status" id="nameValidation">
+                                    <i class="fas fa-check-circle"></i> Valid
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" required placeholder="080XXXXXXXX" oninput="validatePhone()" />
+                                <div class="validation-status" id="phoneValidation">
+                                    <i class="fas fa-check-circle"></i> Valid
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" required placeholder="agent@example.com" oninput="validateEmail()" />
+                                <div class="validation-status" id="emailValidation">
+                                    <i class="fas fa-check-circle"></i> Valid
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password <span class="required">*</span></label>
+                                <input type="password" id="password" required placeholder="Min 8 characters" oninput="validatePassword()" />
+                                <div class="password-strength" id="passwordStrength">
+                                    <span class="strength-bar"><span id="strengthFill" style="width:0%"></span></span>
+                                    <span id="strengthText">Enter password</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI-Assisted Assignment -->
+                    <div class="form-section ai-enhanced">
+                        <h3><i class="fas fa-robot"></i> AI-Assisted Assignment</h3>
+                        <div class="ai-suggestion-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <span>AI Suggestion:</span>
+                                <p id="aiSuggestionText">Based on your location, we recommend <strong>Bauchi LGA</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Local Government Area <span class="required">*</span></label>
+                            <select id="lgaSelect" required onchange="updateWards(); updateAISuggestion()">
+                                <option value="">Select LGA...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ward <span class="required">*</span></label>
+                            <select id="wardSelect" required onchange="updatePollingUnits()">
+                                <option value="">Select Ward...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Polling Unit <span class="required">*</span></label>
+                            <select id="puSelect" required>
+                                <option value="">Select Polling Unit...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Party & Role -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-flag"></i> Party & Role</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Political Party <span class="required">*</span></label>
+                                <select id="partySelect" required>
+                                    <option value="">Select Party...</option>
+                                    <option value="APC">All Progressives Congress (APC)</option>
+                                    <option value="PDP">Peoples Democratic Party (PDP)</option>
+                                    <option value="NNPP">New Nigeria Peoples Party (NNPP)</option>
+                                    <option value="APGA">All Progressives Grand Alliance (APGA)</option>
+                                    <option value="Others">Other Parties</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Agent Role <span class="required">*</span></label>
+                                <select id="roleSelect" required>
+                                    <option value="LGA_AGENT">LGA Agent</option>
+                                    <option value="PU_AGENT">Polling Unit Agent</option>
+                                    <option value="COLLATION_OFFICER">Collation Officer</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Fraud Detection -->
+                    <div class="form-section ai-enhanced">
+                        <h3><i class="fas fa-shield-alt"></i> AI Fraud Detection</h3>
+                        <div class="fraud-detection" id="fraudDetection">
+                            <div class="fraud-status">
+                                <i class="fas fa-check-circle"></i>
+                                <span>No fraud indicators detected</span>
+                            </div>
+                            <div class="fraud-details">
+                                <span>Device Fingerprint: <strong>Clean</strong></span>
+                                <span>IP Reputation: <strong>Trusted</strong></span>
+                                <span>Duplicate Check: <strong>Unique</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms -->
+                    <div class="form-section terms">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" required />
+                            <span>I confirm all information is accurate and agree to the election monitoring guidelines</span>
+                        </label>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn-primary" id="submitBtn">
+                            <i class="fas fa-user-plus"></i> Register Agent
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="js/register.js"></script>
+</body>
+</html>
