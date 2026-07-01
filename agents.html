@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Agents Management - Bauchi Election Monitor</title>
     
-    <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/advanced.css" />
@@ -28,6 +27,10 @@
             <span class="ai-model">
                 Active Tasks: <span id="activeTasks">156</span>
             </span>
+            <span class="ai-model">
+                <i class="fas fa-trophy" style="color:var(--brand-warning);"></i>
+                Top Performer: <span id="topPerformer">Musa Bello</span>
+            </span>
         </div>
         <div class="ai-status-right">
             <span class="ai-processing">
@@ -42,7 +45,7 @@
 
     <!-- ===== MAIN CONTENT ===== -->
     <main class="main-content">
-        <!-- Agents Stats -->
+        <!-- Agent Stats -->
         <section class="agent-stats">
             <div class="stat-card">
                 <div class="stat-icon blue">
@@ -100,7 +103,7 @@
             </div>
         </section>
 
-        <!-- Agents Controls -->
+        <!-- Agent Controls -->
         <section class="agents-controls">
             <div class="controls-left">
                 <button class="btn-primary" onclick="showAddAgent()">
@@ -112,19 +115,24 @@
                 <button class="btn-secondary" onclick="runAIAnalysis()">
                     <i class="fas fa-robot"></i> AI Analyze
                 </button>
+                <button class="btn-secondary" onclick="bulkAssign()">
+                    <i class="fas fa-users"></i> Bulk Assign
+                </button>
             </div>
             <div class="controls-right">
-                <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" />
-                <select id="agentFilter" onchange="filterAgents()">
-                    <option value="all">All Agents</option>
-                    <option value="active">Active</option>
-                    <option value="pending">Pending</option>
-                    <option value="flagged">AI Flagged</option>
-                    <option value="top">Top Performers</option>
-                </select>
-                <select id="lgaFilterAgents" onchange="filterAgents()">
-                    <option value="all">All LGAs</option>
-                </select>
+                <div class="search-group">
+                    <input type="text" id="agentSearch" placeholder="Search agents..." oninput="filterAgents()" />
+                    <select id="agentFilter" onchange="filterAgents()">
+                        <option value="all">All Agents</option>
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="flagged">AI Flagged</option>
+                        <option value="top">Top Performers</option>
+                    </select>
+                    <select id="lgaFilterAgents" onchange="filterAgents()">
+                        <option value="all">All LGAs</option>
+                    </select>
+                </div>
             </div>
         </section>
 
