@@ -1,0 +1,330 @@
+/* ============================================
+   SECURE LOGIN PAGE
+   ============================================ */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--brand-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Animation */
+.login-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.1;
+}
+
+.orb1 {
+    width: 500px;
+    height: 500px;
+    background: var(--brand-primary);
+    top: -200px;
+    right: -100px;
+    animation: float 20s ease-in-out infinite;
+}
+
+.orb2 {
+    width: 400px;
+    height: 400px;
+    background: var(--brand-primary-light);
+    bottom: -100px;
+    left: -100px;
+    animation: float 25s ease-in-out infinite reverse;
+}
+
+.orb3 {
+    width: 300px;
+    height: 300px;
+    background: var(--brand-purple);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float 30s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(50px, -30px); }
+    50% { transform: translate(-20px, 50px); }
+    75% { transform: translate(30px, -40px); }
+}
+
+/* Login Card */
+.login-card {
+    position: relative;
+    z-index: 1;
+    width: 440px;
+    max-width: 95vw;
+    background: var(--brand-card);
+    border: 1px solid var(--brand-border);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+}
+
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.brand-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--brand-text);
+}
+
+.brand-logo i {
+    color: var(--brand-primary-light);
+}
+
+.brand-logo span {
+    color: var(--brand-text-muted);
+}
+
+.election-badge {
+    font-size: 11px;
+    padding: 4px 14px;
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    border-radius: 20px;
+    color: var(--brand-primary-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.login-body h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.login-body p {
+    color: var(--brand-text-secondary);
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--brand-text-secondary);
+    margin-bottom: 4px;
+}
+
+.form-group label i {
+    color: var(--brand-primary-light);
+    width: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--brand-bg);
+    border: 1px solid var(--brand-border);
+    border-radius: 10px;
+    color: var(--brand-text);
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--brand-text-muted);
+}
+
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    padding-right: 48px;
+}
+
+.password-input button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--brand-text-muted);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.password-input button:hover {
+    color: var(--brand-text);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0 24px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--brand-text-secondary);
+    cursor: pointer;
+}
+
+.checkbox-label input {
+    accent-color: var(--brand-primary);
+}
+
+.form-options a {
+    font-size: 13px;
+    color: var(--brand-primary-light);
+    text-decoration: none;
+}
+
+.form-options a:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: var(--brand-gradient);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--brand-shadow-hover);
+}
+
+.btn-login .btn-loader {
+    display: none;
+}
+
+.btn-login.loading .btn-text {
+    display: none;
+}
+
+.btn-login.loading .btn-loader {
+    display: inline;
+}
+
+.login-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--brand-border);
+    text-align: center;
+}
+
+.login-footer span {
+    font-size: 12px;
+    color: var(--brand-text-muted);
+}
+
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.security-badges span {
+    font-size: 11px;
+    color: var(--brand-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.security-badges i {
+    color: var(--brand-primary-light);
+}
+
+.ai-status-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-size: 12px;
+    color: var(--brand-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand-card);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--brand-border);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand-success);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 24px;
+    }
+    .login-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    .login-body h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+    .login-body p {
+        text-align: center;
+    }
+    .form-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .security-badges {
+        flex-wrap: wrap;
+    }
+}
