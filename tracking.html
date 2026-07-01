@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Tracking - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="styles/tracking.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== AI STATUS BAR ===== -->
+    <div class="ai-status-bar">
+        <div class="ai-status-left">
+            <span class="ai-badge">
+                <i class="fas fa-satellite"></i>
+                Live Tracking: <span id="trackingStatus">Active</span>
+            </span>
+            <span class="ai-confidence">
+                GPS Accuracy: <span id="gpsAccuracy">±5m</span>
+            </span>
+            <span class="ai-model">
+                Agents Online: <span id="agentsOnline">47</span>
+            </span>
+        </div>
+        <div class="ai-status-right">
+            <span class="ai-processing">
+                <i class="fas fa-map-marker-alt fa-pulse"></i>
+                Tracking: <span id="trackingCount">20 LGAs</span>
+            </span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
+                <i class="fas fa-microphone"></i> Voice
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- Tracking Controls -->
+        <div class="tracking-controls">
+            <div class="controls-left">
+                <button class="btn-control active" onclick="setViewMode('map')">
+                    <i class="fas fa-map"></i> Map View
+                </button>
+                <button class="btn-control" onclick="setViewMode('list')">
+                    <i class="fas fa-list"></i> List View
+                </button>
+                <button class="btn-control" onclick="setViewMode('grid')">
+                    <i class="fas fa-th"></i> Grid View
+                </button>
+                <button class="btn-control" onclick="setViewMode('heatmap')">
+                    <i class="fas fa-fire"></i> Heatmap
+                </button>
+            </div>
+            <div class="controls-right">
+                <div class="filter-group">
+                    <select id="lgaFilterTracking" onchange="filterTracking()">
+                        <option value="all">All LGAs</option>
+                    </select>
+                    <select id="statusFilterTracking" onchange="filterTracking()">
+                        <option value="all">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="counting">Counting</option>
+                        <option value="pending">Pending</option>
+                        <option value="incident">Incident</option>
+                    </select>
+                    <select id="aiFilterTracking" onchange="filterTracking()">
+                        <option value="all">AI Analysis</option>
+                        <option value="high_risk">High Risk</option>
+                        <option value="medium_risk">Medium Risk</option>
+                        <option value="low_risk">Low Risk</option>
+                    </select>
+                </div>
+                <button class="btn-refresh" onclick="refreshTracking()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tracking Container -->
+        <div class="tracking-container" id="trackingContainer">
+            <!-- Map View -->
+            <div class="map-view active" id="mapView">
+                <div id="electionMap"></div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot completed"></span>
+                        Completed
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot counting"></span>
+                        Counting
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot pending"></span>
+                        Pending
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot incident"></span>
+                        Incident
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot agent"></span>
+                        Agent Active
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot ai-warning"></span>
+                        AI Warning
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="list-view" id="listView">
+                <div class="list-header">
+                    <span>LGA</span>
+                    <span>Wards</span>
+                    <span>PUs</span>
+                    <span>Status</span>
+                    <span>Votes</span>
+                    <span>Turnout</span>
+                    <span>Agents</span>
+                    <span>AI Risk</span>
+                </div>
+                <div id="listContent">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div class="grid-view" id="gridView">
+                <div id="gridContent">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Heatmap View -->
+            <div class="heatmap-view" id="heatmapView">
+                <div id="heatmapContent">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Tracking Summary -->
+        <div class="tracking-summary">
+            <div class="summary-card">
+                <i class="fas fa-flag-checkered"></i>
+                <div>
+                    <span class="summary-label">Total LGAs</span>
+                    <span class="summary-value">20</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <span class="summary-label">Completed</span>
+                    <span class="summary-value" id="summaryCompleted">0</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-clock"></i>
+                <div>
+                    <span class="summary-label">In Progress</span>
+                    <span class="summary-value" id="summaryProgress">0</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <span class="summary-label">AI Warnings</span>
+                    <span class="summary-value" id="summaryWarnings">0</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-users"></i>
+                <div>
+                    <span class="summary-label">Active Agents</span>
+                    <span class="summary-value" id="summaryAgents">0</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <span class="summary-label">AI Confidence</span>
+                    <span class="summary-value" id="summaryConfidence">94%</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-container"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="js/tracking.js"></script>
+</body>
+</html>
