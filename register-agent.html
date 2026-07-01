@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Registration - Bauchi Election Monitor</title>
     
-    <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/advanced.css" />
@@ -29,6 +28,10 @@
             <span class="ai-model">
                 Fraud Detection: <span id="regFraud">Clear</span>
             </span>
+            <span class="ai-model">
+                <i class="fas fa-check-circle" style="color:var(--brand-success);"></i>
+                ID Verification: <span id="regIDVerify">Verified</span>
+            </span>
         </div>
         <div class="ai-status-right">
             <span class="ai-processing">
@@ -47,142 +50,292 @@
             <div class="register-card">
                 <div class="card-header">
                     <h2><i class="fas fa-user-plus"></i> Smart Agent Registration</h2>
-                    <p>AI-powered registration with real-time validation</p>
+                    <p>AI-powered registration with real-time validation and fraud detection</p>
+                    <div class="progress-steps">
+                        <div class="step active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Personal</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Assignment</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Party & Role</span>
+                        </div>
+                        <div class="step" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Verify</span>
+                        </div>
+                    </div>
                 </div>
 
                 <form id="registerForm" onsubmit="registerAgent(event)">
-                    <!-- Personal Information -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-user"></i> Personal Information</h3>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Full Name <span class="required">*</span></label>
-                                <input type="text" id="fullName" required placeholder="Enter full name" oninput="validateName()" />
-                                <div class="validation-status" id="nameValidation">
-                                    <i class="fas fa-check-circle"></i> Valid
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" data-step="1">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Full Name <span class="required">*</span></label>
+                                    <input type="text" id="fullName" required placeholder="Enter full name" oninput="validateName()" />
+                                    <div class="validation-status" id="nameValidation">
+                                        <i class="fas fa-check-circle"></i> Valid
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number <span class="required">*</span></label>
+                                    <input type="tel" id="phone" required placeholder="080XXXXXXXX" oninput="validatePhone()" />
+                                    <div class="validation-status" id="phoneValidation">
+                                        <i class="fas fa-check-circle"></i> Valid
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Phone Number <span class="required">*</span></label>
-                                <input type="tel" id="phone" required placeholder="080XXXXXXXX" oninput="validatePhone()" />
-                                <div class="validation-status" id="phoneValidation">
-                                    <i class="fas fa-check-circle"></i> Valid
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email Address <span class="required">*</span></label>
+                                    <input type="email" id="email" required placeholder="agent@example.com" oninput="validateEmail()" />
+                                    <div class="validation-status" id="emailValidation">
+                                        <i class="fas fa-check-circle"></i> Valid
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password <span class="required">*</span></label>
+                                    <input type="password" id="password" required placeholder="Min 8 characters" oninput="validatePassword()" />
+                                    <div class="password-strength" id="passwordStrength">
+                                        <span class="strength-bar"><span id="strengthFill" style="width:0%"></span></span>
+                                        <span id="strengthText">Enter password</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input type="date" id="dob" />
+                                </div>
+                                <div class="form-group">
+                                    <label>National ID Number</label>
+                                    <input type="text" id="nin" placeholder="NIN number" oninput="validateNIN()" />
+                                    <div class="validation-status" id="ninValidation">
+                                        <i class="fas fa-check-circle"></i> Valid
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Email Address <span class="required">*</span></label>
-                                <input type="email" id="email" required placeholder="agent@example.com" oninput="validateEmail()" />
-                                <div class="validation-status" id="emailValidation">
-                                    <i class="fas fa-check-circle"></i> Valid
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Password <span class="required">*</span></label>
-                                <input type="password" id="password" required placeholder="Min 8 characters" oninput="validatePassword()" />
-                                <div class="password-strength" id="passwordStrength">
-                                    <span class="strength-bar"><span id="strengthFill" style="width:0%"></span></span>
-                                    <span id="strengthText">Enter password</span>
-                                </div>
-                            </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-next" onclick="nextStep(2)">
+                                Next Step <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- AI-Assisted Assignment -->
-                    <div class="form-section ai-enhanced">
-                        <h3><i class="fas fa-robot"></i> AI-Assisted Assignment</h3>
-                        <div class="ai-suggestion-box">
-                            <i class="fas fa-lightbulb"></i>
-                            <div>
-                                <span>AI Suggestion:</span>
-                                <p id="aiSuggestionText">Based on your location, we recommend <strong>Bauchi LGA</strong></p>
+                    <!-- Step 2: Assignment -->
+                    <div class="form-step" data-step="2">
+                        <div class="form-section ai-enhanced">
+                            <h3><i class="fas fa-robot"></i> AI-Assisted Assignment</h3>
+                            <div class="ai-suggestion-box">
+                                <i class="fas fa-lightbulb"></i>
+                                <div>
+                                    <span>AI Suggestion:</span>
+                                    <p id="aiSuggestionText">Based on your location, we recommend <strong>Bauchi LGA</strong></p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label>Local Government Area <span class="required">*</span></label>
-                            <select id="lgaSelect" required onchange="updateWards(); updateAISuggestion()">
-                                <option value="">Select LGA...</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Ward <span class="required">*</span></label>
-                            <select id="wardSelect" required onchange="updatePollingUnits()">
-                                <option value="">Select Ward...</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Polling Unit <span class="required">*</span></label>
-                            <select id="puSelect" required>
-                                <option value="">Select Polling Unit...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Party & Role -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-flag"></i> Party & Role</h3>
-                        
-                        <div class="form-row">
                             <div class="form-group">
-                                <label>Political Party <span class="required">*</span></label>
-                                <select id="partySelect" required>
-                                    <option value="">Select Party...</option>
-                                    <option value="APC">All Progressives Congress (APC)</option>
-                                    <option value="PDP">Peoples Democratic Party (PDP)</option>
-                                    <option value="NNPP">New Nigeria Peoples Party (NNPP)</option>
-                                    <option value="APGA">All Progressives Grand Alliance (APGA)</option>
-                                    <option value="Others">Other Parties</option>
+                                <label>Local Government Area <span class="required">*</span></label>
+                                <select id="lgaSelect" required onchange="updateWards(); updateAISuggestion()">
+                                    <option value="">Select LGA...</option>
+                                </select>
+                                <div class="ai-match" id="lgaMatch">
+                                    <i class="fas fa-robot"></i> AI Match: <span id="lgaMatchScore">92%</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ward <span class="required">*</span></label>
+                                <select id="wardSelect" required onchange="updatePollingUnits()">
+                                    <option value="">Select Ward...</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
-                                <label>Agent Role <span class="required">*</span></label>
-                                <select id="roleSelect" required>
-                                    <option value="LGA_AGENT">LGA Agent</option>
-                                    <option value="PU_AGENT">Polling Unit Agent</option>
-                                    <option value="COLLATION_OFFICER">Collation Officer</option>
+                                <label>Polling Unit <span class="required">*</span></label>
+                                <select id="puSelect" required>
+                                    <option value="">Select Polling Unit...</option>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label>Agent Coverage Area</label>
+                                <div class="coverage-selector">
+                                    <label class="coverage-option">
+                                        <input type="radio" name="coverage" value="single" checked />
+                                        <span>Single PU</span>
+                                    </label>
+                                    <label class="coverage-option">
+                                        <input type="radio" name="coverage" value="multiple" />
+                                        <span>Multiple PUs</span>
+                                    </label>
+                                    <label class="coverage-option">
+                                        <input type="radio" name="coverage" value="ward" />
+                                        <span>Whole Ward</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevStep(1)">
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep(3)">
+                                Next Step <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- AI Fraud Detection -->
-                    <div class="form-section ai-enhanced">
-                        <h3><i class="fas fa-shield-alt"></i> AI Fraud Detection</h3>
-                        <div class="fraud-detection" id="fraudDetection">
-                            <div class="fraud-status">
-                                <i class="fas fa-check-circle"></i>
-                                <span>No fraud indicators detected</span>
+                    <!-- Step 3: Party & Role -->
+                    <div class="form-step" data-step="3">
+                        <div class="form-section">
+                            <h3><i class="fas fa-flag"></i> Party & Role</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Political Party <span class="required">*</span></label>
+                                    <select id="partySelect" required>
+                                        <option value="">Select Party...</option>
+                                        <option value="APC">All Progressives Congress (APC)</option>
+                                        <option value="PDP">Peoples Democratic Party (PDP)</option>
+                                        <option value="NNPP">New Nigeria Peoples Party (NNPP)</option>
+                                        <option value="APGA">All Progressives Grand Alliance (APGA)</option>
+                                        <option value="SDP">Social Democratic Party (SDP)</option>
+                                        <option value="ADC">African Democratic Congress (ADC)</option>
+                                        <option value="YPP">Young Progressives Party (YPP)</option>
+                                        <option value="ZLP">Zenith Labour Party (ZLP)</option>
+                                        <option value="OTHERS">Other Parties</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Agent Role <span class="required">*</span></label>
+                                    <select id="roleSelect" required>
+                                        <option value="LGA_AGENT">LGA Agent</option>
+                                        <option value="PU_AGENT">Polling Unit Agent</option>
+                                        <option value="COLLATION_OFFICER">Collation Officer</option>
+                                        <option value="SUPERVISOR">Supervisor</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="fraud-details">
-                                <span>Device Fingerprint: <strong>Clean</strong></span>
-                                <span>IP Reputation: <strong>Trusted</strong></span>
-                                <span>Duplicate Check: <strong>Unique</strong></span>
+
+                            <div class="form-group">
+                                <label>Agent Level</label>
+                                <div class="level-selector">
+                                    <label class="level-option">
+                                        <input type="radio" name="level" value="basic" checked />
+                                        <div class="level-content">
+                                            <i class="fas fa-user"></i>
+                                            <span>Basic</span>
+                                            <small>PU level monitoring</small>
+                                        </div>
+                                    </label>
+                                    <label class="level-option">
+                                        <input type="radio" name="level" value="senior" />
+                                        <div class="level-content">
+                                            <i class="fas fa-user-graduate"></i>
+                                            <span>Senior</span>
+                                            <small>Ward level supervision</small>
+                                        </div>
+                                    </label>
+                                    <label class="level-option">
+                                        <input type="radio" name="level" value="expert" />
+                                        <div class="level-content">
+                                            <i class="fas fa-user-tie"></i>
+                                            <span>Expert</span>
+                                            <small>LGA level coordination</small>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevStep(2)">
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button type="button" class="btn-next" onclick="nextStep(4)">
+                                Next Step <i class="fas fa-arrow-right"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Terms -->
-                    <div class="form-section terms">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="terms" required />
-                            <span>I confirm all information is accurate and agree to the election monitoring guidelines</span>
-                        </label>
-                    </div>
+                    <!-- Step 4: Verify & Submit -->
+                    <div class="form-step" data-step="4">
+                        <div class="form-section">
+                            <h3><i class="fas fa-shield-alt"></i> Verification & Submit</h3>
+                            
+                            <!-- AI Fraud Detection -->
+                            <div class="fraud-detection" id="fraudDetection">
+                                <div class="fraud-status">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>No fraud indicators detected</span>
+                                </div>
+                                <div class="fraud-details">
+                                    <span><i class="fas fa-fingerprint"></i> Device: <strong>Clean</strong></span>
+                                    <span><i class="fas fa-network-wired"></i> IP Reputation: <strong>Trusted</strong></span>
+                                    <span><i class="fas fa-copy"></i> Duplicate Check: <strong>Unique</strong></span>
+                                    <span><i class="fas fa-shield-alt"></i> ID Verification: <strong>Passed</strong></span>
+                                </div>
+                            </div>
 
-                    <!-- Submit -->
-                    <div class="form-actions">
-                        <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                        <button type="submit" class="btn-primary" id="submitBtn">
-                            <i class="fas fa-user-plus"></i> Register Agent
-                        </button>
+                            <!-- Summary -->
+                            <div class="registration-summary" id="regSummary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Name</span>
+                                    <span class="summary-value" id="summaryName">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Email</span>
+                                    <span class="summary-value" id="summaryEmail">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">LGA</span>
+                                    <span class="summary-value" id="summaryLGA">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Ward</span>
+                                    <span class="summary-value" id="summaryWard">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">PU</span>
+                                    <span class="summary-value" id="summaryPU">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Party</span>
+                                    <span class="summary-value" id="summaryParty">--</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Role</span>
+                                    <span class="summary-value" id="summaryRole">--</span>
+                                </div>
+                            </div>
+
+                            <!-- Terms -->
+                            <div class="terms">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="terms" required />
+                                    <span>I confirm all information is accurate and agree to the election monitoring guidelines</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn-prev" onclick="prevStep(3)">
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button type="submit" class="btn-primary" id="submitBtn">
+                                <i class="fas fa-user-plus"></i> Register Agent
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -191,6 +344,26 @@
 
     <!-- ===== FOOTER ===== -->
     <div id="footer-container"></div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Registration Successful!</h2>
+            <p>Agent has been registered with AI verification.</p>
+            <div class="modal-details" id="agentDetails"></div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeModal()">
+                    <i class="fas fa-check"></i> Done
+                </button>
+                <button class="btn-secondary" onclick="registerAnother()">
+                    <i class="fas fa-user-plus"></i> Register Another
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="js/register.js"></script>
 </body>
