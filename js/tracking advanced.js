@@ -672,4 +672,236 @@ window.toggleLiveTracking = function() {
     liveTracking = !liveTracking;
     const btn = document.querySelector('.btn-control:last-child');
     if (liveTracking) {
-        btn.innerHTML = '<
+        btn.innerHTML = '<i class="fas fa-play-circle"></i> Live';
+        btn.classList.add('active');
+        document.getElementById('liveIndicator').style.display = 'flex';
+        startLiveUpdates();
+    } else {
+        btn.innerHTML = '<i class="fas fa-pause-circle"></i> Paused';
+        btn.classList.remove('active');
+        document.getElementById('liveIndicator').style.display = 'none';
+        if (updateInterval) clearInterval(updateInterval);
+    }
+};
+
+// ===== SET VIEW MODE =====
+window.setViewMode = function(mode) {
+    currentView = mode;
+    
+    document.querySelectorAll('.btn-control').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    const btns = document.querySelectorAll('.btn-control');
+    const index = ['map', 'satellite', '3d', 'heatmap', 'live'].indexOf(mode);
+    if (btns[index]) btns[index].classList.add('active');
+    
+    // Change map tile layer
+    let tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    let attribution = '&copy; OpenStreetMap contributors';
+    
+    if (mode === 'satellite') {
+        tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+        attribution = '&copy; Esri';
+    } else if (mode === '3d') {
+        tileUrl = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+        attribution = '&copy; OpenTopoMap';
+    }
+    
+    // Remove existing tile layers
+    map.eachLayer(layer => {
+        if (layer instanceof L.TileLayer) {
+            map.removeLayer(layer);
+        }
+    });
+    
+    L.tileLayer(tileUrl, {
+        attribution: attribution,
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Handle heatmap
+    if (mode === 'heatmap') {
+        showHeatmap();
+    } else {
+        hideHeatmap();
+    }
+};
+
+// ===== HEATMAP =====
+function showHeatmap() {
+    if (heatmapLayer) {
+        map.addLayer(heatmapLayer);
+        return;
+    }
+    
+    // Create heatmap data
+    const heatData = filteredLocations.map(loc => [
+        loc.coordinates[0],
+        loc.coordinates[1],
+        Object.values(loc.partyResults).reduce((a,b) => a+b, 0) / 100
+    ]);
+    
+    // Simple heatmap implementation using canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = map.getSize().x;
+    canvas.height = map.getSize().y;
+    
+    // This is a simplified heatmap - in production, use a proper library
+    heatmapLayer = L.canvasLayer().delegate('draw', function() {
+        const bounds = this._map.getBounds();
+        const topLeft = this._map.latLngToLayerPoint(bounds.getNorthWest());
+        const bottomRight = this._map.latLngToLayerPoint(bounds.getSouthEast());
+        const width = bottomRight.x - topLeft.x;
+        const height = bottomRight.y - topLeft.y;
+        
+        this._canvas.width = width;
+        this._canvas.height = height;
+        const ctx = this._canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
+        
+        heatData.forEach(([lat, lng, intensity]) => {
+            const point = this._map.latLngToLayerPoint([lat, lng]);
+            const x = point.x - topLeft.x;
+            const y = point.y - topLeft.y;
+            
+            const radius = 20 + intensity * 10;
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, `rgba(239, 68, 68, ${0.3 + intensity * 0.2})`);
+            gradient.addColorStop(0.5, `rgba(234, 179, 8, ${0.2 + intensity * 0.1})`);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        });
+    });
+    
+    map.addLayer(heatmapLayer);
+}
+
+function hideHeatmap() {
+    if (heatmapLayer) {
+        map.removeLayer(heatmapLayer);
+        heatmapLayer = null;
+    }
+}
+
+// ===== ZOOM CONTROLS =====
+window.zoomIn = function() {
+    map.zoomIn();
+};
+
+window.zoomOut = function() {
+    map.zoomOut();
+};
+
+window.resetView = function() {
+    map.setView([10.5, 9.8], 8);
+    closeInfoPanel();
+};
+
+// ===== LOCATE USER =====
+window.locateUser = function() {
+    if (navigator.geolocation) {
+        document.querySelector('.btn-locate i').className = 'fas fa-spinner fa-spin';
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                map.setView([pos.coords.latitude, pos.coords.longitude], 15);
+                document.querySelector('.btn-locate i').className = 'fas fa-location-arrow';
+                
+                // Add user location marker
+                const userIcon = L.divIcon({
+                    html: '<div style="background:#3B82F6;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 0 20px rgba(59,130,246,0.6);"></div>',
+                    className: 'user-location',
+                    iconSize: [16, 16]
+                });
+                
+                L.marker([pos.coords.latitude, pos.coords.longitude], {
+                    icon: userIcon,
+                    zIndexOffset: 1000
+                }).addTo(map);
+            },
+            () => {
+                alert('Unable to get your location. Please enable GPS.');
+                document.querySelector('.btn-locate i').className = 'fas fa-location-arrow';
+            }
+        );
+    } else {
+        alert('Geolocation is not supported by your browser.');
+    }
+};
+
+// ===== UPDATE VISIBLE MARKERS =====
+function updateVisibleMarkers() {
+    // Update marker visibility based on zoom level
+    const zoom = map.getZoom();
+    const markers = document.querySelectorAll('.custom-marker');
+    // This is handled automatically by Leaflet
+}
+
+// ===== REFRESH TRACKING =====
+window.refreshTracking = function() {
+    const btn = document.querySelector('.btn-refresh i');
+    if (btn) {
+        btn.classList.add('fa-spin');
+        setTimeout(() => btn.classList.remove('fa-spin'), 1000);
+    }
+    
+    // Reset to all locations
+    filteredLocations = [...allLocations];
+    addMarkersToMap(filteredLocations);
+    updateStats();
+    updateHierarchy();
+    
+    // Show toast
+    showToast('Tracking data refreshed');
+};
+
+// ===== TOAST =====
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'ai-toast';
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }, 100);
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeInfoPanel();
+    if (e.key === 'r' || e.key === 'R') refreshTracking();
+    if (e.key === 'l' || e.key === 'L') toggleLiveTracking();
+    if (e.key === '+' || e.key === '=') zoomIn();
+    if (e.key === '-') zoomOut();
+});
+
+// ===== EXPOSE GLOBAL =====
+window.filterByLGA = filterByLGA;
+window.filterByWard = filterByWard;
+window.filterByPU = filterByPU;
+window.filterByStatus = filterByStatus;
+window.searchLocation = searchLocation;
+window.zoomToLGA = zoomToLGA;
+window.zoomToWard = zoomToWard;
+window.zoomToPU = zoomToPU;
+window.zoomIn = zoomIn;
+window.zoomOut = zoomOut;
+window.resetView = resetView;
+window.locateUser = locateUser;
+window.refreshTracking = refreshTracking;
+window.setViewMode = setViewMode;
+window.toggleLiveTracking = toggleLiveTracking;
+window.closeInfoPanel = closeInfoPanel;
+window.zoomToLocation = zoomToLocation;
+window.navigateToLocation = navigateToLocation;
+window.toggleHierarchyItem = toggleHierarchyItem;
+window.toggleHierarchy = toggleHierarchy;
