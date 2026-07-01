@@ -15,6 +15,7 @@ export const BAUCHI_DATA = {
       name: "Bauchi",
       code: "BAU",
       headquarters: "Bauchi",
+      coordinates: [10.3157, 9.8442],
       wards: [
         { name: "Ajiya", pollingUnits: ["PU001", "PU002", "PU003", "PU004", "PU005", "PU006", "PU007"] },
         { name: "Badan/Doya", pollingUnits: ["PU008", "PU009", "PU010", "PU011", "PU012", "PU013"] },
@@ -38,6 +39,7 @@ export const BAUCHI_DATA = {
       name: "Tafawa Balewa",
       code: "TBF",
       headquarters: "Bununu",
+      coordinates: [10.2667, 9.5833],
       wards: [
         { name: "Bununu", pollingUnits: ["PU079", "PU080", "PU081", "PU082", "PU083", "PU084", "PU085"] },
         { name: "Dajin", pollingUnits: ["PU086", "PU087", "PU088", "PU089", "PU090", "PU091"] },
@@ -60,6 +62,7 @@ export const BAUCHI_DATA = {
       name: "Dass",
       code: "DAS",
       headquarters: "Dass",
+      coordinates: [10.0167, 9.5000],
       wards: [
         { name: "Bagel", pollingUnits: ["PU152", "PU153", "PU154", "PU155", "PU156"] },
         { name: "Bundot", pollingUnits: ["PU157", "PU158", "PU159", "PU160", "PU161"] },
@@ -78,6 +81,7 @@ export const BAUCHI_DATA = {
       name: "Toro",
       code: "TOR",
       headquarters: "Toro",
+      coordinates: [10.0667, 9.0667],
       wards: [
         { name: "Bom", pollingUnits: ["PU202", "PU203", "PU204", "PU205", "PU206", "PU207"] },
         { name: "Bula", pollingUnits: ["PU208", "PU209", "PU210", "PU211", "PU212"] },
@@ -102,6 +106,7 @@ export const BAUCHI_DATA = {
       name: "Ningi",
       code: "NIN",
       headquarters: "Ningi",
+      coordinates: [11.0667, 9.0667],
       wards: [
         { name: "Badara", pollingUnits: ["PU283", "PU284", "PU285", "PU286", "PU287"] },
         { name: "Balma", pollingUnits: ["PU288", "PU289", "PU290", "PU291", "PU292"] },
@@ -121,6 +126,7 @@ export const BAUCHI_DATA = {
       name: "Warji",
       code: "WAR",
       headquarters: "Warji",
+      coordinates: [11.2000, 9.0000],
       wards: [
         { name: "Amar", pollingUnits: ["PU338", "PU339", "PU340", "PU341", "PU342"] },
         { name: "Bundas", pollingUnits: ["PU343", "PU344", "PU345", "PU346", "PU347"] },
@@ -139,6 +145,7 @@ export const BAUCHI_DATA = {
       name: "Gamawa",
       code: "GAM",
       headquarters: "Gamawa",
+      coordinates: [12.1333, 10.5333],
       wards: [
         { name: "Alagarno", pollingUnits: ["PU388", "PU389", "PU390", "PU391", "PU392"] },
         { name: "Dagudi", pollingUnits: ["PU393", "PU394", "PU395", "PU396", "PU397"] },
@@ -157,6 +164,7 @@ export const BAUCHI_DATA = {
       name: "Misau",
       code: "MIS",
       headquarters: "Misau",
+      coordinates: [11.3167, 10.4667],
       wards: [
         { name: "Ajile", pollingUnits: ["PU438", "PU439", "PU440", "PU441", "PU442"] },
         { name: "Bazam", pollingUnits: ["PU443", "PU444", "PU445", "PU446", "PU447"] },
@@ -176,6 +184,7 @@ export const BAUCHI_DATA = {
       name: "Damban",
       code: "DAM",
       headquarters: "Damban",
+      coordinates: [11.6500, 10.6833],
       wards: [
         { name: "Bateri", pollingUnits: ["PU493", "PU494", "PU495", "PU496", "PU497"] },
         { name: "Damban", pollingUnits: ["PU498", "PU499", "PU500", "PU501", "PU502"] },
@@ -194,6 +203,7 @@ export const BAUCHI_DATA = {
       name: "Darazo",
       code: "DAR",
       headquarters: "Darazo",
+      coordinates: [11.0167, 10.4167],
       wards: [
         { name: "Bakari", pollingUnits: ["PU543", "PU544", "PU545", "PU546", "PU547"] },
         { name: "Darazo", pollingUnits: ["PU548", "PU549", "PU550", "PU551", "PU552"] },
@@ -214,6 +224,7 @@ export const BAUCHI_DATA = {
       name: "Katagum",
       code: "KAT",
       headquarters: "Azare",
+      coordinates: [11.6667, 10.0167],
       wards: [
         { name: "Azare I", pollingUnits: ["PU603", "PU604", "PU605", "PU606", "PU607", "PU608"] },
         { name: "Azare II", pollingUnits: ["PU609", "PU610", "PU611", "PU612", "PU613"] },
@@ -235,6 +246,7 @@ export const BAUCHI_DATA = {
       name: "Itas/Gadau",
       code: "ITA",
       headquarters: "Itas",
+      coordinates: [11.4000, 10.1333],
       wards: [
         { name: "Buzawa", pollingUnits: ["PU669", "PU670", "PU671", "PU672", "PU673"] },
         { name: "Dagauda", pollingUnits: ["PU674", "PU675", "PU676", "PU677", "PU678"] },
@@ -253,6 +265,7 @@ export const BAUCHI_DATA = {
       name: "Shira",
       code: "SHI",
       headquarters: "Shira",
+      coordinates: [11.5000, 10.0833],
       wards: [
         { name: "Bakari", pollingUnits: ["PU719", "PU720", "PU721", "PU722", "PU723"] },
         { name: "Dagauda", pollingUnits: ["PU724", "PU725", "PU726", "PU727", "PU728"] },
@@ -271,6 +284,7 @@ export const BAUCHI_DATA = {
       name: "Jama'are",
       code: "JAM",
       headquarters: "Jama'are",
+      coordinates: [11.6667, 9.9167],
       wards: [
         { name: "Bakari", pollingUnits: ["PU769", "PU770", "PU771", "PU772", "PU773"] },
         { name: "Dagauda", pollingUnits: ["PU774", "PU775", "PU776", "PU777", "PU778"] },
@@ -289,6 +303,7 @@ export const BAUCHI_DATA = {
       name: "Zaki",
       code: "ZAK",
       headquarters: "Zaki",
+      coordinates: [11.7000, 10.1333],
       wards: [
         { name: "Bakari", pollingUnits: ["PU819", "PU820", "PU821", "PU822", "PU823"] },
         { name: "Dagauda", pollingUnits: ["PU824", "PU825", "PU826", "PU827", "PU828"] },
@@ -309,6 +324,7 @@ export const BAUCHI_DATA = {
       name: "Giade",
       code: "GIA",
       headquarters: "Giade",
+      coordinates: [11.3833, 10.3833],
       wards: [
         { name: "Dagauda", pollingUnits: ["PU879", "PU880", "PU881", "PU882", "PU883"] },
         { name: "Gamji", pollingUnits: ["PU884", "PU885", "PU886", "PU887", "PU888"] },
@@ -327,6 +343,7 @@ export const BAUCHI_DATA = {
       name: "Alkaleri",
       code: "ALK",
       headquarters: "Alkaleri",
+      coordinates: [10.2667, 10.3167],
       wards: [
         { name: "Alkaleri", pollingUnits: ["PU929", "PU930", "PU931", "PU932", "PU933"] },
         { name: "Bakari", pollingUnits: ["PU934", "PU935", "PU936", "PU937", "PU938"] },
@@ -346,6 +363,7 @@ export const BAUCHI_DATA = {
       name: "Kirfi",
       code: "KIR",
       headquarters: "Kirfi",
+      coordinates: [10.4000, 10.2167],
       wards: [
         { name: "Bakari", pollingUnits: ["PU984", "PU985", "PU986", "PU987", "PU988"] },
         { name: "Dagauda", pollingUnits: ["PU989", "PU990", "PU991", "PU992", "PU993"] },
@@ -364,6 +382,7 @@ export const BAUCHI_DATA = {
       name: "Ganjuwa",
       code: "GAN",
       headquarters: "Ganjuwa",
+      coordinates: [10.5667, 10.0333],
       wards: [
         { name: "Bakari", pollingUnits: ["PU1034", "PU1035", "PU1036", "PU1037", "PU1038"] },
         { name: "Dagauda", pollingUnits: ["PU1039", "PU1040", "PU1041", "PU1042", "PU1043"] },
@@ -386,6 +405,7 @@ export const BAUCHI_DATA = {
       name: "Bogoro",
       code: "BOG",
       headquarters: "Bogoro",
+      coordinates: [10.0167, 9.6000],
       wards: [
         { name: "Bogoro", pollingUnits: ["PU1104", "PU1105", "PU1106", "PU1107", "PU1108"] },
         { name: "Dagauda", pollingUnits: ["PU1109", "PU1110", "PU1111", "PU1112", "PU1113"] },
@@ -408,7 +428,8 @@ export function getAllLGAs() {
     id: lga.id,
     name: lga.name,
     code: lga.code,
-    headquarters: lga.headquarters
+    headquarters: lga.headquarters,
+    coordinates: lga.coordinates
   }));
 }
 
@@ -434,6 +455,10 @@ export function getAllPollingUnitsByLGA(lgaName) {
   return allPUs;
 }
 
+export function getLGAById(id) {
+  return BAUCHI_DATA.lgAs.find(l => l.id === id);
+}
+
 export function getTotalCounts() {
   let totalWards = 0;
   let totalPUs = 0;
@@ -451,3 +476,28 @@ export function getTotalCounts() {
     pollingUnits: totalPUs
   };
 }
+
+// ===== PARTY COLORS =====
+export const PARTY_COLORS = {
+  APC: '#00C49F',
+  PDP: '#0088FE',
+  NNPP: '#FFBB28',
+  APGA: '#FF8042',
+  SDP: '#8884D8',
+  ADC: '#82CA9D',
+  YPP: '#FF6B6B',
+  ZLP: '#4ECDC4',
+  Others: '#95A5A6'
+};
+
+export const PARTIES = [
+  { id: 'APC', name: 'All Progressives Congress', color: '#00C49F' },
+  { id: 'PDP', name: 'Peoples Democratic Party', color: '#0088FE' },
+  { id: 'NNPP', name: 'New Nigeria Peoples Party', color: '#FFBB28' },
+  { id: 'APGA', name: 'All Progressives Grand Alliance', color: '#FF8042' },
+  { id: 'SDP', name: 'Social Democratic Party', color: '#8884D8' },
+  { id: 'ADC', name: 'African Democratic Congress', color: '#82CA9D' },
+  { id: 'YPP', name: 'Young Progressives Party', color: '#FF6B6B' },
+  { id: 'ZLP', name: 'Zenith Labour Party', color: '#4ECDC4' },
+  { id: 'Others', name: 'Other Parties', color: '#95A5A6' }
+];
