@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Live Stream - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="styles/stream.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== AI STATUS BAR ===== -->
+    <div class="ai-status-bar">
+        <div class="ai-status-left">
+            <span class="ai-badge">
+                <i class="fas fa-broadcast"></i>
+                Stream: <span id="streamStatus">Live</span>
+            </span>
+            <span class="ai-confidence">
+                Viewers: <span id="viewerCount">1,247</span>
+            </span>
+            <span class="ai-model">
+                AI Captions: <span id="captionStatus">Active</span>
+            </span>
+        </div>
+        <div class="ai-status-right">
+            <span class="ai-processing">
+                <i class="fas fa-chart-line"></i>
+                Engagement: <span id="engagementRate">87%</span>
+            </span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
+                <i class="fas fa-microphone"></i> Voice
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content stream-main">
+        <!-- Stream Container -->
+        <div class="stream-container">
+            <!-- Video Area -->
+            <div class="video-area">
+                <div class="video-placeholder">
+                    <div class="stream-overlay">
+                        <div class="live-badge-large">
+                            <span class="pulse-dot"></span>
+                            LIVE
+                        </div>
+                        <div class="stream-info">
+                            <h1>Bauchi State Election 2026</h1>
+                            <p>Real-time results • AI-Powered Analysis</p>
+                        </div>
+                        <div class="stream-stats">
+                            <span><i class="fas fa-eye"></i> <span id="streamViewers">1,247</span></span>
+                            <span><i class="fas fa-thumbs-up"></i> <span id="streamLikes">3,456</span></span>
+                            <span><i class="fas fa-comment"></i> <span id="streamComments">892</span></span>
+                        </div>
+                    </div>
+                    <img src="assets/stream-bg.jpg" alt="Stream Background" />
+                </div>
+            </div>
+
+            <!-- Stream Controls -->
+            <div class="stream-controls">
+                <button onclick="toggleStream()">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button onclick="toggleMute()">
+                    <i class="fas fa-volume-up"></i> Mute
+                </button>
+                <button onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i> Fullscreen
+                </button>
+                <button onclick="toggleCaptions()">
+                    <i class="fas fa-closed-captioning"></i> Captions
+                </button>
+                <button onclick="toggleAIAnalysis()" class="btn-ai">
+                    <i class="fas fa-robot"></i> AI Analysis
+                </button>
+                <select id="streamQuality" onchange="changeQuality(this.value)">
+                    <option value="1080p">1080p</option>
+                    <option value="720p" selected>720p</option>
+                    <option value="480p">480p</option>
+                    <option value="360p">360p</option>
+                </select>
+            </div>
+
+            <!-- AI Overlay -->
+            <div class="ai-overlay" id="aiOverlay">
+                <div class="ai-analysis-panel">
+                    <h4><i class="fas fa-robot"></i> AI Real-Time Analysis</h4>
+                    <div class="ai-metrics">
+                        <div class="metric">
+                            <span class="metric-label">Sentiment</span>
+                            <span class="metric-value positive">+0.67</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Engagement</span>
+                            <span class="metric-value">87%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Prediction</span>
+                            <span class="metric-value">APC 52.3%</span>
+                        </div>
+                    </div>
+                    <div class="ai-insights-stream">
+                        <div class="insight">📊 APC leading in 12 LGAs</div>
+                        <div class="insight">⚠️ Anomaly detected in Ningi</div>
+                        <div class="insight">✅ 92% results verified</div>
+                    </div>
+                    <button class="close-ai" onclick="toggleAIAnalysis()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Data Ticker -->
+        <div class="live-ticker">
+            <div class="ticker-content">
+                <span class="ticker-item">🔴 LIVE: Bauchi State Election Results</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📍 <span id="tickerLGAs">12/20</span> LGAs Completed</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📊 Turnout: <span id="tickerTurnout">68.4%</span></span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">🏆 Leading: <span id="tickerLeading">APC</span></span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">🤖 AI Confidence: <span id="tickerConfidence">94.7%</span></span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📅 Election 2026 • Bauchi State</span>
+            </div>
+        </div>
+
+        <!-- Chat & Stats -->
+        <div class="stream-sidebar">
+            <div class="chat-panel">
+                <div class="chat-header">
+                    <h4><i class="fas fa-comments"></i> Live Chat</h4>
+                    <span class="chat-count" id="chatCount">892</span>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Chat messages -->
+                </div>
+                <div class="chat-input">
+                    <input type="text" placeholder="Type a message..." />
+                    <button><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div class="stats-panel">
+                <h4><i class="fas fa-chart-bar"></i> Live Stats</h4>
+                <div class="stat-item">
+                    <span>Viewers</span>
+                    <span id="statViewers">1,247</span>
+                </div>
+                <div class="stat-item">
+                    <span>Likes</span>
+                    <span id="statLikes">3,456</span>
+                </div>
+                <div class="stat-item">
+                    <span>Shares</span>
+                    <span id="statShares">456</span>
+                </div>
+                <div class="stat-item">
+                    <span>Peak Viewers</span>
+                    <span id="statPeak">2,103</span>
+                </div>
+                <div class="stat-item">
+                    <span>AI Sentiment</span>
+                    <span class="positive" id="statSentiment">+0.67</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="js/stream.js"></script>
+</body>
+</html>
