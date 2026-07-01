@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Live Stream - Bauchi Election Monitor</title>
     
-    <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/advanced.css" />
@@ -28,6 +27,10 @@
             </span>
             <span class="ai-model">
                 AI Captions: <span id="captionStatus">Active</span>
+            </span>
+            <span class="ai-model">
+                <i class="fas fa-language"></i>
+                Translation: <span id="translationStatus">EN/HA</span>
             </span>
         </div>
         <div class="ai-status-right">
@@ -61,6 +64,13 @@
                             <span><i class="fas fa-eye"></i> <span id="streamViewers">1,247</span></span>
                             <span><i class="fas fa-thumbs-up"></i> <span id="streamLikes">3,456</span></span>
                             <span><i class="fas fa-comment"></i> <span id="streamComments">892</span></span>
+                            <span><i class="fas fa-share-alt"></i> <span id="streamShares">234</span></span>
+                        </div>
+                        <div class="stream-platform-badges">
+                            <span class="platform-badge facebook"><i class="fab fa-facebook"></i> Live</span>
+                            <span class="platform-badge youtube"><i class="fab fa-youtube"></i> Live</span>
+                            <span class="platform-badge tiktok"><i class="fab fa-tiktok"></i> Live</span>
+                            <span class="platform-badge instagram"><i class="fab fa-instagram"></i> Live</span>
                         </div>
                     </div>
                     <img src="assets/stream-bg.jpg" alt="Stream Background" />
@@ -90,6 +100,12 @@
                     <option value="480p">480p</option>
                     <option value="360p">360p</option>
                 </select>
+                <select id="streamLanguage" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="ha">Hausa</option>
+                    <option value="yo">Yoruba</option>
+                    <option value="ig">Igbo</option>
+                </select>
             </div>
 
             <!-- AI Overlay -->
@@ -109,11 +125,16 @@
                             <span class="metric-label">Prediction</span>
                             <span class="metric-value">APC 52.3%</span>
                         </div>
+                        <div class="metric">
+                            <span class="metric-label">Confidence</span>
+                            <span class="metric-value">94.7%</span>
+                        </div>
                     </div>
                     <div class="ai-insights-stream">
                         <div class="insight">📊 APC leading in 12 LGAs</div>
                         <div class="insight">⚠️ Anomaly detected in Ningi</div>
                         <div class="insight">✅ 92% results verified</div>
+                        <div class="insight">📈 Turnout up 4.2%</div>
                     </div>
                     <button class="close-ai" onclick="toggleAIAnalysis()">
                         <i class="fas fa-times"></i>
@@ -124,7 +145,7 @@
 
         <!-- Live Data Ticker -->
         <div class="live-ticker">
-            <div class="ticker-content">
+            <div class="ticker-content" id="tickerContent">
                 <span class="ticker-item">🔴 LIVE: Bauchi State Election Results</span>
                 <span class="ticker-divider">|</span>
                 <span class="ticker-item">📍 <span id="tickerLGAs">12/20</span> LGAs Completed</span>
@@ -136,6 +157,8 @@
                 <span class="ticker-item">🤖 AI Confidence: <span id="tickerConfidence">94.7%</span></span>
                 <span class="ticker-divider">|</span>
                 <span class="ticker-item">📅 Election 2026 • Bauchi State</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">👥 <span id="tickerViewers">1,247</span> watching</span>
             </div>
         </div>
 
@@ -145,13 +168,21 @@
                 <div class="chat-header">
                     <h4><i class="fas fa-comments"></i> Live Chat</h4>
                     <span class="chat-count" id="chatCount">892</span>
+                    <button class="chat-ai-filter" onclick="toggleAIFilter()">
+                        <i class="fas fa-robot"></i> AI Filter
+                    </button>
                 </div>
                 <div class="chat-messages" id="chatMessages">
                     <!-- Chat messages -->
                 </div>
                 <div class="chat-input">
-                    <input type="text" placeholder="Type a message..." />
-                    <button><i class="fas fa-paper-plane"></i></button>
+                    <input type="text" id="chatInput" placeholder="Type a message..." />
+                    <button onclick="sendChatMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <button onclick="toggleChatEmoji()">
+                        <i class="fas fa-smile"></i>
+                    </button>
                 </div>
             </div>
             <div class="stats-panel">
@@ -175,6 +206,10 @@
                 <div class="stat-item">
                     <span>AI Sentiment</span>
                     <span class="positive" id="statSentiment">+0.67</span>
+                </div>
+                <div class="stat-item">
+                    <span>Watch Time</span>
+                    <span id="statWatchTime">1h 23m</span>
                 </div>
             </div>
         </div>
