@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI LGA Analysis - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="styles/lga-detail.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <div id="navbar-container"></div>
+
+    <!-- ===== AI STATUS BAR ===== -->
+    <div class="ai-status-bar">
+        <div class="ai-status-left">
+            <span class="ai-badge">
+                <i class="fas fa-microscope"></i>
+                AI Analysis: <span id="lgaAIStatus">Active</span>
+            </span>
+            <span class="ai-confidence">
+                Analysis Confidence: <span id="lgaAIConfidence">96.3%</span>
+            </span>
+            <span class="ai-model">
+                Risk Level: <span id="lgaRiskLevel">Low</span>
+            </span>
+        </div>
+        <div class="ai-status-right">
+            <span class="ai-processing">
+                <i class="fas fa-chart-line"></i>
+                Data Points: <span id="lgaDataPoints">1,247</span>
+            </span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
+                <i class="fas fa-microphone"></i> Voice
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- LGA Overview -->
+        <section class="lga-overview" id="lgaOverview">
+            <div class="lga-header-card">
+                <div class="lga-header-left">
+                    <div class="lga-badge">
+                        <span class="lga-code" id="lgaCode">BAU001</span>
+                        <span class="lga-status" id="lgaStatus">PENDING</span>
+                        <span class="lga-ai-risk" id="lgaAIRisk">AI: Low Risk</span>
+                    </div>
+                    <h1 id="lgaName">Loading...</h1>
+                    <div class="lga-meta">
+                        <span><i class="fas fa-map-pin"></i> <span id="lgaHeadquarters">--</span></span>
+                        <span><i class="fas fa-layer-group"></i> <span id="lgaWards">0</span> Wards</span>
+                        <span><i class="fas fa-flag"></i> <span id="lgaPUs">0</span> Polling Units</span>
+                        <span><i class="fas fa-users"></i> <span id="lgaAgents">0</span> Agents</span>
+                        <span><i class="fas fa-robot"></i> <span id="lgaAIScore">AI Score: --</span></span>
+                    </div>
+                </div>
+                <div class="lga-header-right">
+                    <div class="lga-stats-mini">
+                        <div class="mini-stat">
+                            <span class="mini-label">Total Votes</span>
+                            <span class="mini-value" id="lgaTotalVotes">0</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-label">Turnout</span>
+                            <span class="mini-value" id="lgaTurnout">0%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-label">AI Prediction</span>
+                            <span class="mini-value" id="lgaAIPrediction">--</span>
+                        </div>
+                    </div>
+                    <button class="btn-refresh" onclick="refreshLGAData()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Analysis Row -->
+        <section class="ai-analysis-row">
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-header">
+                    <i class="fas fa-brain"></i>
+                    <h4>AI Performance Score</h4>
+                </div>
+                <div class="ai-analysis-body">
+                    <div class="score-circle" id="performanceScore">87</div>
+                    <span class="score-label">Out of 100</span>
+                    <div class="score-bar">
+                        <div class="fill" style="width: 87%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Risk Assessment</h4>
+                </div>
+                <div class="ai-analysis-body">
+                    <div class="risk-indicator" id="riskIndicator">Low</div>
+                    <div class="risk-details">
+                        <span>Fraud Risk: <span id="fraudRisk">2.3%</span></span>
+                        <span>Error Risk: <span id="errorRisk">1.8%</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Turnout Prediction</h4>
+                </div>
+                <div class="ai-analysis-body">
+                    <div class="prediction-value" id="turnoutPrediction">72.4%</div>
+                    <span class="prediction-range">Range: 68% - 76%</span>
+                    <div class="prediction-bar">
+                        <div class="fill" style="width: 72%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-analysis-card">
+                <div class="ai-analysis-header">
+                    <i class="fas fa-clock"></i>
+                    <h4>Completion Forecast</h4>
+                </div>
+                <div class="ai-analysis-body">
+                    <div class="forecast-time" id="completionTime">3h 45m</div>
+                    <span class="forecast-label">Estimated remaining</span>
+                    <div class="forecast-bar">
+                        <div class="fill" style="width: 45%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results & Charts -->
+        <section class="lga-results">
+            <div class="results-grid">
+                <!-- Party Results -->
+                <div class="result-card party-results-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-vote-yea"></i> Party Results</h3>
+                        <span class="badge">AI Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="partyResultsList">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Chart -->
+                <div class="result-card chart-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-bar"></i> Results Distribution</h3>
+                        <button class="btn-toggle" onclick="toggleChartMode()">
+                            <i class="fas fa-exchange-alt"></i> AI View
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="lgaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wards & Polling Units -->
+        <section class="wards-section">
+            <div class="section-header">
+                <h2><i class="fas fa-layer-group"></i> Wards & Polling Units</h2>
+                <div class="section-controls">
+                    <input type="text" id="wardSearch" placeholder="Search Ward..." oninput="filterWards()" />
+                    <select id="puFilter" onchange="filterWards()">
+                        <option value="all">All PUs</option>
+                        <option value="reported">Reported</option>
+                        <option value="pending">Pending</option>
+                        <option value="ai_flagged">AI Flagged</option>
+                    </select>
+                    <button class="btn-ai-analyze" onclick="analyzeWards()">
+                        <i class="fas fa-robot"></i> AI Analyze
+                    </button>
+                </div>
+            </div>
+            <div class="wards-grid" id="wardsGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Agent Activity -->
+        <section class="agent-activity-section">
+            <div class="section-header">
+                <h2><i class="fas fa-user-check"></i> Agent Activity</h2>
+                <span class="badge" id="activityCount">0 active</span>
+            </div>
+            <div class="activity-timeline" id="activityTimeline">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Incidents -->
+        <section class="incidents-section">
+            <div class="section-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Incidents</h2>
+                <button class="btn-primary small" onclick="reportIncident()">
+                    <i class="fas fa-plus"></i> Report Incident
+                </button>
+            </div>
+            <div class="incidents-list" id="incidentsList">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <div id="footer-container"></div>
+
+    <script type="module" src="js/lga-detail.js"></script>
+</body>
+</html>
