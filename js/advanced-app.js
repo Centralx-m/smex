@@ -5,7 +5,7 @@
 import { renderNavbar, initNavbar } from './components/navbar.js';
 import { renderHeader, updateHeaderStats } from './components/header.js';
 import { renderFooter, updateFooter, initFooter } from './components/footer.js';
-import { BAUCHI_DATA } from './bauchi-data.js';
+import { BAUCHI_DATA, getAllLGAs } from './bauchi-data.js';
 
 // ===== STATE =====
 let predictionChart = null;
@@ -46,28 +46,45 @@ function initAIEngine() {
 
 // ===== UPDATE AI STATUS =====
 function updateAIStatus(status, confidence, model, processing) {
-    document.getElementById('aiStatus').textContent = status;
-    document.getElementById('aiConfidence').textContent = confidence;
-    document.getElementById('aiModel').textContent = model;
-    document.getElementById('aiProcessing').textContent = `${processing} data points`;
-    document.getElementById('aiAccuracy').textContent = '97.2%';
+    const statusEl = document.getElementById('aiStatus');
+    const confidenceEl = document.getElementById('aiConfidence');
+    const modelEl = document.getElementById('aiModel');
+    const processingEl = document.getElementById('aiProcessing');
+    const accuracyEl = document.getElementById('aiAccuracy');
+    
+    if (statusEl) statusEl.textContent = status;
+    if (confidenceEl) confidenceEl.textContent = confidence;
+    if (modelEl) modelEl.textContent = model;
+    if (processingEl) processingEl.textContent = `${processing} data points`;
+    if (accuracyEl) accuracyEl.textContent = '97.2%';
 }
 
 // ===== UPDATE AI PREDICTIONS =====
 function updateAIPredictions(winner, percent, anomaly, verification, turnout) {
-    document.getElementById('aiPrediction').textContent = `${winner} projected to win with ${percent}%`;
-    document.getElementById('anomalyAlert').textContent = anomaly;
-    document.getElementById('verificationStatus').textContent = verification;
-    document.getElementById('turnoutPrediction').textContent = turnout;
+    const predEl = document.getElementById('aiPrediction');
+    const anomalyEl = document.getElementById('anomalyAlert');
+    const verifyEl = document.getElementById('verificationStatus');
+    const turnoutEl = document.getElementById('turnoutPrediction');
+    
+    if (predEl) predEl.textContent = `${winner} projected to win with ${percent}%`;
+    if (anomalyEl) anomalyEl.textContent = anomaly;
+    if (verifyEl) verifyEl.textContent = verification;
+    if (turnoutEl) turnoutEl.textContent = turnout;
 }
 
 // ===== UPDATE AI STATS =====
 function updateAIStats(votes, range, blockchain, anomaly, sentiment) {
-    document.getElementById('aiTotalVotes').textContent = votes;
-    document.getElementById('forecastRange').textContent = range;
-    document.getElementById('blockchainStatus').textContent = blockchain;
-    document.getElementById('anomalyScore').textContent = anomaly;
-    document.getElementById('sentimentScore').textContent = sentiment;
+    const votesEl = document.getElementById('aiTotalVotes');
+    const rangeEl = document.getElementById('forecastRange');
+    const blockchainEl = document.getElementById('blockchainStatus');
+    const anomalyEl = document.getElementById('anomalyScore');
+    const sentimentEl = document.getElementById('sentimentScore');
+    
+    if (votesEl) votesEl.textContent = votes;
+    if (rangeEl) rangeEl.textContent = range;
+    if (blockchainEl) blockchainEl.textContent = blockchain;
+    if (anomalyEl) anomalyEl.textContent = anomaly;
+    if (sentimentEl) sentimentEl.textContent = sentiment;
 }
 
 // ===== LOAD AI DATA =====
@@ -129,7 +146,10 @@ function generateRiskPredictions() {
 
 // ===== UPDATE CHARTS =====
 function updateCharts(data) {
-    const ctx = document.getElementById('predictionChart').getContext('2d');
+    const ctx = document.getElementById('predictionChart');
+    if (!ctx) return;
+    
+    const context = ctx.getContext('2d');
     if (predictionChart) predictionChart.destroy();
     
     const parties = Object.keys(data.predictions);
@@ -137,7 +157,7 @@ function updateCharts(data) {
     const actual = Object.values(data.actual);
     const colors = ['#00C49F', '#0088FE', '#FFBB28', '#FF8042', '#8884D8'];
     
-    predictionChart = new Chart(ctx, {
+    predictionChart = new Chart(context, {
         type: 'bar',
         data: {
             labels: parties,
@@ -193,14 +213,17 @@ function updateCharts(data) {
 
 // ===== UPDATE ANOMALY CHART =====
 function updateAnomalyChart(data) {
-    const ctx = document.getElementById('anomalyChart').getContext('2d');
+    const ctx = document.getElementById('anomalyChart');
+    if (!ctx) return;
+    
+    const context = ctx.getContext('2d');
     if (anomalyChart) anomalyChart.destroy();
     
     const labels = data.anomalies.map(a => a.lga);
     const scores = data.anomalies.map(a => a.score);
     const colors = scores.map(s => s > 70 ? '#EF4444' : s > 50 ? '#EAB308' : '#22C55E');
     
-    anomalyChart = new Chart(ctx, {
+    anomalyChart = new Chart(context, {
         type: 'line',
         data: {
             labels: labels,
@@ -254,32 +277,39 @@ function setupAIPredictions() {
     aiInterval = setInterval(() => {
         // Update confidence
         const confidence = 92 + Math.random() * 6;
-        document.getElementById('aiConfidence').textContent = `${confidence.toFixed(1)}%`;
+        const confidenceEl = document.getElementById('aiConfidence');
+        if (confidenceEl) confidenceEl.textContent = `${confidence.toFixed(1)}%`;
         
         // Update prediction
         const parties = ['APC', 'PDP', 'NNPP', 'APGA'];
         const winner = parties[Math.floor(Math.random() * 4)];
         const percent = (50 + Math.random() * 10).toFixed(1);
-        document.getElementById('aiPrediction').textContent = `${winner} projected to win with ${percent}%`;
+        const predEl = document.getElementById('aiPrediction');
+        if (predEl) predEl.textContent = `${winner} projected to win with ${percent}%`;
         
         // Update processing
         const points = Math.floor(Math.random() * 2000) + 1000;
-        document.getElementById('aiProcessing').textContent = `${points.toLocaleString()} data points`;
+        const processingEl = document.getElementById('aiProcessing');
+        if (processingEl) processingEl.textContent = `${points.toLocaleString()} data points`;
         
         // Update anomaly
         const anomalies = ['Normal', 'Unusual pattern detected', 'AI flagged for review', 'No anomalies'];
-        document.getElementById('anomalyAlert').textContent = anomalies[Math.floor(Math.random() * 4)];
+        const anomalyEl = document.getElementById('anomalyAlert');
+        if (anomalyEl) anomalyEl.textContent = anomalies[Math.floor(Math.random() * 4)];
         
         // Update verification
         const verified = 88 + Math.random() * 10;
-        document.getElementById('verificationStatus').textContent = `${verified.toFixed(1)}% of results verified`;
+        const verifyEl = document.getElementById('verificationStatus');
+        if (verifyEl) verifyEl.textContent = `${verified.toFixed(1)}% of results verified`;
         
         // Update time
-        document.getElementById('insightTime').textContent = new Date().toLocaleTimeString();
+        const timeEl = document.getElementById('insightTime');
+        if (timeEl) timeEl.textContent = new Date().toLocaleTimeString();
         
         // Update accuracy
         const accuracy = 95 + Math.random() * 4;
-        document.getElementById('aiAccuracy').textContent = `${accuracy.toFixed(1)}%`;
+        const accuracyEl = document.getElementById('aiAccuracy');
+        if (accuracyEl) accuracyEl.textContent = `${accuracy.toFixed(1)}%`;
         
     }, 8000);
 }
@@ -326,6 +356,8 @@ function generateInsights() {
     ];
     
     const grid = document.getElementById('insightsGrid');
+    if (!grid) return;
+    
     grid.innerHTML = insightsList.map(insight => `
         <div class="insight-item">
             <div class="insight-icon ${insight.icon}">
@@ -347,10 +379,12 @@ function generateInsights() {
 // ===== RENDER LGA ANALYSIS =====
 function renderLGAAnalysis() {
     const grid = document.getElementById('lgaAnalysisGrid');
+    if (!grid) return;
+    
     const analysis = generateLGAAnalysis();
     analysisData = analysis;
     
-    grid.innerHTML = analysis.map(lga => {
+    grid.innerHTML = analysis.slice(0, 8).map(lga => {
         const scoreClass = lga.score > 85 ? 'high' : lga.score > 70 ? 'medium' : 'low';
         const riskColor = lga.risk === 'Low' ? 'var(--brand-success)' : 
                          lga.risk === 'Medium' ? 'var(--brand-warning)' : 'var(--brand-danger)';
@@ -376,6 +410,8 @@ function renderLGAAnalysis() {
 // ===== RENDER INCIDENT PREDICTIONS =====
 function renderIncidentPredictions() {
     const grid = document.getElementById('predictorGrid');
+    if (!grid) return;
+    
     const predictions = generateRiskPredictions();
     
     const riskEmojis = {
@@ -402,35 +438,43 @@ function renderIncidentPredictions() {
 
 // ===== UPDATE LGA ANALYSIS =====
 window.updateLGAAnalysis = function() {
-    const type = document.getElementById('analysisType').value;
-    // Re-render with different metrics
-    renderLGAAnalysis();
+    const type = document.getElementById('analysisType');
+    if (type) {
+        // Re-render with different metrics based on selected type
+        renderLGAAnalysis();
+    }
 };
 
 // ===== TOGGLE PREDICTION MODE =====
 window.togglePredictionMode = function() {
     const chart = document.getElementById('predictionChart');
     const btn = document.querySelector('.btn-toggle');
-    if (chart.style.opacity === '0.5') {
-        chart.style.opacity = '1';
-        btn.innerHTML = '<i class="fas fa-eye"></i> Show Confidence';
-    } else {
-        chart.style.opacity = '0.5';
-        btn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Confidence';
+    if (chart && btn) {
+        if (chart.style.opacity === '0.5') {
+            chart.style.opacity = '1';
+            btn.innerHTML = '<i class="fas fa-eye"></i> Show Confidence';
+        } else {
+            chart.style.opacity = '0.5';
+            btn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Confidence';
+        }
     }
 };
 
 // ===== TOGGLE VOICE ASSISTANT =====
 window.toggleVoiceAssistant = function() {
     const assistant = document.getElementById('voiceAssistant');
+    if (!assistant) return;
+    
     voiceActive = !voiceActive;
     assistant.classList.toggle('active', voiceActive);
     
     if (voiceActive) {
-        document.querySelector('.btn-ai-voice').classList.add('active');
+        const voiceBtn = document.querySelector('.btn-ai-voice');
+        if (voiceBtn) voiceBtn.classList.add('active');
         startVoiceRecognition();
     } else {
-        document.querySelector('.btn-ai-voice').classList.remove('active');
+        const voiceBtn = document.querySelector('.btn-ai-voice');
+        if (voiceBtn) voiceBtn.classList.remove('active');
         stopVoiceRecognition();
     }
 };
@@ -438,6 +482,8 @@ window.toggleVoiceAssistant = function() {
 // ===== VOICE RECOGNITION =====
 function startVoiceRecognition() {
     const voiceText = document.getElementById('voiceText');
+    if (!voiceText) return;
+    
     voiceText.textContent = 'Listening... Speak a command';
     
     // Simulate voice recognition
@@ -450,15 +496,18 @@ function startVoiceRecognition() {
 }
 
 function stopVoiceRecognition() {
-    document.getElementById('voiceText').textContent = 'Voice assistant deactivated';
+    const voiceText = document.getElementById('voiceText');
+    if (voiceText) voiceText.textContent = 'Voice assistant deactivated';
 }
 
 // ===== PROCESS VOICE COMMAND =====
 window.processVoiceCommand = function(command) {
     const voiceText = document.getElementById('voiceText');
+    if (!voiceText) return;
+    
     const commands = {
         'dashboard': () => { window.location.href = 'index.html'; },
-        'results': () => { window.location.href = 'lga.html'; },
+        'results': () => { window.location.href = 'lga-detail.html'; },
         'tracking': () => { window.location.href = 'tracking.html'; },
         'help': () => { showVoiceHelp(); }
     };
@@ -474,6 +523,8 @@ window.processVoiceCommand = function(command) {
 // ===== SHOW VOICE HELP =====
 function showVoiceHelp() {
     const voiceText = document.getElementById('voiceText');
+    if (!voiceText) return;
+    
     voiceText.textContent = 'Available commands: Dashboard, Results, Tracking, Help';
     setTimeout(() => {
         voiceText.textContent = 'Say a command to navigate';
@@ -484,11 +535,8 @@ function showVoiceHelp() {
 function setupRealtimeUpdates() {
     // Simulate real-time data updates
     setInterval(() => {
-        // Update LGA analysis
         renderLGAAnalysis();
-        // Update incident predictions
         renderIncidentPredictions();
-        // Update insights
         generateInsights();
     }, 30000);
 }
@@ -522,39 +570,6 @@ function showAIToast(message) {
         }, 3000);
     }, 100);
 }
-
-// ===== AI TOAST STYLES =====
-const aiToastStyles = document.createElement('style');
-aiToastStyles.textContent = `
-    .ai-toast {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: var(--brand-card);
-        border: 1px solid var(--brand-primary);
-        border-radius: 12px;
-        padding: 12px 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        opacity: 0;
-        transition: all 0.3s ease;
-        z-index: 9999;
-        font-size: 14px;
-        color: var(--brand-text);
-    }
-    .ai-toast.show {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-    }
-    .ai-toast i {
-        color: var(--brand-primary-light);
-        font-size: 20px;
-    }
-`;
-document.head.appendChild(aiToastStyles);
 
 // ===== EXPOSE GLOBAL FUNCTIONS =====
 window.toggleVoiceAssistant = toggleVoiceAssistant;
