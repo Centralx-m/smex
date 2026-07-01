@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Login - Bauchi Election Monitor</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/brand.css" />
+    <link rel="stylesheet" href="styles/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <div class="login-container">
+        <!-- Background Animation -->
+        <div class="login-bg">
+            <div class="bg-orb orb1"></div>
+            <div class="bg-orb orb2"></div>
+            <div class="bg-orb orb3"></div>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card">
+            <div class="login-header">
+                <div class="brand-logo">
+                    <i class="fas fa-cloud"></i>
+                    <span>WebHotel<span>.Cloud</span></span>
+                </div>
+                <div class="election-badge">
+                    <i class="fas fa-vote-yea"></i>
+                    Bauchi Election 2026
+                </div>
+            </div>
+
+            <div class="login-body">
+                <h2>Welcome Back</h2>
+                <p>Sign in to access the election monitoring dashboard</p>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="loginEmail" required placeholder="agent@example.com" />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <div class="password-input">
+                            <input type="password" id="loginPassword" required placeholder="Enter password" />
+                            <button type="button" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordToggle"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe" />
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" onclick="forgotPassword()">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="loginBtn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="btn-loader"><i class="fas fa-spinner fa-spin"></i></span>
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    <span>Secure login with AI-powered fraud detection</span>
+                    <div class="security-badges">
+                        <span><i class="fas fa-shield-alt"></i> 256-bit SSL</span>
+                        <span><i class="fas fa-robot"></i> AI Protected</span>
+                        <span><i class="fas fa-fingerprint"></i> Biometric Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Status Indicator -->
+        <div class="ai-status-indicator">
+            <span class="status-dot"></span>
+            AI Security: Active
+        </div>
+    </div>
+
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>
