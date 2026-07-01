@@ -1,0 +1,287 @@
+/* ============================================
+   ADDITIONAL ADVANCED AI STYLES
+   ============================================ */
+
+/* ===== AI ANALYSIS ROW ===== */
+.ai-analysis-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ai-analysis-card {
+    background: var(--brand-card);
+    border: 1px solid var(--brand-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    transition: all 0.3s;
+}
+
+.ai-analysis-card:hover {
+    border-color: var(--brand-primary);
+    transform: translateY(-2px);
+}
+
+.ai-analysis-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.ai-analysis-header i {
+    color: var(--brand-primary-light);
+    font-size: 18px;
+}
+
+.ai-analysis-header h4 {
+    font-size: 12px;
+    color: var(--brand-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ai-analysis-body {
+    text-align: center;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--brand-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 6px;
+}
+
+.score-label {
+    font-size: 11px;
+    color: var(--brand-text-muted);
+}
+
+.score-bar {
+    height: 4px;
+    background: var(--brand-bg);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.score-bar .fill {
+    height: 100%;
+    background: var(--brand-gradient);
+    border-radius: 2px;
+    transition: width 1s ease;
+}
+
+.risk-indicator {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--brand-success);
+}
+
+.risk-details {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--brand-text-muted);
+    margin-top: 6px;
+}
+
+.prediction-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brand-primary-light);
+}
+
+.prediction-range {
+    font-size: 11px;
+    color: var(--brand-text-muted);
+    display: block;
+}
+
+.prediction-bar {
+    height: 4px;
+    background: var(--brand-bg);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.prediction-bar .fill {
+    height: 100%;
+    background: var(--brand-gradient);
+    border-radius: 2px;
+    transition: width 1s ease;
+}
+
+.forecast-time {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brand-warning);
+}
+
+.forecast-label {
+    font-size: 11px;
+    color: var(--brand-text-muted);
+    display: block;
+}
+
+.forecast-bar {
+    height: 4px;
+    background: var(--brand-bg);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.forecast-bar .fill {
+    height: 100%;
+    background: var(--brand-warning);
+    border-radius: 2px;
+    transition: width 1s ease;
+}
+
+/* ===== HEATMAP VIEW ===== */
+.heatmap-view {
+    display: none;
+    padding: 16px;
+    height: 500px;
+}
+
+.heatmap-view.active {
+    display: block;
+}
+
+#heatmapContent {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* ===== AI BUTTONS ===== */
+.btn-ai-analyze {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--brand-primary-light);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-ai-analyze:hover {
+    background: rgba(37, 99, 235, 0.15);
+    border-color: var(--brand-primary);
+}
+
+.btn-ai-refresh {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--brand-border);
+    color: var(--brand-text-secondary);
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-ai-refresh:hover {
+    border-color: var(--brand-primary);
+    color: var(--brand-text);
+}
+
+/* ===== LGA AI RISK BADGE ===== */
+.lga-ai-risk {
+    font-size: 10px;
+    padding: 2px 12px;
+    border-radius: 10px;
+    background: rgba(34, 197, 94, 0.12);
+    color: var(--brand-success);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.lga-ai-risk.medium {
+    background: rgba(234, 179, 8, 0.12);
+    color: var(--brand-warning);
+    border-color: rgba(234, 179, 8, 0.2);
+}
+
+.lga-ai-risk.high {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--brand-danger);
+    border-color: rgba(239, 68, 68, 0.2);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ===== AI WARNING LEGEND ===== */
+.legend-dot.ai-warning {
+    background: var(--brand-danger);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+    .ai-analysis-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .ai-analysis-row {
+        grid-template-columns: 1fr;
+    }
+    .lga-ai-risk {
+        font-size: 9px;
+        padding: 1px 8px;
+    }
+    .score-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+    .prediction-value,
+    .forecast-time {
+        font-size: 22px;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes aiPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.ai-processing i {
+    animation: aiPulse 1.5s ease-in-out infinite;
+}
+
+/* ===== SCROLLBAR FOR AI PANELS ===== */
+.ai-insights::-webkit-scrollbar,
+.lga-analysis-grid::-webkit-scrollbar,
+.predictor-grid::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ai-insights::-webkit-scrollbar-track,
+.lga-analysis-grid::-webkit-scrollbar-track,
+.predictor-grid::-webkit-scrollbar-track {
+    background: var(--brand-bg);
+}
+
+.ai-insights::-webkit-scrollbar-thumb,
+.lga-analysis-grid::-webkit-scrollbar-thumb,
+.predictor-grid::-webkit-scrollbar-thumb {
+    background: var(--brand-border);
+    border-radius: 2px;
+}
