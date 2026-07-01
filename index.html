@@ -1,348 +1,190 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Election Monitor - Bauchi 2026</title>
+    <title>Bauchi Election Monitor - Live Results</title>
     
-    <!-- ===== META TAGS ===== -->
-    <meta name="description" content="AI-Powered Election Monitoring System for Bauchi State" />
-    <meta name="theme-color" content="#2563EB" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗳️</text></svg>" />
-    
-    <!-- ===== STYLES ===== -->
     <link rel="stylesheet" href="styles/brand.css" />
-    <link rel="stylesheet" href="styles/main.css" />
-    <link rel="stylesheet" href="styles/advanced.css" />
+    <link rel="stylesheet" href="styles/display.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    
-    <!-- ===== CHART.JS ===== -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- ============================================
-    NAVBAR
-    ============================================ -->
-    <div id="navbar-container"></div>
-
-    <!-- ============================================
-    AI STATUS BAR
-    ============================================ -->
-    <div class="ai-status-bar">
-        <div class="ai-status-left">
-            <span class="ai-badge">
-                <i class="fas fa-brain"></i> 
-                AI Engine: <span id="aiStatus">Active</span>
-            </span>
-            <span class="ai-confidence">
-                Confidence: <span id="aiConfidence">94.7%</span>
-            </span>
-            <span class="ai-model">
-                Model: <span id="aiModel">ElectionNet v3.0</span>
-            </span>
-            <span class="ai-accuracy">
-                <i class="fas fa-check-circle"></i> 
-                Accuracy: <span id="aiAccuracy">97.2%</span>
-            </span>
-            <span class="ai-model">
-                <i class="fas fa-clock"></i> 
-                Uptime: <span id="aiUptime">2d 14h</span>
-            </span>
+    <!-- ===== TOP HEADER ===== -->
+    <header class="display-header">
+        <div class="header-left">
+            <div class="brand-logo">
+                <i class="fas fa-cloud"></i>
+                <span class="brand-name">WebHotel<span class="highlight">.Cloud</span></span>
+            </div>
+            <div class="brand-divider"></div>
+            <div class="election-title">
+                <i class="fas fa-vote-yea"></i>
+                Bauchi Election 2026
+            </div>
         </div>
-        <div class="ai-status-right">
-            <span class="ai-processing">
-                <i class="fas fa-spinner fa-spin"></i> 
-                Processing: <span id="aiProcessing">1,247 data points</span>
-            </span>
-            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()" title="Voice Assistant">
-                <i class="fas fa-microphone"></i> Voice
-            </button>
-            <button class="btn-ai-refresh" onclick="refreshAI()" title="Refresh AI Engine">
-                <i class="fas fa-sync-alt"></i>
-            </button>
+        <div class="header-right">
+            <div class="live-badge">
+                <span class="pulse-dot"></span>
+                <span>LIVE</span>
+            </div>
+            <div class="time-display">
+                <div class="local-time">
+                    <span class="label">LOCAL</span>
+                    <span class="time" id="localTime">--:--:--</span>
+                    <span class="date" id="localDate">--</span>
+                </div>
+                <div class="utc-time">
+                    <span class="label">UTC</span>
+                    <span class="time" id="utcTime">--:--:--</span>
+                </div>
+            </div>
+            <div class="viewer-count">
+                <i class="fas fa-eye"></i>
+                <span id="viewerCount">1,247</span>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- ============================================
-    MAIN CONTENT
-    ============================================ -->
-    <main class="main-content">
-        
-        <!-- ===== AI INSIGHTS BANNER ===== -->
-        <section class="ai-insights-banner animate-fade-in-up">
-            <div class="insight-card primary animate-delay-1">
-                <i class="fas fa-robot"></i>
-                <div>
-                    <h4>AI Prediction</h4>
-                    <p id="aiPrediction">APC projected to win with 52.3%</p>
-                    <small>Based on 78% of votes counted</small>
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="display-main">
+        <!-- LEFT: Party & LGA Results -->
+        <div class="left-panel">
+            <!-- Party Results -->
+            <div class="card party-results">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> Party Results</h3>
+                    <span class="badge" id="partyTotal">0 votes</span>
+                </div>
+                <div class="card-body" id="partyResults">
+                    <!-- Rendered by JS -->
                 </div>
             </div>
-            <div class="insight-card warning animate-delay-2">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <h4>Anomaly Detected</h4>
-                    <p id="anomalyAlert">Unusual vote pattern in Ningi LGA</p>
-                    <small>AI flagged for review</small>
-                </div>
-            </div>
-            <div class="insight-card success animate-delay-3">
-                <i class="fas fa-check-circle"></i>
-                <div>
-                    <h4>Verification Status</h4>
-                    <p id="verificationStatus">92% of results verified</p>
-                    <small>Blockchain verified</small>
-                </div>
-            </div>
-            <div class="insight-card info animate-delay-4">
-                <i class="fas fa-chart-line"></i>
-                <div>
-                    <h4>Turnout Prediction</h4>
-                    <p id="turnoutPrediction">68.4% ± 2.3%</p>
-                    <small>Based on historical data</small>
-                </div>
-            </div>
-        </section>
 
-        <!-- ===== SMART STATS ===== -->
-        <section class="smart-stats animate-fade-in-up">
-            <div class="stat-card ai-enhanced animate-delay-1">
-                <div class="stat-icon blue"><i class="fas fa-robot"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">AI Predicted Total Votes</span>
-                    <span class="stat-value" id="aiTotalVotes">0</span>
-                    <span class="stat-trend">↑ 4.2% from projection</span>
+            <!-- LGA Results -->
+            <div class="card lga-results">
+                <div class="card-header">
+                    <h3><i class="fas fa-map-pin"></i> LGA Results</h3>
+                    <span class="badge" id="lgaCount">0/20</span>
                 </div>
-                <div class="stat-forecast">
-                    <span class="forecast-label">Forecast Range</span>
-                    <span class="forecast-value" id="forecastRange">245K - 268K</span>
+                <div class="card-body" id="lgaResults">
+                    <!-- Rendered by JS -->
                 </div>
             </div>
-            <div class="stat-card ai-enhanced animate-delay-2">
-                <div class="stat-icon green"><i class="fas fa-shield-alt"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Blockchain Verification</span>
-                    <span class="stat-value" id="blockchainStatus">2,847</span>
-                    <span class="stat-trend">blocks verified</span>
-                </div>
-                <div class="stat-verification">
-                    <div class="verification-bar"><div class="fill" style="width:92%"></div></div>
-                    <span class="verification-text">92% verified</span>
-                </div>
-            </div>
-            <div class="stat-card ai-enhanced animate-delay-3">
-                <div class="stat-icon purple"><i class="fas fa-brain"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">AI Anomaly Score</span>
-                    <span class="stat-value" id="anomalyScore">2.3</span>
-                    <span class="stat-trend">↓ 0.8 from baseline</span>
-                </div>
-                <div class="stat-anomaly">
-                    <div class="anomaly-meter"><div class="fill" style="width:23%"></div></div>
-                    <span class="anomaly-text">Low Risk</span>
-                </div>
-            </div>
-            <div class="stat-card ai-enhanced animate-delay-4">
-                <div class="stat-icon orange"><i class="fas fa-users"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Voter Sentiment</span>
-                    <span class="stat-value" id="sentimentScore">+0.67</span>
-                    <span class="stat-trend">↑ Positive</span>
-                </div>
-                <div class="stat-sentiment">
-                    <div class="sentiment-bar"><div class="fill positive" style="width:67%"></div></div>
-                    <span class="sentiment-text">67% Positive</span>
-                </div>
-            </div>
-        </section>
+        </div>
 
-        <!-- ===== AI CHARTS ===== -->
-        <section class="ai-charts animate-fade-in-up">
-            <div class="chart-card ai-chart animate-delay-1">
-                <div class="chart-header">
-                    <h3><i class="fas fa-chart-line"></i> AI Prediction vs Actual</h3>
-                    <div class="chart-controls">
-                        <span class="ai-badge-small">AI Model: ElectionNet</span>
-                        <button onclick="togglePredictionMode()" class="btn-toggle">
-                            <i class="fas fa-eye"></i> Show Confidence
-                        </button>
+        <!-- CENTER: Map -->
+        <div class="center-panel">
+            <div class="map-container">
+                <div id="electionMap"></div>
+                <!-- Map Legend -->
+                <div class="map-legend">
+                    <div class="legend-title">📍 Status</div>
+                    <div class="legend-item">
+                        <span class="legend-dot completed"></span> Completed
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot counting"></span> Counting
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot pending"></span> Pending
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot incident"></span> Incident
                     </div>
                 </div>
-                <div class="chart-body">
-                    <canvas id="predictionChart"></canvas>
+                <!-- Map Controls -->
+                <div class="map-controls">
+                    <button onclick="zoomIn()"><i class="fas fa-plus"></i></button>
+                    <button onclick="zoomOut()"><i class="fas fa-minus"></i></button>
+                    <button onclick="resetView()"><i class="fas fa-home"></i></button>
+                </div>
+                <!-- Map Stats -->
+                <div class="map-stats">
+                    <div class="map-stat">
+                        <span class="stat-label">LGAs</span>
+                        <span class="stat-value" id="mapLgas">20</span>
+                    </div>
+                    <div class="map-stat">
+                        <span class="stat-label">PUs</span>
+                        <span class="stat-value" id="mapPUs">2,984</span>
+                    </div>
+                    <div class="map-stat">
+                        <span class="stat-label">Agents</span>
+                        <span class="stat-value" id="mapAgents">0</span>
+                    </div>
                 </div>
             </div>
-            <div class="chart-card ai-chart animate-delay-2">
-                <div class="chart-header">
-                    <h3><i class="fas fa-heartbeat"></i> Real-time Anomaly Detection</h3>
-                    <span class="ai-badge-small">Live Monitoring</span>
-                </div>
-                <div class="chart-body">
-                    <canvas id="anomalyChart"></canvas>
-                </div>
-            </div>
-        </section>
+        </div>
 
-        <!-- ===== AI INSIGHTS ===== -->
-        <section class="ai-insights animate-fade-in-up">
-            <div class="insights-header">
-                <h2><i class="fas fa-lightbulb"></i> AI-Generated Insights</h2>
-                <span class="badge badge-primary">
-                    <i class="fas fa-clock"></i> 
-                    Updated: <span id="insightTime">Just now</span>
-                </span>
-            </div>
-            <div class="insights-grid" id="insightsGrid">
-                <!-- Rendered by JavaScript -->
-            </div>
-        </section>
-
-        <!-- ===== LGA ANALYSIS ===== -->
-        <section class="advanced-lga animate-fade-in-up">
-            <div class="section-header">
-                <h2><i class="fas fa-robot"></i> AI-Powered LGA Analysis</h2>
-                <div class="section-controls">
-                    <select id="analysisType" onchange="updateLGAAnalysis()">
-                        <option value="performance">Performance Score</option>
-                        <option value="risk">Risk Assessment</option>
-                        <option value="turnout">Turnout Prediction</option>
-                        <option value="anomaly">Anomaly Detection</option>
-                    </select>
-                    <button class="btn btn-sm btn-outline" onclick="refreshAI()">
-                        <i class="fas fa-sync-alt"></i> Refresh
-                    </button>
+        <!-- RIGHT: Stats -->
+        <div class="right-panel">
+            <div class="card stats-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-simple"></i> Live Stats</h3>
+                </div>
+                <div class="card-body">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Votes</span>
+                        <span class="stat-value" id="totalVotes">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Turnout</span>
+                        <span class="stat-value" id="turnout">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Leading Party</span>
+                        <span class="stat-value" id="leadingParty">--</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Incidents</span>
+                        <span class="stat-value" id="incidentCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Active Agents</span>
+                        <span class="stat-value" id="activeAgents">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Update</span>
+                        <span class="stat-value" id="lastUpdate">--</span>
+                    </div>
                 </div>
             </div>
-            <div class="lga-analysis-grid" id="lgaAnalysisGrid">
-                <!-- Rendered by JavaScript -->
-            </div>
-        </section>
 
-        <!-- ===== INCIDENT PREDICTOR ===== -->
-        <section class="incident-predictor animate-fade-in-up">
-            <div class="section-header">
-                <h2><i class="fas fa-shield-virus"></i> AI Incident Predictor</h2>
-                <span class="badge badge-danger badge-pulse">
-                    <i class="fas fa-exclamation-circle"></i> 
-                    High Risk Areas
-                </span>
+            <!-- Mini Chart -->
+            <div class="card mini-chart">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-pie"></i> Party Share</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="miniPieChart"></canvas>
+                </div>
             </div>
-            <div class="predictor-grid" id="predictorGrid">
-                <!-- Rendered by JavaScript -->
-            </div>
-        </section>
-
-        <!-- ===== QUICK ACTIONS ===== -->
-        <section class="quick-actions animate-fade-in-up">
-            <div class="section-header">
-                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
-            </div>
-            <div class="actions-grid">
-                <a href="tracking.html" class="action-card">
-                    <div class="action-icon blue">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>Live Tracking</h4>
-                        <p>View real-time map</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-                <a href="register-agent.html" class="action-card">
-                    <div class="action-icon green">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>Register Agent</h4>
-                        <p>Add new election agent</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-                <a href="agents.html" class="action-card">
-                    <div class="action-icon purple">
-                        <i class="fas fa-users-cog"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>Manage Agents</h4>
-                        <p>View all agents</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-                <a href="stream.html" class="action-card">
-                    <div class="action-icon orange">
-                        <i class="fas fa-broadcast"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>Live Stream</h4>
-                        <p>Watch election coverage</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-                <a href="lga-detail.html?id=BAU001" class="action-card">
-                    <div class="action-icon red">
-                        <i class="fas fa-flag"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>View LGAs</h4>
-                        <p>Check LGA results</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-                <a href="#" class="action-card" onclick="generateReport()">
-                    <div class="action-icon cyan">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <div class="action-info">
-                        <h4>Generate Report</h4>
-                        <p>Export election report</p>
-                    </div>
-                    <i class="fas fa-arrow-right action-arrow"></i>
-                </a>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <!-- ============================================
-    FOOTER
-    ============================================ -->
-    <div id="footer-container"></div>
-
-    <!-- ============================================
-    VOICE ASSISTANT MODAL
-    ============================================ -->
-    <div class="voice-assistant" id="voiceAssistant">
-        <div class="voice-overlay">
-            <div class="voice-circle">
-                <i class="fas fa-microphone"></i>
-                <div class="voice-pulse"></div>
+    <!-- ===== BOTTOM TICKER ===== -->
+    <div class="ticker-container">
+        <div class="ticker-wrapper">
+            <div class="ticker-content" id="tickerContent">
+                <span class="ticker-item">🔴 LIVE: Bauchi State Election 2026</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📍 <span id="tickerLGAs">0/20</span> LGAs Completed</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📊 Turnout: <span id="tickerTurnout">0%</span></span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">🏆 Leading: <span id="tickerLeading">--</span></span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">📅 Election 2026 • Bauchi State</span>
+                <span class="ticker-divider">|</span>
+                <span class="ticker-item">👥 <span id="tickerViewers">1,247</span> watching</span>
             </div>
-            <div class="voice-text" id="voiceText">Listening...</div>
-            <div class="voice-commands">
-                <button onclick="processVoiceCommand('dashboard')">
-                    <i class="fas fa-home"></i> Dashboard
-                </button>
-                <button onclick="processVoiceCommand('results')">
-                    <i class="fas fa-vote-yea"></i> Results
-                </button>
-                <button onclick="processVoiceCommand('tracking')">
-                    <i class="fas fa-map"></i> Tracking
-                </button>
-                <button onclick="processVoiceCommand('agents')">
-                    <i class="fas fa-users"></i> Agents
-                </button>
-                <button onclick="processVoiceCommand('help')">
-                    <i class="fas fa-question-circle"></i> Help
-                </button>
-            </div>
-            <button class="voice-close" onclick="toggleVoiceAssistant()">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
     </div>
 
-    <!-- ============================================
-    SCRIPTS
-    ============================================ -->
-    <script type="module" src="js/advanced-app.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="js/display.js"></script>
 </body>
 </html>
