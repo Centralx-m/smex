@@ -5,95 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Election Monitor - Bauchi 2026</title>
     
-    <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="stylesheet" href="styles/advanced.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- ===== NAVBAR ===== -->
     <div id="navbar-container"></div>
 
-    <!-- ===== AI STATUS BAR ===== -->
+    <!-- AI Status Bar -->
     <div class="ai-status-bar">
         <div class="ai-status-left">
-            <span class="ai-badge">
-                <i class="fas fa-brain"></i>
-                AI Engine: <span id="aiStatus">Active</span>
-            </span>
-            <span class="ai-confidence">
-                Prediction Confidence: <span id="aiConfidence">94.7%</span>
-            </span>
-            <span class="ai-model">
-                Model: <span id="aiModel">ElectionNet v3.0</span>
-            </span>
-            <span class="ai-accuracy">
-                <i class="fas fa-check-circle"></i>
-                Accuracy: <span id="aiAccuracy">97.2%</span>
-            </span>
+            <span class="ai-badge"><i class="fas fa-brain"></i> AI Engine: <span id="aiStatus">Active</span></span>
+            <span class="ai-confidence">Confidence: <span id="aiConfidence">94.7%</span></span>
+            <span class="ai-model">Model: <span id="aiModel">ElectionNet v3.0</span></span>
+            <span class="ai-accuracy"><i class="fas fa-check-circle"></i> Accuracy: <span id="aiAccuracy">97.2%</span></span>
         </div>
         <div class="ai-status-right">
-            <span class="ai-processing">
-                <i class="fas fa-spinner fa-spin"></i>
-                Processing: <span id="aiProcessing">1,247 data points</span>
-            </span>
-            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()">
-                <i class="fas fa-microphone"></i> Voice
-            </button>
-            <button class="btn-ai-refresh" onclick="refreshAI()">
-                <i class="fas fa-sync-alt"></i>
-            </button>
+            <span class="ai-processing"><i class="fas fa-spinner fa-spin"></i> Processing: <span id="aiProcessing">1,247 data points</span></span>
+            <button class="btn-ai-voice" onclick="toggleVoiceAssistant()"><i class="fas fa-microphone"></i> Voice</button>
+            <button class="btn-ai-refresh" onclick="refreshAI()"><i class="fas fa-sync-alt"></i></button>
         </div>
     </div>
 
-    <!-- ===== MAIN CONTENT ===== -->
     <main class="main-content">
         <!-- AI Insights Banner -->
         <section class="ai-insights-banner">
             <div class="insight-card primary">
                 <i class="fas fa-robot"></i>
-                <div>
-                    <h4>AI Prediction</h4>
-                    <p id="aiPrediction">APC projected to win with 52.3%</p>
-                    <small>Based on 78% of votes counted</small>
-                </div>
+                <div><h4>AI Prediction</h4><p id="aiPrediction">APC projected to win with 52.3%</p><small>Based on 78% of votes counted</small></div>
             </div>
             <div class="insight-card warning">
                 <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <h4>Anomaly Detected</h4>
-                    <p id="anomalyAlert">Unusual vote pattern in Ningi LGA</p>
-                    <small>AI flagged for review</small>
-                </div>
+                <div><h4>Anomaly Detected</h4><p id="anomalyAlert">Unusual vote pattern in Ningi LGA</p><small>AI flagged for review</small></div>
             </div>
             <div class="insight-card success">
                 <i class="fas fa-check-circle"></i>
-                <div>
-                    <h4>Verification Status</h4>
-                    <p id="verificationStatus">92% of results verified</p>
-                    <small>Blockchain verified</small>
-                </div>
+                <div><h4>Verification Status</h4><p id="verificationStatus">92% of results verified</p><small>Blockchain verified</small></div>
             </div>
             <div class="insight-card info">
                 <i class="fas fa-chart-line"></i>
-                <div>
-                    <h4>Turnout Prediction</h4>
-                    <p id="turnoutPrediction">68.4% ± 2.3%</p>
-                    <small>Based on historical data</small>
-                </div>
+                <div><h4>Turnout Prediction</h4><p id="turnoutPrediction">68.4% ± 2.3%</p><small>Based on historical data</small></div>
             </div>
         </section>
 
-        <!-- Smart Stats with AI -->
+        <!-- Smart Stats -->
         <section class="smart-stats">
             <div class="stat-card ai-enhanced">
-                <div class="stat-icon blue">
-                    <i class="fas fa-robot"></i>
-                </div>
+                <div class="stat-icon blue"><i class="fas fa-robot"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">AI Predicted Total Votes</span>
                     <span class="stat-value" id="aiTotalVotes">0</span>
@@ -105,79 +65,61 @@
                 </div>
             </div>
             <div class="stat-card ai-enhanced">
-                <div class="stat-icon green">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
+                <div class="stat-icon green"><i class="fas fa-shield-alt"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">Blockchain Verification</span>
                     <span class="stat-value" id="blockchainStatus">2,847</span>
                     <span class="stat-trend">blocks verified</span>
                 </div>
                 <div class="stat-verification">
-                    <div class="verification-bar">
-                        <div class="fill" style="width: 92%"></div>
-                    </div>
+                    <div class="verification-bar"><div class="fill" style="width:92%"></div></div>
                     <span class="verification-text">92% verified</span>
                 </div>
             </div>
             <div class="stat-card ai-enhanced">
-                <div class="stat-icon purple">
-                    <i class="fas fa-brain"></i>
-                </div>
+                <div class="stat-icon purple"><i class="fas fa-brain"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">AI Anomaly Score</span>
                     <span class="stat-value" id="anomalyScore">2.3</span>
                     <span class="stat-trend">↓ 0.8 from baseline</span>
                 </div>
                 <div class="stat-anomaly">
-                    <div class="anomaly-meter">
-                        <div class="fill" style="width: 23%"></div>
-                    </div>
+                    <div class="anomaly-meter"><div class="fill" style="width:23%"></div></div>
                     <span class="anomaly-text">Low Risk</span>
                 </div>
             </div>
             <div class="stat-card ai-enhanced">
-                <div class="stat-icon orange">
-                    <i class="fas fa-users"></i>
-                </div>
+                <div class="stat-icon orange"><i class="fas fa-users"></i></div>
                 <div class="stat-info">
                     <span class="stat-label">Voter Sentiment</span>
                     <span class="stat-value" id="sentimentScore">+0.67</span>
                     <span class="stat-trend">↑ Positive</span>
                 </div>
                 <div class="stat-sentiment">
-                    <div class="sentiment-bar">
-                        <div class="fill positive" style="width: 67%"></div>
-                    </div>
+                    <div class="sentiment-bar"><div class="fill positive" style="width:67%"></div></div>
                     <span class="sentiment-text">67% Positive</span>
                 </div>
             </div>
         </section>
 
-        <!-- AI Charts -->
+        <!-- Charts -->
         <section class="ai-charts">
             <div class="chart-card ai-chart">
                 <div class="chart-header">
                     <h3><i class="fas fa-chart-line"></i> AI Prediction vs Actual</h3>
                     <div class="chart-controls">
                         <span class="ai-badge-small">AI Model: ElectionNet</span>
-                        <button onclick="togglePredictionMode()" class="btn-toggle">
-                            <i class="fas fa-eye"></i> Show Confidence
-                        </button>
+                        <button onclick="togglePredictionMode()" class="btn-toggle"><i class="fas fa-eye"></i> Show Confidence</button>
                     </div>
                 </div>
-                <div class="chart-body">
-                    <canvas id="predictionChart"></canvas>
-                </div>
+                <div class="chart-body"><canvas id="predictionChart"></canvas></div>
             </div>
             <div class="chart-card ai-chart">
                 <div class="chart-header">
                     <h3><i class="fas fa-heartbeat"></i> Real-time Anomaly Detection</h3>
                     <span class="ai-badge-small">Live Monitoring</span>
                 </div>
-                <div class="chart-body">
-                    <canvas id="anomalyChart"></canvas>
-                </div>
+                <div class="chart-body"><canvas id="anomalyChart"></canvas></div>
             </div>
         </section>
 
@@ -187,9 +129,7 @@
                 <h2><i class="fas fa-lightbulb"></i> AI-Generated Insights</h2>
                 <span class="badge">Updated: <span id="insightTime">Just now</span></span>
             </div>
-            <div class="insights-grid" id="insightsGrid">
-                <!-- AI-generated insights -->
-            </div>
+            <div class="insights-grid" id="insightsGrid"></div>
         </section>
 
         <!-- LGA Analysis -->
@@ -205,9 +145,7 @@
                     </select>
                 </div>
             </div>
-            <div class="lga-analysis-grid" id="lgaAnalysisGrid">
-                <!-- AI-analyzed LGA cards -->
-            </div>
+            <div class="lga-analysis-grid" id="lgaAnalysisGrid"></div>
         </section>
 
         <!-- Incident Predictor -->
@@ -216,40 +154,24 @@
                 <h2><i class="fas fa-shield-virus"></i> AI Incident Predictor</h2>
                 <span class="badge warning">High Risk Areas</span>
             </div>
-            <div class="predictor-grid" id="predictorGrid">
-                <!-- AI risk predictions -->
-            </div>
+            <div class="predictor-grid" id="predictorGrid"></div>
         </section>
     </main>
 
-    <!-- ===== FOOTER ===== -->
     <div id="footer-container"></div>
 
     <!-- Voice Assistant -->
     <div class="voice-assistant" id="voiceAssistant">
         <div class="voice-overlay">
-            <div class="voice-circle">
-                <i class="fas fa-microphone"></i>
-                <div class="voice-pulse"></div>
-            </div>
+            <div class="voice-circle"><i class="fas fa-microphone"></i><div class="voice-pulse"></div></div>
             <div class="voice-text" id="voiceText">Listening...</div>
             <div class="voice-commands">
-                <button onclick="processVoiceCommand('dashboard')">
-                    <i class="fas fa-home"></i> Dashboard
-                </button>
-                <button onclick="processVoiceCommand('results')">
-                    <i class="fas fa-vote-yea"></i> Results
-                </button>
-                <button onclick="processVoiceCommand('tracking')">
-                    <i class="fas fa-map"></i> Tracking
-                </button>
-                <button onclick="processVoiceCommand('help')">
-                    <i class="fas fa-question-circle"></i> Help
-                </button>
+                <button onclick="processVoiceCommand('dashboard')"><i class="fas fa-home"></i> Dashboard</button>
+                <button onclick="processVoiceCommand('results')"><i class="fas fa-vote-yea"></i> Results</button>
+                <button onclick="processVoiceCommand('tracking')"><i class="fas fa-map"></i> Tracking</button>
+                <button onclick="processVoiceCommand('help')"><i class="fas fa-question-circle"></i> Help</button>
             </div>
-            <button class="voice-close" onclick="toggleVoiceAssistant()">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="voice-close" onclick="toggleVoiceAssistant()"><i class="fas fa-times"></i></button>
         </div>
     </div>
 
