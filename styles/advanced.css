@@ -12,11 +12,14 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 12px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-text-secondary);
     position: sticky;
     top: 64px;
     z-index: 99;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: var(--brand-transition);
 }
 
 .ai-status-left {
@@ -65,10 +68,15 @@
     color: var(--brand-success);
 }
 
+.ai-accuracy i {
+    font-size: 12px;
+}
+
 .ai-status-right {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .ai-processing {
@@ -76,6 +84,10 @@
     align-items: center;
     gap: 6px;
     color: var(--brand-text-muted);
+}
+
+.ai-processing i {
+    color: var(--brand-primary-light);
 }
 
 .btn-ai-voice {
@@ -86,15 +98,17 @@
     border-radius: 20px;
     cursor: pointer;
     transition: var(--brand-transition);
-    font-size: 12px;
+    font-size: var(--brand-font-sm);
     display: flex;
     align-items: center;
     gap: 6px;
+    font-weight: 500;
 }
 
 .btn-ai-voice:hover {
     background: rgba(37, 99, 235, 0.2);
     border-color: var(--brand-primary);
+    transform: scale(1.02);
 }
 
 .btn-ai-voice.active {
@@ -112,11 +126,13 @@
     border-radius: 6px;
     cursor: pointer;
     transition: var(--brand-transition);
+    font-size: var(--brand-font-sm);
 }
 
 .btn-ai-refresh:hover {
     border-color: var(--brand-primary);
     color: var(--brand-text);
+    transform: rotate(45deg);
 }
 
 /* ===== AI INSIGHTS BANNER ===== */
@@ -138,10 +154,11 @@
     transition: var(--brand-transition);
     position: relative;
     overflow: hidden;
+    cursor: default;
 }
 
 .insight-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: var(--brand-primary);
     box-shadow: var(--brand-shadow);
 }
@@ -156,16 +173,16 @@
 }
 
 .insight-card.primary::before {
-    background: var(--brand-primary);
+    background: var(--brand-gradient-light);
 }
 .insight-card.warning::before {
-    background: var(--brand-warning);
+    background: var(--brand-gradient-warning);
 }
 .insight-card.success::before {
-    background: var(--brand-success);
+    background: var(--brand-gradient-success);
 }
 .insight-card.info::before {
-    background: var(--brand-primary-light);
+    background: var(--brand-gradient);
 }
 
 .insight-card i {
@@ -200,7 +217,7 @@
 }
 
 .insight-card h4 {
-    font-size: 11px;
+    font-size: var(--brand-font-xs);
     color: var(--brand-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -208,13 +225,14 @@
 }
 
 .insight-card p {
-    font-size: 14px;
+    font-size: var(--brand-font-md);
     font-weight: 600;
     color: var(--brand-text);
+    margin: 0;
 }
 
 .insight-card small {
-    font-size: 10px;
+    font-size: var(--brand-font-xs);
     color: var(--brand-text-muted);
 }
 
@@ -239,6 +257,8 @@
 
 .stat-card.ai-enhanced:hover {
     border-color: var(--brand-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--brand-shadow);
 }
 
 .stat-card.ai-enhanced .stat-icon {
@@ -275,23 +295,25 @@
 .stat-card.ai-enhanced .stat-info {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .stat-card.ai-enhanced .stat-label {
-    font-size: 10px;
+    font-size: var(--brand-font-xs);
     text-transform: uppercase;
     color: var(--brand-text-muted);
     letter-spacing: 0.5px;
 }
 
 .stat-card.ai-enhanced .stat-value {
-    font-size: 24px;
+    font-size: var(--brand-font-2xl);
     font-weight: 700;
     color: var(--brand-text);
+    line-height: 1.2;
 }
 
 .stat-card.ai-enhanced .stat-trend {
-    font-size: 11px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-success);
 }
 
@@ -305,14 +327,14 @@
 }
 
 .forecast-label {
-    font-size: 10px;
+    font-size: var(--brand-font-xs);
     color: var(--brand-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .forecast-value {
-    font-size: 13px;
+    font-size: var(--brand-font-sm);
     font-weight: 600;
     color: var(--brand-primary-light);
     display: block;
@@ -355,7 +377,7 @@
 .verification-text,
 .anomaly-text,
 .sentiment-text {
-    font-size: 11px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-text-secondary);
 }
 
@@ -372,6 +394,11 @@
     border: 1px solid var(--brand-border);
     border-radius: var(--brand-radius);
     overflow: hidden;
+    transition: var(--brand-transition);
+}
+
+.ai-chart:hover {
+    border-color: var(--brand-border-light);
 }
 
 .ai-chart .chart-header {
@@ -385,7 +412,7 @@
 }
 
 .ai-chart .chart-header h3 {
-    font-size: 14px;
+    font-size: var(--brand-font-md);
     font-weight: 500;
     color: var(--brand-text-secondary);
     display: flex;
@@ -398,12 +425,13 @@
 }
 
 .ai-badge-small {
-    font-size: 10px;
+    font-size: var(--brand-font-xs);
     padding: 2px 10px;
     background: rgba(37, 99, 235, 0.08);
     border: 1px solid rgba(37, 99, 235, 0.15);
     border-radius: 10px;
     color: var(--brand-primary-light);
+    font-weight: 500;
 }
 
 .btn-toggle {
@@ -413,8 +441,9 @@
     padding: 4px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: var(--brand-font-sm);
     transition: var(--brand-transition);
+    font-weight: 500;
 }
 
 .btn-toggle:hover {
@@ -443,7 +472,7 @@
 }
 
 .insights-header h2 {
-    font-size: 18px;
+    font-size: var(--brand-font-lg);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -473,6 +502,8 @@
 
 .insight-item:hover {
     border-color: var(--brand-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--brand-shadow);
 }
 
 .insight-item .insight-icon {
@@ -506,23 +537,28 @@
     color: var(--brand-danger);
 }
 
+.insight-item .insight-icon.purple {
+    background: rgba(167, 139, 250, 0.1);
+    color: var(--brand-purple);
+}
+
 .insight-item .insight-content {
     flex: 1;
 }
 
 .insight-item .insight-title {
-    font-size: 13px;
+    font-size: var(--brand-font-sm);
     font-weight: 600;
 }
 
 .insight-item .insight-desc {
-    font-size: 12px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-text-secondary);
     margin-top: 2px;
 }
 
 .insight-item .insight-confidence {
-    font-size: 10px;
+    font-size: var(--brand-font-xs);
     color: var(--brand-text-muted);
     margin-top: 4px;
 }
@@ -542,7 +578,7 @@
 }
 
 .section-header h2 {
-    font-size: 18px;
+    font-size: var(--brand-font-lg);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -566,14 +602,26 @@
     color: var(--brand-text-secondary);
     border: 1px solid var(--brand-border);
     border-radius: var(--brand-radius-sm);
-    font-size: 13px;
+    font-size: var(--brand-font-sm);
     outline: none;
     cursor: pointer;
     transition: var(--brand-transition);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
 }
 
 .section-controls select:focus {
     border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.section-controls select option {
+    background: var(--brand-card);
+    color: var(--brand-text);
 }
 
 .lga-analysis-grid {
@@ -595,16 +643,21 @@
 
 .lga-analysis-card:hover {
     border-color: var(--brand-primary);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: var(--brand-shadow);
+}
+
+.lga-analysis-card:active {
+    transform: scale(0.98);
 }
 
 .lga-analysis-card .lga-name {
-    font-size: 14px;
+    font-size: var(--brand-font-md);
     font-weight: 600;
 }
 
 .lga-analysis-card .lga-score {
-    font-size: 22px;
+    font-size: var(--brand-font-2xl);
     font-weight: 700;
     margin: 4px 0;
 }
@@ -622,7 +675,7 @@
 }
 
 .lga-analysis-card .lga-metric {
-    font-size: 11px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-text-muted);
 }
 
@@ -661,13 +714,19 @@
     position: relative;
 }
 
+.predictor-card:hover {
+    border-color: var(--brand-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--brand-shadow);
+}
+
 .predictor-card .risk-indicator {
     font-size: 28px;
     margin-bottom: 4px;
 }
 
 .predictor-card .risk-level {
-    font-size: 12px;
+    font-size: var(--brand-font-sm);
     font-weight: 600;
     padding: 2px 12px;
     border-radius: 10px;
@@ -690,7 +749,7 @@
 }
 
 .predictor-card .risk-metric {
-    font-size: 11px;
+    font-size: var(--brand-font-sm);
     color: var(--brand-text-muted);
     margin-top: 4px;
 }
@@ -707,16 +766,19 @@
     z-index: 9999;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
 .voice-assistant.active {
     display: flex;
+    animation: fadeIn 0.3s ease;
 }
 
 .voice-overlay {
     text-align: center;
     position: relative;
+    padding: 20px;
 }
 
 .voice-circle {
@@ -731,6 +793,7 @@
     position: relative;
     font-size: 40px;
     color: white;
+    box-shadow: 0 0 60px rgba(37, 99, 235, 0.3);
 }
 
 .voice-pulse {
@@ -750,14 +813,14 @@
         opacity: 1;
     }
     100% {
-        transform: scale(1.5);
+        transform: scale(1.8);
         opacity: 0;
     }
 }
 
 .voice-text {
     color: var(--brand-text);
-    font-size: 20px;
+    font-size: var(--brand-font-xl);
     font-weight: 600;
     margin-bottom: 20px;
 }
@@ -773,20 +836,26 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--brand-border);
     color: var(--brand-text-secondary);
-    padding: 8px 20px;
+    padding: 10px 24px;
     border-radius: 20px;
     cursor: pointer;
     transition: var(--brand-transition);
-    font-size: 14px;
+    font-size: var(--brand-font-md);
     display: flex;
     align-items: center;
     gap: 8px;
+    font-weight: 500;
 }
 
 .voice-commands button:hover {
     background: rgba(37, 99, 235, 0.1);
     border-color: var(--brand-primary);
     color: var(--brand-text);
+    transform: scale(1.05);
+}
+
+.voice-commands button:active {
+    transform: scale(0.95);
 }
 
 .voice-close {
@@ -798,11 +867,18 @@
     color: var(--brand-text-muted);
     font-size: 28px;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: var(--brand-transition);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .voice-close:hover {
     color: var(--brand-text);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -829,10 +905,11 @@
     .ai-status-left {
         flex-wrap: wrap;
         gap: 6px;
-        font-size: 11px;
+        font-size: var(--brand-font-xs);
     }
     .ai-status-right {
         justify-content: flex-end;
+        flex-wrap: wrap;
     }
     .ai-insights-banner {
         grid-template-columns: 1fr;
@@ -852,10 +929,22 @@
     .voice-commands {
         flex-direction: column;
         align-items: center;
+        width: 100%;
+    }
+    .voice-commands button {
+        width: 100%;
+        justify-content: center;
     }
     .voice-close {
         top: -40px;
         right: 0;
+    }
+    .stat-card.ai-enhanced .stat-value {
+        font-size: var(--brand-font-xl);
+    }
+    .ai-chart .chart-body {
+        height: 200px;
+        padding: 12px 16px;
     }
 }
 
@@ -866,13 +955,30 @@
     .predictor-grid {
         grid-template-columns: 1fr;
     }
-    .stat-card.ai-enhanced .stat-value {
-        font-size: 20px;
-    }
     .insight-card {
         padding: 12px 16px;
     }
     .insight-card p {
-        font-size: 12px;
+        font-size: var(--brand-font-sm);
+    }
+    .insight-card i {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    .ai-status-left {
+        font-size: 10px;
+    }
+    .btn-ai-voice {
+        font-size: 10px;
+        padding: 2px 10px;
+    }
+    .voice-circle {
+        width: 80px;
+        height: 80px;
+        font-size: 28px;
+    }
+    .voice-text {
+        font-size: var(--brand-font-lg);
     }
 }
