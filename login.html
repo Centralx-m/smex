@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Secure Login - Bauchi Election Monitor</title>
     
-    <!-- Styles -->
     <link rel="stylesheet" href="styles/brand.css" />
     <link rel="stylesheet" href="styles/login.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -17,6 +16,7 @@
             <div class="bg-orb orb1"></div>
             <div class="bg-orb orb2"></div>
             <div class="bg-orb orb3"></div>
+            <div class="bg-orb orb4"></div>
         </div>
 
         <!-- Login Card -->
@@ -30,24 +30,82 @@
                     <i class="fas fa-vote-yea"></i>
                     Bauchi Election 2026
                 </div>
+                <div class="ai-security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>AI Protected</span>
+                </div>
             </div>
 
             <div class="login-body">
                 <h2>Welcome Back</h2>
-                <p>Sign in to access the election monitoring dashboard</p>
+                <p>Sign in to access the AI-powered election monitoring dashboard</p>
+
+                <div class="login-methods">
+                    <button class="method-btn active" onclick="showLoginMethod('password')">
+                        <i class="fas fa-lock"></i> Password
+                    </button>
+                    <button class="method-btn" onclick="showLoginMethod('otp')">
+                        <i class="fas fa-mobile-alt"></i> OTP
+                    </button>
+                    <button class="method-btn" onclick="showLoginMethod('biometric')">
+                        <i class="fas fa-fingerprint"></i> Biometric
+                    </button>
+                </div>
 
                 <form id="loginForm" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" id="loginEmail" required placeholder="agent@example.com" />
+                    <!-- Password Login -->
+                    <div class="login-method active" id="methodPassword">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="loginEmail" required placeholder="agent@example.com" />
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Password</label>
+                            <div class="password-input">
+                                <input type="password" id="loginPassword" required placeholder="Enter password" />
+                                <button type="button" onclick="togglePassword()">
+                                    <i class="fas fa-eye" id="passwordToggle"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label><i class="fas fa-lock"></i> Password</label>
-                        <div class="password-input">
-                            <input type="password" id="loginPassword" required placeholder="Enter password" />
-                            <button type="button" onclick="togglePassword()">
-                                <i class="fas fa-eye" id="passwordToggle"></i>
+                    <!-- OTP Login -->
+                    <div class="login-method" id="methodOTP">
+                        <div class="form-group">
+                            <label><i class="fas fa-mobile-alt"></i> Phone Number</label>
+                            <input type="tel" id="otpPhone" placeholder="080XXXXXXXX" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> OTP Code</label>
+                            <div class="otp-inputs">
+                                <input type="text" maxlength="1" oninput="otpMove(this, 1)" />
+                                <input type="text" maxlength="1" oninput="otpMove(this, 2)" />
+                                <input type="text" maxlength="1" oninput="otpMove(this, 3)" />
+                                <input type="text" maxlength="1" oninput="otpMove(this, 4)" />
+                                <input type="text" maxlength="1" oninput="otpMove(this, 5)" />
+                                <input type="text" maxlength="1" oninput="otpMove(this, 6)" />
+                            </div>
+                            <button type="button" class="btn-otp-send" onclick="sendOTP()">
+                                <i class="fas fa-paper-plane"></i> Send OTP
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Biometric Login -->
+                    <div class="login-method" id="methodBiometric">
+                        <div class="biometric-container">
+                            <div class="biometric-icon">
+                                <i class="fas fa-fingerprint"></i>
+                            </div>
+                            <p>Place your finger on the sensor</p>
+                            <div class="biometric-status" id="biometricStatus">
+                                <span class="status-dot"></span>
+                                <span>Waiting for fingerprint...</span>
+                            </div>
+                            <button type="button" class="btn-biometric" onclick="startBiometric()">
+                                <i class="fas fa-fingerprint"></i> Scan Fingerprint
                             </button>
                         </div>
                     </div>
@@ -61,17 +119,20 @@
                     </div>
 
                     <button type="submit" class="btn-login" id="loginBtn">
-                        <span class="btn-text">Sign In</span>
+                        <span class="btn-text"><i class="fas fa-sign-in-alt"></i> Sign In</span>
                         <span class="btn-loader"><i class="fas fa-spinner fa-spin"></i></span>
                     </button>
                 </form>
 
                 <div class="login-footer">
-                    <span>Secure login with AI-powered fraud detection</span>
                     <div class="security-badges">
                         <span><i class="fas fa-shield-alt"></i> 256-bit SSL</span>
                         <span><i class="fas fa-robot"></i> AI Protected</span>
                         <span><i class="fas fa-fingerprint"></i> Biometric Ready</span>
+                        <span><i class="fas fa-clock"></i> Session Timeout: 30m</span>
+                    </div>
+                    <div class="login-help">
+                        <span>Need help? <a href="#" onclick="contactSupport()">Contact Support</a></span>
                     </div>
                 </div>
             </div>
@@ -81,6 +142,8 @@
         <div class="ai-status-indicator">
             <span class="status-dot"></span>
             AI Security: Active
+            <span class="status-divider">|</span>
+            <span id="loginTime">Last login: --</span>
         </div>
     </div>
 
