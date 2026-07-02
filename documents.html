@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Documents – Election Monitoring System</title>
+
+    <!-- ===== CSS ===== -->
+    <style>
+        /* --- Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            padding: 20px;
+        }
+
+        /* --- Header --- */
+        .header {
+            max-width: 1300px;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 30px rgba(15, 52, 96, 0.3);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header h1 span {
+            color: #e94560;
+        }
+
+        .header .badge {
+            background: #e94560;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header .badge i {
+            margin-right: 6px;
+        }
+
+        /* --- Controls --- */
+        .controls {
+            max-width: 1300px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .controls .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .controls .search-box input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        .controls .search-box input:focus {
+            border-color: #0f3460;
+        }
+
+        .controls .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-export-all {
+            background: #0f3460;
+            color: #fff;
+        }
+        .btn-export-all:hover { background: #1a4a7a; }
+
+        .btn-export-all-pdf {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-export-all-pdf:hover { background: #c73652; }
+
+        /* --- Document Grid --- */
+        .doc-grid {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        /* --- Document Card --- */
+        .doc-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            padding: 22px 24px 20px 24px;
+            transition: 0.3s;
+            border-left: 5px solid #0f3460;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+        }
+
+        .doc-card .doc-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e94560;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .doc-card .doc-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 8px 0 6px 0;
+            color: #0f3460;
+        }
+
+        .doc-card .doc-desc {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 14px;
+        }
+
+        .doc-card .doc-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #718096;
+            border-top: 1px solid #edf2f7;
+            padding-top: 12px;
+            margin-bottom: 14px;
+        }
+
+        .doc-card .doc-meta .format-badge {
+            background: #edf2f7;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .doc-card .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .doc-card .btn-group button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1 0 auto;
+            justify-content: center;
+        }
+
+        .btn-pdf {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-pdf:hover { background: #c73652; }
+
+        .btn-docx {
+            background: #2b6cb0;
+            color: #fff;
+        }
+        .btn-docx:hover { background: #1e4e7a; }
+
+        .btn-html {
+            background: #38a169;
+            color: #fff;
+        }
+        .btn-html:hover { background: #2d7a4f; }
+
+        .btn-txt {
+            background: #718096;
+            color: #fff;
+        }
+        .btn-txt:hover { background: #5a677a; }
+
+        .btn-md {
+            background: #6b46c1;
+            color: #fff;
+        }
+        .btn-md:hover { background: #553c8a; }
+
+        /* --- Footer --- */
+        .footer {
+            max-width: 1300px;
+            margin: 40px auto 10px auto;
+            text-align: center;
+            font-size: 14px;
+            color: #718096;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .controls .search-box { max-width: 100%; }
+            .doc-grid { grid-template-columns: 1fr; }
+            .doc-card .btn-group button { flex: 1; }
+        }
+
+        /* --- Loading / Toast --- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f3460;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 999;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success { background: #38a169; }
+        .toast.error { background: #e94560; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div>
+            <h1>📄 Project Documents <span>· Election Monitoring</span></h1>
+            <div style="font-size:14px; opacity:0.8; margin-top:4px;">
+                Bauchi State · 20 LGAs · 212 Wards · 4,074 Polling Units
+            </div>
+        </div>
+        <div class="badge">
+            <i>📁</i> 9 Documents
+        </div>
+    </header>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Filter documents..." />
+        </div>
+        <div class="actions">
+            <button class="btn-export-all" onclick="exportAll('zip')">📦 Export All (.zip)</button>
+            <button class="btn-export-all-pdf" onclick="exportAll('pdf')">📄 Export All as PDF</button>
+        </div>
+    </div>
+
+    <!-- ===== DOCUMENT GRID ===== -->
+    <div class="doc-grid" id="docGrid">
+        <!-- cards will be injected by JS -->
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        Private Party Election Monitoring System &bull; Bauchi State &bull; ₦450,000 Budget
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===================================================================== -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ----------------------------------------------
+        // 1. DOCUMENT DATA (all 9 documents)
+        // ----------------------------------------------
+        const documents = [{
+            id: 1,
+            title: 'Project Proposal',
+            desc: 'Full project proposal with budget, scope, timeline, and technical architecture for the Bauchi State election monitoring system.',
+            fileName: 'PROJECT_PROPOSAL',
+            content: `# PROJECT PROPOSAL: PRIVATE PARTY ELECTION MONITORING SYSTEM
+        ## Bauchi State Command Center – ₦450,000 Budget
+
+        ---
+
+        ## 1. EXECUTIVE SUMMARY
+
+        **Project Name:** Private Party Election Monitoring System – Bauchi State Rollout
+
+        **Objective:** Build a private, internal election monitoring system for a political party to track agents, monitor polling units, collate results, and detect problems in real-time – entirely independent of INEC or government systems.
+
+        **Scope:** Bauchi State – 20 LGAs, 212 Wards, 4,074 Polling Units
+
+        **Budget:** ₦450,000
+
+        **Timeline:** 8 Weeks
+
+        **Technology Stack:** Firebase (Database, Auth, Storage) + Vercel (Hosting, Serverless Functions) + React Native (Mobile App) + React (Admin Dashboard)
+
+        ---
+
+        ## 2. PROJECT BACKGROUND
+
+        ### 2.1 The Need
+
+        Political parties require independent, real-time data collection and analysis capabilities to make strategic decisions during elections. This includes:
+
+        - Tracking agent deployment across all polling units
+        - Receiving real-time internal vote counts
+        - Monitoring incidents and security concerns
+        - Detecting anomalies and coverage gaps
+        - Responding rapidly to emerging situations
+
+        ### 2.2 The Solution
+
+        A private command center system consisting of:
+
+        1. **Agent Mobile App** – Check-in/out, submit results, report incidents
+        2. **Admin Web Dashboard** – Real-time map, agent tracking, anomaly detection
+        3. **Backend Database** – Secure, real-time data storage and retrieval
+        4. **Device Approval System** – No unauthorized access without Super Admin approval
+        5. **4-Computer Command Center** – Dedicated stations for each role
+
+        ### 2.3 Key Distinction
+
+        > **This system is strictly for internal party use.** It does not:
+        > - Interface with INEC systems or portals
+        > - Claim authority to declare official winners
+        > - Replace constitutionally mandated electoral processes
+        > - Publish results publicly or to external audiences
+
+        ---
+
+        ## 3. PROJECT OBJECTIVES
+
+        ### 3.1 Primary Objectives
+
+        | # | Objective | Description |
+        |---|-----------|-------------|
+        | 1 | **Agent Tracking** | Track all 4,074 agents in real-time on an interactive map with GPS locations |
+        | 2 | **Results Collation** | Collate internal vote counts from PU → Ward → LGA → State levels |
+        | 3 | **Victory Dashboard** | Display real-time victory probability across all levels |
+        | 4 | **Anomaly Detection** | Automatically flag suspicious results (turnout variance, duplicates, missing evidence) |
+        | 5 | **Incident Management** | Receive, track, and resolve incidents reported by agents |
+        | 6 | **Coverage Optimization** | Identify uncovered PUs and enable rapid reassignment |
+        | 7 | **Broadcast Communication** | Send instant messages to agents via SMS and in-app notifications |
+        | 8 | **Device Approval** | Ensure only authorized computers access the dashboard |
+        | 9 | **Audit Trail** | Maintain complete logs of all admin actions |
+
+        ### 3.2 Benefits
+
+        - **Data-Driven Decision Making:** Real-time information enables rapid strategic responses
+        - **Independent Verification:** Internal data provides verification against official results
+        - **Enhanced Security:** Device fingerprinting and approval system prevents unauthorized access
+        - **Cost Efficiency:** Firebase + Vercel free tiers keep hosting costs near zero
+        - **Scalability:** System architecture supports expansion to other states
+
+        ---
+
+        ## 4. TECHNICAL ARCHITECTURE
+
+        ### 4.1 Technology Stack
+
+        | Component | Technology | Purpose |
+        |-----------|-----------|---------|
+        | **Database** | Firebase Firestore | Real-time data storage for agents, check-ins, results, incidents |
+        | **Authentication** | Firebase Auth | OTP login for agents, custom claims for admin roles |
+        | **File Storage** | Firebase Storage | Agent photos, tally sheet images, incident evidence |
+        | **Backend API** | Vercel Serverless Functions | Device approval, admin actions, broadcasts |
+        | **Frontend** | React + Vercel | Admin dashboard with interactive maps |
+        | **Mobile App** | React Native + Firebase SDK | Agent app (check-in, submit, report) |
+        | **Map Engine** | Mapbox / OpenStreetMap | Heatmap, agent tracking, LGA/ward boundaries |
+
+        ### 4.2 System Components
+
+        #### A. Agent Mobile App
+
+        | Feature | Description |
+        |---------|-------------|
+        | **Authentication** | OTP via phone number – no passwords |
+        | **GPS Tracking** | Real-time location with check-in/out, timestamp, battery status |
+        | **Results Submission** | Submit internal vote counts per polling unit with photo evidence |
+        | **Incident Reporting** | Report problems with photos, GPS, and severity levels |
+        | **Offline Support** | Store data locally when network is unavailable |
+        | **Device Fingerprint** | One device per agent – prevents sharing |
+        | **Photo Capture** | Agent registration photo + tally sheet evidence |
+        | **Broadcast Inbox** | Receive messages from HQ |
+
+        #### B. Admin Web Dashboard
+
+        | Feature | Description |
+        |---------|-------------|
+        | **Live Summary** | Total agents, online agents, results submitted, incidents |
+        | **Interactive Map** | Bauchi State – zoom from LGAs → Wards → Polling Units |
+        | **Agent Tracking** | Live GPS dots with color coding (Online/Offline/No Check-in) |
+        | **Coverage Heatmap** | Visualize agent density – red zones = uncovered PUs |
+        | **Victory Dashboard** | Real-time collation from PU to State level with confidence scoring |
+        | **Anomaly Detection** | Auto-flag suspicious results (turnout variance, duplicates, no photo) |
+        | **Incident Management** | Report, assign, escalate, and resolve incidents |
+        | **Device Approval** | Approve/deny/block computers accessing the dashboard |
+        | **Broadcast Tool** | Send messages to all agents, specific LGAs, or roles |
+        | **Reports Export** | CSV, PDF, Excel exports of all data |
+
+        #### C. Device Approval System
+
+        | Rule | Description |
+        |------|-------------|
+        | **Rule 1** | No computer can access any dashboard page until Super Admin approves it |
+        | **Rule 2** | Each computer has a specific assigned role (Lead Admin / Data Analyst / Ops Coordinator / Backup Admin) |
+        | **Rule 3** | Each role has access to specific pages only – no cross-role access |
+        | **Rule 4** | Unauthorized access attempts are logged and trigger alerts |
+        | **Rule 5** | Super Admin can approve, deny, block, or revoke any device at any time |
+        | **Rule 6** | 3 unauthorized attempts = auto-block |
+
+        #### D. 4-Computer Command Center Setup
+
+        | Computer | Role | User | Access |
+        |----------|------|------|--------|
+        | **PC #1** | Command Center Main | Lead Admin / State Coordinator | Full Access – all modules |
+        | **PC #2** | Data Analysis & Anomaly Detection | Data Analyst | Results + Anomalies ONLY |
+        | **PC #3** | Agent Monitoring & Dispatch | Operations Coordinator | Agents + Map + Dispatch ONLY |
+        | **PC #4** | Backup & Incident Response | Backup Admin | Incidents + Broadcast ONLY |
+
+        ---
+
+        ## 5. DATABASE SCHEMA
+
+        ### 5.1 Firestore Collections
+
+        | Collection | Purpose | Key Fields |
+        |------------|---------|------------|
+        | **agents** | Agent profiles | fullName, phone, photoURL, deviceId, assignedPUId, isVerified |
+        | **pollingUnits** | All 4,074 PUs in Bauchi | puCode, name, wardId, lgaId, latitude, longitude |
+        | **wards** | 212 wards | name, lgaId, boundary |
+        | **lgas** | 20 LGAs | name, boundary |
+        | **checkins** | Agent GPS logs | agentId, puId, checkinTime, checkoutTime, latitude, longitude, batteryLevel |
+        | **results** | Internal vote counts | puId, agentId, partyVotes, opponentVotes, photoURL, isAnomaly |
+        | **incidents** | Problem reports | puId, agentId, description, photoURL, severity, status |
+        | **devices** | Computer approval | deviceId, deviceName, assignedRole, approvalStatus, approvedBy |
+        | **broadcasts** | HQ messages | senderId, message, targetRole, sentAt |
+        | **audits** | Admin action logs | adminId, action, targetType, targetId, timestamp |
+
+        ---
+
+        ## 6. BUDGET & EXPENDITURE BREAKDOWN
+
+        ### 6.1 Total Budget: ₦450,000
+
+        | Item | Description | Cost (₦) |
+        |------|-------------|----------|
+        | **A. Software Development** | | |
+        | Backend Development | Vercel serverless functions, Firebase integration, API design | 120,000 |
+        | Mobile App Development | React Native app for agents (check-in, submit results, incidents) | 130,000 |
+        | Admin Dashboard | React dashboard with map, analytics, device approval system | 100,000 |
+        | **B. Infrastructure** | | |
+        | Vercel Hosting (1 year) | Pro plan for production deployment | 0 (free tier) – 12,000 |
+        | Firebase | Firestore, Auth, Storage – free tier (Spark plan) | 0 |
+        | Map Engine Credits | Mapbox tiles for interactive maps | 20,000 |
+        | SMS API Credits | Termii/Twilio for OTP, alerts, broadcasts | 20,000 |
+        | **C. Contingency** | | |
+        | Miscellaneous / Buffer | Unforeseen costs, testing, deployment support | 20,000 – 48,000 |
+        | **TOTAL** | | **₦380,000 – ₦442,000** |
+
+        ### 6.2 What is NOT Included
+
+        | Item | Estimated Cost | Reason |
+        |------|---------------|--------|
+        | 4 Command Center Computers | ₦1,400,000 – ₦2,200,000 | Use existing computers or rent/stagger |
+        | UPS (3,000VA) | ₦150,000 | Power backup for 4 computers |
+        | Large Screen Display | ₦200,000 – ₦400,000 | Optional – for team viewing |
+        | Office Internet Setup | ₦50,000 – ₦100,000 | Fiber + 4G LTE backup |
+        | Field Agent Stipends | Variable | Data bundles and allowances |
+
+        ---
+
+        ## 7. IMPLEMENTATION TIMELINE (8 WEEKS)
+
+        | Week | Milestone | Deliverable |
+        |------|-----------|-------------|
+        | **Week 1** | Firebase project setup, Firestore schema design, authentication system | Database structure complete |
+        | **Week 2** | Backend API development, device registration/approval logic | API endpoints complete |
+        | **Week 3** | Admin dashboard UI (login, summary, map skeleton) | Frontend scaffolding |
+        | **Week 4** | Mobile app UI + login + registration (photo + device fingerprint) | Agent registration flow |
+        | **Week 5** | Mobile app: GPS tracking, check-in/out, result submission | Core agent functionality |
+        | **Week 6** | Admin dashboard: Map integration, agent monitoring, device approval | Command center view |
+        | **Week 7** | Admin dashboard: Alerts, anomaly detection, broadcast system | Full admin functionality |
+        | **Week 8** | Testing, bug fixes, deployment, agent training | Production-ready system |
+
+        ---
+
+        ## 8. POLITICAL & LEGAL FRAMEWORK
+
+        ### 8.1 Constitutional Basis
+
+        - INEC holds exclusive constitutional authority to authenticate and declare election results in Nigeria
+        - Political parties have the legal right to collect, analyze, and preserve electoral data
+        - Parties can challenge discrepancies through election petition tribunals
+
+        ### 8.2 System Purpose
+
+        This system is built for:
+
+        | Purpose | Description |
+        |---------|-------------|
+        | **Internal Strategy** | Understanding performance, identifying coverage gaps |
+        | **Agent Deployment** | Ensuring party presence across all polling units |
+        | **Incident Response** | Rapid reporting of problems to party coordinators |
+        | **Data Verification** | Comparing internal data against official results for potential challenges |
+
+        ### 8.3 System Restrictions
+
+        This system will NOT:
+
+        | Restriction | Reason |
+        |-------------|--------|
+        | Declare official election winners | Only INEC has constitutional authority |
+        | Publish results to the public or media | Internal party use only |
+        | Claim to be an "official" or "parallel" election result system | Avoids legal challenges |
+        | Interface with INEC's IReV portal or databases | System is private and independent |
+
+        ---
+
+        ## 9. BAUCHI STATE DATA STRUCTURE
+
+        ### 9.1 Scope
+
+        | Level | Quantity |
+        |-------|----------|
+        | **Local Government Areas (LGAs)** | 20 |
+        | **Wards (Registration Areas)** | 212 |
+        | **Polling Units** | 4,074 |
+
+        ### 9.2 Sample LGA Data
+
+        | LGA Name | Wards | Polling Units |
+        |----------|-------|---------------|
+        | Alkaleri | 11 | 237 |
+        | Bauchi | 12 | 493 |
+        | Katagum | 11 | 274 |
+        | Ningi | 11 | 282 |
+        | Toro | 11 | 292 |
+        | *...and 15 more LGAs* | - | - |
+        | **TOTAL** | **212** | **4,074** |
+
+        ---
+
+        ## 10. SUCCESS METRICS & KPIs
+
+        | Metric | Target | Measurement |
+        |--------|--------|-------------|
+        | Agent coverage | 100% of 4,074 PUs | Agents assigned to every PU |
+        | Online agents (election day) | >80% | Real-time dashboard |
+        | Results submitted | >95% of PUs | Submission rate |
+        | Incident response time | <15 minutes | From report to assignment |
+        | Anomaly detection accuracy | >90% | False positive rate |
+        | System uptime | 99.5% | Vercel + Firebase SLA |
+        | Device approval time | <1 hour | Super Admin response time |
+
+        ---
+
+        ## 11. RISK ASSESSMENT & MITIGATION
+
+        | Risk | Likelihood | Impact | Mitigation |
+        |------|------------|--------|------------|
+        | Developer delays | Medium | High | Weekly progress reviews, clear milestones |
+        | Network issues | Medium | High | Offline support in mobile app |
+        | Device issues | Low | Medium | Multiple approved devices per role |
+        | Agent non-compliance | Medium | Medium | Training + clear communication |
+        | Budget overrun | Low | Medium | 10% contingency buffer |
+        | Security breach | Low | High | Device approval, encryption, audit logs |
+
+        ---
+
+        ## 12. CONCLUSION & RECOMMENDATION
+
+        ### 12.1 Summary
+
+        This ₦450,000 project will deliver a **private, secure, and scalable election monitoring system** for your party in Bauchi State. Using Firebase and Vercel reduces hosting costs while providing real-time capabilities essential for a command center.
+
+        ### 12.2 Benefits
+
+        The system enables your party to:
+
+        | Benefit | Description |
+        |---------|-------------|
+        | **Real-time Tracking** | All 4,074 agents visible on an interactive map |
+        | **Instant Collation** | Results aggregated from PU to State in seconds |
+        | **Anomaly Detection** | Suspicious results flagged for investigation |
+        | **Rapid Response** | Incidents reported, assigned, and resolved within minutes |
+        | **Strategic Insight** | Data-driven decisions without relying on external sources |
+        | **Full Security** | Device approval system prevents unauthorized access |
+
+        ### 12.3 Recommendation
+
+        **APPROVE** the project for immediate implementation.
+
+        ---
+
+        ## 13. SIGN-OFF
+
+        | Role | Name | Signature | Date |
+        |------|------|-----------|------|
+        | Project Owner | ________________ | ________________ | ______ |
+        | Lead Developer | ________________ | ________________ | ______ |
+        | Lead Admin | ________________ | ________________ | ______ |
+
+        ---
+
+        **Prepared By:** ________________________
+        **Date:** ________________________
+        **Project:** Private Party Election Monitoring System – Bauchi State
+        **Budget:** ₦450,000
+
+        ---
+
+        ## APPENDIX A: TECHNICAL SPECIFICATIONS
+
+        ### A.1 Mobile App Requirements
+
+        | Requirement | Specification |
+        |-------------|---------------|
+        | Platform | Android (minimum) / iOS (optional) |
+        | Framework | React Native / Flutter |
+        | Minimum OS | Android 6.0 (API 23) |
+        | Network | 3G/4G/Wi-Fi with offline support |
+        | Permissions | Camera, GPS, Storage, Internet |
+        | Storage | Local SQLite for offline data |
+
+        ### A.2 Admin Dashboard Requirements
+
+        | Requirement | Specification |
+        |-------------|---------------|
+        | Framework | React / Streamlit |
+        | Map Engine | Mapbox / Leaflet |
+        | Charting | Chart.js / Recharts |
+        | Real-time | Firebase onSnapshot listeners |
+        | Export | CSV, PDF, Excel |
+
+        ### A.3 Server Requirements
+
+        | Requirement | Specification |
+        |-------------|---------------|
+        | Hosting | Vercel (Serverless Functions) |
+        | Database | Firebase Firestore |
+        | Storage | Firebase Storage |
+        | Authentication | Firebase Auth |
+        | SMS API | Termii / Twilio |
+        | Map Tiles | Mapbox / OpenStreetMap |
+
+        ---
+
+        **END OF PROPOSAL**`
+        }, {
+            id: 2,
+            title: 'Developer Job Description',
+            desc: 'Job description for hiring a full-stack developer with Firebase, React Native, and Vercel expertise for 8-week contract.',
+            fileName: 'DEVELOPER_JOB_DESCRIPTION',
+            content: `# JOB DESCRIPTION: FULL-STACK DEVELOPER – ELECTION MONITORING PLATFORM
+
+        ---
+
+        ## JOB TITLE: Full-Stack Developer – Election Monitoring Platform
+
+        **Location:** Remote (Nigeria preferred)
+        **Duration:** 8 Weeks (Fixed-term Contract)
+        **Budget:** ₦250,000 – ₦300,000
+        **Start Date:** Immediate
+
+        ---
+
+        ## PROJECT OVERVIEW
+
+        We are building a **private election monitoring command center** for a political party, starting with Bauchi State (20 LGAs, 212 Wards, 4,074 Polling Units). The platform includes:
+
+        - **Agent Mobile App** (React Native/Flutter) – GPS tracking, result submission, incident reporting
+        - **Admin Web Dashboard** (React/Streamlit) – Real-time maps, agent monitoring, anomaly detection
+        - **Backend API** (Python FastAPI/Node.js) – PostgreSQL + PostGIS, real-time updates
+        - **Security Features** – Device fingerprinting, photo verification, NDPA compliance
+
+        ---
+
+        ## KEY RESPONSIBILITIES
+
+        | Area | Tasks |
+        |------|-------|
+        | **Backend** | Build RESTful API with authentication, geospatial queries, real-time WebSocket updates |
+        | **Database** | Design PostgreSQL schema with PostGIS extension, optimize queries for 4,000+ agents |
+        | **Mobile App** | Develop cross-platform app with GPS, camera, offline storage, push notifications |
+        | **Dashboard** | Build admin panel with interactive maps (Leaflet/Mapbox), live stats, alert system |
+        | **Security** | Implement device fingerprinting, OTP auth, role-based access, audit logging |
+        | **Deployment** | Deploy on VPS (DigitalOcean/AWS), configure SSL, backups, monitoring |
+
+        ---
+
+        ## REQUIRED SKILLS
+
+        | Skill | Required Level |
+        |-------|---------------|
+        | **Node.js or Python (FastAPI/Django)** | Expert |
+        | **React Native or Flutter** | Expert |
+        | **PostgreSQL + PostGIS** | Advanced |
+        | **WebSockets (Socket.io)** | Advanced |
+        | **REST API Design** | Expert |
+        | **Mobile GPS/Camera Integration** | Advanced |
+        | **Git/GitHub** | Expert |
+        | **Linux Server Administration** | Intermediate |
+        | **Mapbox/Leaflet/OpenStreetMap** | Intermediate |
+        | **NDPA Compliance Knowledge** | Bonus |
+
+        ---
+
+        ## DEVELOPMENT TIMELINE (8 Weeks)
+
+        | Week | Milestone |
+        |------|-----------|
+        | **Week 1** | Database design, API skeleton, authentication system |
+        | **Week 2** | Complete API endpoints, WebSocket setup |
+        | **Week 3** | Mobile app UI + navigation + login flow |
+        | **Week 4** | Mobile app: GPS tracking, check-in/out, photo capture |
+        | **Week 5** | Mobile app: Result submission, incident reporting |
+        | **Week 6** | Admin dashboard: Map integration, agent monitoring |
+        | **Week 7** | Admin dashboard: Alerts, anomaly detection, reporting |
+        | **Week 8** | Testing, bug fixes, deployment, documentation |
+
+        ---
+
+        ## DELIVERABLES
+
+        - [ ] Complete source code (GitHub repository)
+        - [ ] API Documentation (Swagger/Postman)
+        - [ ] Deployment Guide
+        - [ ] Admin User Manual
+        - [ ] Agent Training Guide
+        - [ ] Database Backup Scripts
+        - [ ] 1 Month Post-deployment Support
+
+        ---
+
+        ## HOW TO APPLY
+
+        **Please submit:**
+        1. **CV/Resume** – Highlighting similar projects
+        2. **Portfolio** – Previous map-based or field data collection apps
+        3. **Code Sample** – GitHub repository or code snippet
+        4. **Project Quote** – Breakdown of timeline and cost
+        5. **References** – 2 previous clients
+
+        **Send to:** [INSERT EMAIL HERE]
+        **Subject:** "Full-Stack Developer Application – Election Platform"
+
+        ---
+
+        ## EVALUATION CRITERIA
+
+        | Criteria | Weight |
+        |----------|--------|
+        | Technical Experience | 40% |
+        | Portfolio Quality | 25% |
+        | Timeline Feasibility | 15% |
+        | Communication Skills | 10% |
+        | Cost Reasonableness | 10% |
+
+        ---
+
+        ## CONTRACT TERMS
+
+        | Term | Detail |
+        |------|--------|
+        | Payment | 30% upfront, 40% at Week 4, 30% on delivery |
+        | NDA Required | Yes – Full confidentiality |
+        | IP Ownership | All code becomes client's property |
+        | Support Period | 1 month free bug fixes after launch |`
+        }, {
+            id: 3,
+            title: 'Security Audit Checklist',
+            desc: 'Comprehensive security checklist covering authentication, encryption, API security, device security, NDPA compliance, and disaster recovery.',
+            fileName: 'SECURITY_AUDIT_CHECKLIST',
+            content: `# SECURITY AUDIT CHECKLIST
+        ## Private Election Monitoring System – Bauchi State
+
+        ---
+
+        ## 1. AUTHENTICATION & ACCESS CONTROL
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Admin passwords hashed with bcrypt/Argon2 | ⬜ | |
+        | 2FA enabled for all admin accounts | ⬜ | |
+        | Session timeout set to 30 minutes idle | ⬜ | |
+        | Rate limiting on login attempts | ⬜ | |
+        | IP whitelist for admin dashboard | ⬜ | |
+        | OTP only for agent login (no passwords) | ⬜ | |
+        | Password reset requires 2FA | ⬜ | |
+        | All admin actions logged with timestamp | ⬜ | |
+
+        ---
+
+        ## 2. DATA ENCRYPTION
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | HTTPS enforced on all endpoints | ⬜ | |
+        | SSL certificate valid (Let's Encrypt/Paid) | ⬜ | |
+        | Data encrypted at rest (database) | ⬜ | |
+        | Sensitive data (phone, device ID) encrypted | ⬜ | |
+        | Photo uploads encrypted in transit | ⬜ | |
+        | Backup files encrypted | ⬜ | |
+
+        ---
+
+        ## 3. API SECURITY
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | JWT tokens with 24-hour expiry | ⬜ | |
+        | Refresh token rotation | ⬜ | |
+        | CSRF protection enabled | ⬜ | |
+        | SQL injection prevention (parameterized queries) | ⬜ | |
+        | Input validation on all endpoints | ⬜ | |
+        | API rate limiting (100 requests/minute) | ⬜ | |
+        | Request logging with IP and user-agent | ⬜ | |
+        | CORS properly configured | ⬜ | |
+
+        ---
+
+        ## 4. DEVICE & MOBILE SECURITY
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Device ID fingerprinting implemented | ⬜ | |
+        | Rooted/jailbroken detection | ⬜ | |
+        | One device per agent enforced | ⬜ | |
+        | Device switch triggers admin alert | ⬜ | |
+        | GPS spoofing detection | ⬜ | |
+        | App code obfuscated | ⬜ | |
+        | Certificate pinning implemented | ⬜ | |
+        | Secure storage for local data (encrypted) | ⬜ | |
+        | App permissions minimized | ⬜ | |
+        | Photo metadata sanitized (remove EXIF GPS) | ⬜ | |
+
+        ---
+
+        ## 5. DATABASE SECURITY
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Database not accessible from public internet | ⬜ | |
+        | Strong database password | ⬜ | |
+        | Database user has minimal privileges | ⬜ | |
+        | Automated daily encrypted backups | ⬜ | |
+        | Backup stored off-server | ⬜ | |
+        | Audit log table enabled | ⬜ | |
+        | Data retention policy implemented (60 days) | ⬜ | |
+        | Regular vacuum/cleanup scheduled | ⬜ | |
+
+        ---
+
+        ## 6. INFRASTRUCTURE SECURITY
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Firewall configured (UFW/iptables) | ⬜ | |
+        | SSH key authentication only (no passwords) | ⬜ | |
+        | Unused ports closed | ⬜ | |
+        | Fail2ban installed | ⬜ | |
+        | Regular OS updates enabled | ⬜ | |
+        | Monitoring alerts for server load/attacks | ⬜ | |
+        | Separate database server (if possible) | ⬜ | |
+        | Backup VPS/server for failover | ⬜ | |
+
+        ---
+
+        ## 7. NDPA COMPLIANCE (Nigeria Data Protection Act)
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Consent forms signed by all agents | ⬜ | |
+        | Purpose limitation clearly defined | ⬜ | |
+        | Data minimization principle applied | ⬜ | |
+        | Data subject access rights enabled | ⬜ | |
+        | Data retention period defined (60 days) | ⬜ | |
+        | Data Protection Officer designated | ⬜ | |
+        | Breach notification procedure documented | ⬜ | |
+        | Third-party agreements (hosting, SMS) reviewed | ⬜ | |
+
+        ---
+
+        ## 8. AUDIT & MONITORING
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Admin action logs enabled | ⬜ | |
+        | Agent activity logs enabled | ⬜ | |
+        | System alert logs enabled | ⬜ | |
+        | Login attempt logs enabled | ⬜ | |
+        | Data access logs enabled | ⬜ | |
+        | Regular security reports scheduled | ⬜ | |
+        | Incident response plan documented | ⬜ | |
+
+        ---
+
+        ## 9. PENETRATION TESTING CHECKLIST
+
+        | Test | Status | Notes |
+        |------|--------|-------|
+        | SQL Injection | ⬜ | |
+        | Cross-Site Scripting (XSS) | ⬜ | |
+        | CSRF Test | ⬜ | |
+        | Authentication Bypass | ⬜ | |
+        | Authorization Bypass | ⬜ | |
+        | Session Hijacking | ⬜ | |
+        | API Security Test | ⬜ | |
+        | Mobile App Security Test | ⬜ | |
+
+        ---
+
+        ## 10. DISASTER RECOVERY
+
+        | Check | Status | Notes |
+        |-------|--------|-------|
+        | Database backup tested and verified | ⬜ | |
+        | Server restore procedure documented | ⬜ | |
+        | Emergency admin access procedure | ⬜ | |
+        | Contact list for critical team members | ⬜ | |
+        | Alternative communication channel (WhatsApp) | ⬜ | |
+        | Paper backup plan (manual reporting) | ⬜ | |
+
+        ---
+
+        ## AUDIT SIGN-OFF
+
+        | Role | Name | Signature | Date |
+        |------|------|-----------|------|
+        | Lead Developer | ______ | ______ | ______ |
+        | Security Officer | ______ | ______ | ______ |
+        | Project Manager | ______ | ______ | ______ |`
+        }, {
+            id: 4,
+            title: 'Admin UI Mockups',
+            desc: 'Complete mobile-first UI mockups for the admin dashboard including login, map view, agent details, incidents, broadcasts, and anomaly detection.',
+            fileName: 'ADMIN_UI_MOCKUPS',
+            content: `# ADMIN MOBILE APP UI MOCKUPS
+        ## Private Party Election Monitoring System
+
+        ---
+
+        ## SCREEN 1: ADMIN LOGIN
+
+        ┌──────────────────────┐
+        │ 📱 ADMIN LOGIN       │
+        ├──────────────────────┤
+        │                      │
+        │  🏛️ PARTY COMMAND    │
+        │   CENTER             │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │ Username     │   │
+        │  │ ___________  │   │
+        │  └──────────────┘   │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │ Password     │   │
+        │  │ ••••••••••   │   │
+        │  └──────────────┘   │
+        │                      │
+        │  [ LOGIN ]           │
+        │                      │
+        │  🔒 2FA Required     │
+        │  ┌──────────────┐   │
+        │  │ Enter 6-digit│   │
+        │  │ code         │   │
+        │  └──────────────┘   │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 2: ADMIN DASHBOARD (HOME)
+
+        ┌──────────────────────┐
+        │ ⚡ LIVE OVERVIEW      │
+        ├──────────────────────┤
+        │                      │
+        │  📊 Today's Stats    │
+        │  ┌──┐ ┌──┐ ┌──┐    │
+        │  │4K│ │3K│ │23│    │
+        │  │Ag│ │On│ │In│    │
+        │  │en│ │li│ │ci│    │
+        │  │ts│ │ne│ │de│    │
+        │  │  │ │  │ │nt│    │
+        │  └──┘ └──┘ └──┘    │
+        │                      │
+        │  ⚠️ CRITICAL ALERTS  │
+        │  ┌──────────────┐   │
+        │  │ 🔴 12 Agents │   │
+        │  │ Offline >2h  │   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ 🔴 45 PUs    │   │
+        │  │ No Agent     │   │
+        │  └──────────────┘   │
+        │                      │
+        │  📍 Quick Actions    │
+        │  [Map] [Agents]      │
+        │  [Results] [Report]  │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 3: LIVE MAP VIEW
+
+        ┌──────────────────────┐
+        │ 🗺️ REAL-TIME MAP     │
+        ├──────────────────────┤
+        │                      │
+        │  Legend:             │
+        │  🟢 Online           │
+        │  🟡 No Check-in      │
+        │  🔴 Offline          │
+        │  📍 Incident         │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │              │   │
+        │  │  [MAP AREA]  │   │
+        │  │              │   │
+        │  │  🟢🟢🟢🔴🟢  │   │
+        │  │  🟢📍🟢🟢🟢  │   │
+        │  │  🟢🟢🔴🟢🟢  │   │
+        │  │  🟡🟢🟢🟢🟢  │   │
+        │  │              │   │
+        │  └──────────────┘   │
+        │                      │
+        │  📍 Bauchi LGA       │
+        │  423/493 Agents ✅   │
+        │  [Zoom In] [Zoom Out]│
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 4: AGENT DETAILS (POPUP)
+
+        ┌──────────────────────┐
+        │ 👤 AGENT DETAILS     │
+        ├──────────────────────┤
+        │                      │
+        │  [Agent Photo]       │
+        │                      │
+        │  John Musa           │
+        │  0803 123 4567       │
+        │  Alkaleri LGA        │
+        │  PU-001              │
+        │                      │
+        │  Status: 🟢 Online   │
+        │  Check-in: 07:02 AM  │
+        │  Battery: 87%        │
+        │                      │
+        │  Device: Galaxy A32  │
+        │  Device ID: 1234-ABC │
+        │  First Seen: 01/07   │
+        │                      │
+        │  [SEND MESSAGE]      │
+        │  [VIEW RESULTS]      │
+        │  [BLOCK DEVICE]      │
+        │  [REASSIGN PU]       │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 5: INCIDENT REPORT VIEW
+
+        ┌──────────────────────┐
+        │ 🚨 INCIDENT REPORT   │
+        ├──────────────────────┤
+        │                      │
+        │  Severity: 🔴 CRITICAL│
+        │                      │
+        │  Location:           │
+        │  Bauchi LGA, PU-045  │
+        │                      │
+        │  Reported by:        │
+        │  Aisha Bello         │
+        │  0805 678 9012       │
+        │                      │
+        │  Time:               │
+        │  10:45 AM, 02/07/26  │
+        │                      │
+        │  Description:        │
+        │  Thugs attempting    │
+        │  to disrupt voting   │
+        │  at PU-045. Police   │
+        │  notified.           │
+        │                      │
+        │  Photos: [View]      │
+        │                      │
+        │  Status: OPEN        │
+        │                      │
+        │  [RESOLVE] [ESCALATE]│
+        │  [CALL AGENT]        │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 6: BROADCAST MESSAGE
+
+        ┌──────────────────────┐
+        │ 📢 SEND BROADCAST    │
+        ├──────────────────────┤
+        │                      │
+        │  Target:             │
+        │  ○ All Agents        │
+        │  ○ All Coordinators  │
+        │  ○ LGA Coordinators  │
+        │  ● Bauchi LGA Agents │
+        │                      │
+        │  Message:            │
+        │  ┌──────────────┐   │
+        │  │ All agents in│   │
+        │  │ Bauchi LGA,  │   │
+        │  │ please       │   │
+        │  │ confirm your │   │
+        │  │ check-in via │   │
+        │  │ the app.     │   │
+        │  │              │   │
+        │  │ - HQ         │   │
+        │  └──────────────┘   │
+        │                      │
+        │  ⚠️ 423 agents will  │
+        │  receive this        │
+        │                      │
+        │  [SEND] [CANCEL]     │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 7: PENDING PHOTO VERIFICATION
+
+        ┌──────────────────────┐
+        │ 📸 PHOTO VERIFICATION│
+        ├──────────────────────┤
+        │                      │
+        │  Pending: 9          │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │ 👤 John Musa │   │
+        │  │ 0803 123 4567│   │
+        │  │ Alkaleri LGA │   │
+        │  │ [Photo] [ID] │   │
+        │  │ [APPROVE]    │   │
+        │  │ [REJECT]     │   │
+        │  └──────────────┘   │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │ 👤 Aisha Bello│   │
+        │  │ 0805 678 9012│   │
+        │  │ Bauchi LGA   │   │
+        │  │ [Photo] [ID] │   │
+        │  │ ⚠️ Too dark  │   │
+        │  │ [APPROVE]    │   │
+        │  │ [REJECT]     │   │
+        │  └──────────────┘   │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 8: COVERAGE HEATMAP
+
+        ┌──────────────────────┐
+        │ 📊 COVERAGE HEATMAP  │
+        ├──────────────────────┤
+        │                      │
+        │  LGA Coverage:       │
+        │  Bauchi   96% ████   │
+        │  Alkaleri 100% ████  │
+        │  Toro     92% ███    │
+        │  Ningi    92% ███    │
+        │  Katagum  89% ██     │
+        │                      │
+        │  ⚠️ Gaps Found:      │
+        │  ┌──────────────┐   │
+        │  │ Toro LGA: 32 │   │
+        │  │ PUs uncovered│   │
+        │  │ [REASSIGN]   │   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ Katagum: 28  │   │
+        │  │ PUs uncovered│   │
+        │  │ [REASSIGN]   │   │
+        │  └──────────────┘   │
+        │                      │
+        │  [EXPORT REPORT]     │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 9: ANOMALY DETECTION
+
+        ┌──────────────────────┐
+        │ 🔍 ANOMALY DETECTION │
+        ├──────────────────────┤
+        │                      │
+        │  🔴 4 Critical       │
+        │  🟡 12 Warnings      │
+        │  🔵 8 Informational  │
+        │                      │
+        │  ┌──────────────┐   │
+        │  │ 🔴 ALK-001   │   │
+        │  │ Turnout: 98% │   │
+        │  │ Expected: 73%│   │
+        │  │ [INVESTIGATE]│   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ 🟡 BAU-045   │   │
+        │  │ No photo for │   │
+        │  │ result       │   │
+        │  │ [REQUEST PHOTO]│  │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ 🟡 TOR-112   │   │
+        │  │ Duplicate    │   │
+        │  │ submission   │   │
+        │  │ [INVESTIGATE]│   │
+        │  └──────────────┘   │
+        │                      │
+        └──────────────────────┘
+
+        ---
+
+        ## SCREEN 10: ADMIN PROFILE & SETTINGS
+
+        ┌──────────────────────┐
+        │ ⚙️ ADMIN SETTINGS    │
+        ├──────────────────────┤
+        │                      │
+        │  👤 Admin:           │
+        │  Adebayo Oluwole     │
+        │  Super Admin         │
+        │                      │
+        │  🔐 Security         │
+        │  ┌──────────────┐   │
+        │  │ Change       │   │
+        │  │ Password     │   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ Enable 2FA   │   │
+        │  │ [ON]         │   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ Session      │   │
+        │  │ Timeout: 30m │   │
+        │  └──────────────┘   │
+        │                      │
+        │  📱 Notifications    │
+        │  ┌──────────────┐   │
+        │  │ Critical     │   │
+        │  │ Alerts [ON]  │   │
+        │  └──────────────┘   │
+        │  ┌──────────────┐   │
+        │  │ Daily Report │   │
+        │  │ [ON]         │   │
+        │  └──────────────┘   │
+        │                      │
+        │  [LOG OUT]           │
+        │                      │
+        └──────────────────────┘`
+        }, {
+            id: 5,
+            title: 'NDPA Compliance Checklist',
+            desc: 'Comprehensive checklist for Nigeria Data Protection Act (2023) compliance covering data collection, subject rights, DPO, breach procedures, and third-party processors.',
+            fileName: 'NDPA_COMPLIANCE_CHECKLIST',
+            content: `# NDPA COMPLIANCE CHECKLIST
+        ## Nigeria Data Protection Act (2023)
+
+        ---
+
+        ## 1. DATA COLLECTION
+
+        | Requirement | Status | Evidence |
+        |-------------|--------|----------|
+        | Lawful basis for processing established | ⬜ | Consent forms signed |
+        | Consent freely given, specific, informed, unambiguous | ⬜ | Clear consent language |
+        | Purpose limitation documented | ⬜ | Purpose statement in consent form |
+        | Data minimization applied | ⬜ | Only necessary data collected |
+        | Collection of sensitive data justified | ⬜ | Justification documented |
+
+        ---
+
+        ## 2. DATA SUBJECT RIGHTS
+
+        | Right | Implemented? | Notes |
+        |-------|--------------|-------|
+        | Right to access data | ⬜ | Process documented |
+        | Right to rectification | ⬜ | Process documented |
+        | Right to erasure ("right to be forgotten") | ⬜ | 60-day retention policy |
+        | Right to restrict processing | ⬜ | Process documented |
+        | Right to data portability | ⬜ | Export capability |
+        | Right to object | ⬜ | Objection procedure documented |
+        | Right to withdraw consent | ⬜ | Withdrawal procedure documented |
+
+        ---
+
+        ## 3. DATA PROTECTION PRINCIPLES
+
+        | Principle | Compliant? | Notes |
+        |-----------|------------|-------|
+        | Lawfulness, fairness, transparency | ⬜ | Consent forms explain all uses |
+        | Purpose limitation | ⬜ | Data used only for election monitoring |
+        | Data minimization | ⬜ | Only necessary data collected |
+        | Accuracy | ⬜ | Process for corrections documented |
+        | Storage limitation | ⬜ | 60-day retention policy |
+        | Integrity and confidentiality (security) | ⬜ | Encryption, access controls |
+        | Accountability | ⬜ | Audit logs maintained |
+
+        ---
+
+        ## 4. DATA PROTECTION OFFICER (DPO)
+
+        | Requirement | Status | Notes |
+        |-------------|--------|-------|
+        | DPO designated | ⬜ | Name and contact documented |
+        | DPO contact details published | ⬜ | Provided to data subjects |
+        | DPO independent and properly resourced | ⬜ | Resources allocated |
+        | DPO reports to highest management | ⬜ | Reporting line established |
+
+        ---
+
+        ## 5. DATA BREACH PROCEDURES
+
+        | Requirement | Status | Notes |
+        |-------------|--------|-------|
+        | Breach detection process | ⬜ | Monitoring in place |
+        | Breach notification procedure | ⬜ | Documented |
+        | NDPC notification within 72 hours | ⬜ | Contact details ready |
+        | Data subject notification | ⬜ | Communication plan ready |
+        | Breach documentation | ⬜ | Logging in place |
+
+        ---
+
+        ## 6. DATA TRANSFERS
+
+        | Requirement | Status | Notes |
+        |-------------|--------|-------|
+        | Data transfer outside Nigeria assessed | ⬜ | Firebase servers assessed |
+        | Adequate safeguards for transfers | ⬜ | Standard contractual clauses |
+        | Data transfer agreements in place | ⬜ | With Firebase/Termii |
+
+        ---
+
+        ## 7. SECURITY MEASURES
+
+        | Measure | Implemented? | Notes |
+        |---------|--------------|-------|
+        | Encryption in transit (HTTPS) | ⬜ | All endpoints |
+        | Encryption at rest (database) | ⬜ | Firebase default |
+        | Access controls | ⬜ | Role-based access |
+        | Authentication | ⬜ | OTP + JWT |
+        | Audit logs | ⬜ | All actions logged |
+        | Regular security assessments | ⬜ | Schedule documented |
+        | Staff training | ⬜ | Training completed |
+
+        ---
+
+        ## 8. RETENTION AND DISPOSAL
+
+        | Requirement | Status | Notes |
+        |-------------|--------|-------|
+        | Retention policy documented | ⬜ | 60 days |
+        | Disposal method defined | ⬜ | Secure deletion |
+        | Disposal schedule | ⬜ | After 60 days |
+        | Retention justification | ⬜ | For election purposes |
+
+        ---
+
+        ## 9. THIRD-PARTY PROCESSORS
+
+        | Processor | Contract Signed? | DPA in Place? | Assessment Done? |
+        |-----------|------------------|---------------|------------------|
+        | Firebase (Google) | ⬜ | ⬜ | ⬜ |
+        | Vercel | ⬜ | ⬜ | ⬜ |
+        | Termii/Twilio | ⬜ | ⬜ | ⬜ |
+        | Mapbox | ⬜ | ⬜ | ⬜ |
+
+        ---
+
+        ## 10. DOCUMENTATION & RECORDS
+
+        | Document | Created? | Reviewed? | Updated? |
+        |----------|----------|-----------|----------|
+        | Data Protection Policy | ⬜ | ⬜ | ⬜ |
+        | Privacy Notice | ⬜ | ⬜ | ⬜ |
+        | Consent Forms | ⬜ | ⬜ | ⬜ |
+        | Data Subject Access Request Procedure | ⬜ | ⬜ | ⬜ |
+        | Data Breach Response Plan | ⬜ | ⬜ | ⬜ |
+        | Data Retention Policy | ⬜ | ⬜ | ⬜ |
+        | Data Processing Agreement | ⬜ | ⬜ | ⬜ |
+        | Record of Processing Activities (RoPA) | ⬜ | ⬜ | ⬜ |
+
+        ---
+
+        ## SIGN-OFF
+
+        | Role | Name | Signature | Date |
+        |------|------|-----------|------|
+        | DPO | ______ | ______ | ______ |
+        | Project Manager | ______ | ______ | ______ |
+        | Legal Counsel | ______ | ______ | ______ |`
+        }, {
+            id: 6,
+            title: 'Developer Contract Template',
+            desc: 'Standard independent contractor agreement template covering project description, timeline, payment schedule, IP ownership, confidentiality, and termination.',
+            fileName: 'DEVELOPER_CONTRACT_TEMPLATE',
+            content: `# INDEPENDENT CONTRACTOR AGREEMENT
+
+        ---
+
+        **This Independent Contractor Agreement** (the "Agreement") is entered into on this ____ day of __________, 2026 (the "Effective Date") by and between:
+
+        **Client:**
+        [CLIENT COMPANY NAME]
+        [CLIENT ADDRESS]
+        [CLIENT PHONE]
+        [CLIENT EMAIL]
+
+        **Contractor:**
+        [CONTRACTOR NAME]
+        [CONTRACTOR ADDRESS]
+        [CONTRACTOR PHONE]
+        [CONTRACTOR EMAIL]
+
+        (Collectively referred to as the "Parties")
+
+        ---
+
+        ## 1. PROJECT DESCRIPTION
+
+        The Contractor agrees to provide services for the development of a **Private Party Election Monitoring System** as described in the project proposal:
+
+        - **Scope:** Bauchi State – 20 LGAs, 212 Wards, 4,074 Polling Units
+        - **Technology:** Firebase + Vercel + React Native + React
+        - **Timeline:** 8 Weeks from start date
+        - **Deliverables:** Complete source code, API documentation, deployment guide, user manuals
+
+        ---
+
+        ## 2. SERVICES AND DELIVERABLES
+
+        ### 2.1 Services
+
+        The Contractor shall provide the following services:
+
+        | # | Service | Description |
+        |---|---------|-------------|
+        | 1 | Backend Development | Vercel serverless functions, Firebase integration, API design |
+        | 2 | Mobile App Development | React Native app for agents (check-in, submit results, incidents) |
+        | 3 | Admin Dashboard | React dashboard with map, analytics, device approval system |
+        | 4 | Database Design | Firestore schema with security rules |
+        | 5 | Deployment | Production deployment on Vercel + Firebase |
+        | 6 | Documentation | API docs, deployment guide, user manuals |
+        | 7 | Training | Training for admin team |
+        | 8 | Support | 1 month post-deployment support (bug fixes) |
+
+        ### 2.2 Deliverables
+
+        The Contractor shall deliver:
+
+        - [ ] Complete source code (GitHub repository)
+        - [ ] API Documentation (Swagger/Postman)
+        - [ ] Deployment Guide
+        - [ ] Admin User Manual
+        - [ ] Agent Training Guide
+        - [ ] Database Backup Scripts
+        - [ ] 1 Month Post-deployment Support
+
+        ---
+
+        ## 3. TIMELINE
+
+        | Week | Milestone | Deliverable |
+        |------|-----------|-------------|
+        | **Week 1** | Firebase project setup, Firestore schema design, authentication system | Database structure complete |
+        | **Week 2** | Backend API development, device registration/approval logic | API endpoints complete |
+        | **Week 3** | Admin dashboard UI (login, summary, map skeleton) | Frontend scaffolding |
+        | **Week 4** | Mobile app UI + login + registration (photo + device fingerprint) | Agent registration flow |
+        | **Week 5** | Mobile app: GPS tracking, check-in/out, result submission | Core agent functionality |
+        | **Week 6** | Admin dashboard: Map integration, agent monitoring, device approval | Command center view |
+        | **Week 7** | Admin dashboard: Alerts, anomaly detection, broadcast system | Full admin functionality |
+        | **Week 8** | Testing, bug fixes, deployment, agent training | Production-ready system |
+
+        ---
+
+        ## 4. COMPENSATION
+
+        ### 4.1 Total Fee
+
+        The total fee for the Services shall be **₦[AMOUNT]** (______________________ Naira).
+
+        ### 4.2 Payment Schedule
+
+        | Milestone | Payment | Percentage |
+        |-----------|---------|------------|
+        | **Upfront** | ₦_________ | 30% |
+        | **Week 4** | ₦_________ | 40% |
+        | **Delivery** | ₦_________ | 30% |
+        | **TOTAL** | **₦[AMOUNT]** | **100%** |
+
+        ### 4.3 Payment Method
+
+        Payments shall be made via:
+        - Bank Transfer to [BANK NAME] [ACCOUNT NUMBER] [ACCOUNT NAME]
+        - OR other method agreed in writing
+
+        ---
+
+        ## 5. INTELLECTUAL PROPERTY
+
+        ### 5.1 Ownership
+
+        All intellectual property rights in the Deliverables, including but not limited to source code, designs, documentation, and any related materials, shall be the sole and exclusive property of the Client.
+
+        ### 5.2 Assignment
+
+        The Contractor hereby assigns to the Client all right, title, and interest in and to the Deliverables, including all intellectual property rights.
+
+        ### 5.3 Third-Party Materials
+
+        The Contractor shall ensure that any third-party materials used in the Deliverables are properly licensed and do not infringe on any third-party rights.
+
+        ---
+
+        ## 6. CONFIDENTIALITY
+
+        ### 6.1 Confidential Information
+
+        "Confidential Information" includes all information disclosed by the Client to the Contractor, including but not limited to:
+        - System architecture and design
+        - Data and databases
+        - Business strategies and plans
+        - Agent and polling unit data
+        - Source code and algorithms
+        - Any other information marked as confidential
+
+        ### 6.2 Obligations
+
+        The Contractor agrees to:
+        - Not disclose Confidential Information to any third party
+        - Use Confidential Information only for performing Services
+        - Protect Confidential Information with reasonable security measures
+        - Return or destroy all Confidential Information upon termination
+
+        ### 6.3 Non-Disclosure Agreement (NDA)
+
+        This Agreement includes the confidentiality obligations of the NDA signed by the Contractor.
+
+        ---
+
+        ## 7. REPRESENTATIONS AND WARRANTIES
+
+        ### 7.1 Contractor Warranties
+
+        The Contractor warrants that:
+        - The Deliverables will be original work
+        - The Deliverables will not infringe on any third-party rights
+        - The Deliverables will conform to the specifications
+        - The Services will be performed with reasonable care and skill
+        - All third-party materials are properly licensed
+
+        ### 7.2 Client Warranties
+
+        The Client warrants that:
+        - They have the authority to enter into this Agreement
+        - They will provide reasonable cooperation and access to information
+        - They will make payments as scheduled
+
+        ---
+
+        ## 8. TERMINATION
+
+        ### 8.1 Termination for Convenience
+
+        Either party may terminate this Agreement with 14 days' written notice.
+
+        ### 8.2 Termination for Cause
+
+        Either party may terminate this Agreement immediately if the other party:
+        - Breaches any material term and fails to cure within 7 days
+        - Commits fraud or willful misconduct
+        - Is dissolved or becomes insolvent
+
+        ### 8.3 Effect of Termination
+
+        Upon termination:
+        - Client pays for work completed up to termination date
+        - Contractor delivers all work in progress
+        - Contractor returns all Client materials
+        - Confidentiality obligations survive termination
+
+        ---
+
+        ## 9. INDEPENDENT CONTRACTOR STATUS
+
+        The Contractor is an independent contractor and not an employee of the Client. The Contractor is responsible for their own taxes, benefits, and insurance.
+
+        ---
+
+        ## 10. LIMITATION OF LIABILITY
+
+        Neither party shall be liable for any indirect, incidental, special, or consequential damages. Total liability shall not exceed the total fees paid under this Agreement.
+
+        ---
+
+        ## 11. GOVERNING LAW
+
+        This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Nigeria.
+
+        ---
+
+        ## 12. ENTIRE AGREEMENT
+
+        This Agreement constitutes the entire agreement between the Parties and supersedes all prior agreements and understandings.
+
+        ---
+
+        ## 13. SIGNATURES
+
+        **Client:**
+        ________________________
+        Signature
+
+        ________________________
+        Name (Print)
+
+        ________________________
+        Title
+
+        ________________________
+        Date
+
+        **Contractor:**
+        ________________________
+        Signature
+
+        ________________________
+        Name (Print)
+
+        ________________________
+        Title
+
+        ________________________
+        Date`
+        }, {
+            id: 7,
+            title: 'Agent Training Manual',
+            desc: 'Complete training guide for field agents covering app installation, check-in/out, results submission, incident reporting, and troubleshooting.',
+            fileName: 'AGENT_TRAINING_MANUAL',
+            content: `# AGENT TRAINING MANUAL
+        ## Private Party Election Monitoring System
+
+        ---
+
+        ## 1. INTRODUCTION
+
+        Welcome to the **Party Command Center** system. This training manual will guide you through using the agent mobile app to monitor elections and report data to your party headquarters.
+
+        ### 1.1 What You Will Learn
+
+        - How to install and log in to the app
+        - How to check in and check out at your polling unit
+        - How to submit internal vote counts
+        - How to report incidents with photos
+        - How to receive and read broadcast messages from HQ
+
+        ### 1.2 System Overview
+
+        YOUR MOBILE APP →
+        • Login with OTP (phone number)
+        • Check-in at your assigned PU
+        • Submit results with photo of tally sheet
+        • Report incidents with photo + GPS location
+        • Receive messages from HQ
+
+        → PARTY HEADQUARTERS (Command Center - 4 Computers)
+
+        ---
+
+        ## 2. APP INSTALLATION
+
+        ### 2.1 Android Installation
+
+        1. Open **Google Play Store**
+        2. Search for **[APP NAME]**
+        3. Tap **Install**
+        4. Wait for installation to complete
+        5. Tap **Open**
+
+        ### 2.2 iOS Installation
+
+        1. Open **App Store**
+        2. Search for **[APP NAME]**
+        3. Tap **Get**
+        4. Authenticate with Face ID/Touch ID/Password
+        5. Tap **Open**
+
+        ### 2.3 First-Time Setup
+
+        When you open the app for the first time:
+
+        1. **Allow permissions**:
+           - ✅ Camera (for photos)
+           - ✅ GPS/Location (for tracking)
+           - ✅ Storage (for saving photos)
+           - ✅ Notifications (for alerts)
+
+        2. **Enter your phone number**:
+           - Format: 0803 123 4567
+
+        3. **Wait for OTP**:
+           - You will receive a 6-digit code via SMS
+
+        4. **Enter the OTP**:
+           - Enter the 6-digit code
+
+        5. **Take your photo**:
+           - Tap "Take Photo"
+           - Position your face in the center
+           - Ensure good lighting
+           - Tap the shutter button
+
+        6. **Review and confirm**:
+           - Your photo will be sent to HQ for verification
+           - Wait for verification (usually within 1 hour)
+
+        ---
+
+        ## 3. AGENT DASHBOARD
+
+        After login, you will see your **Agent Dashboard**:
+
+        👤 John Musa                    🟢 Online
+        Polling Unit: ALK-001
+        Ward: Alkaleri
+        LGA: Alkaleri
+
+        [📍 CHECK-IN]  [📊 SUBMIT RESULTS]  [🚨 REPORT INCIDENT]
+
+        📩 BROADCAST INBOX
+        ┌─────────────────────────────────────────────────────────────┐
+        │ 🔔 HQ: All agents please check-in by 7:00 AM               │
+        │    ⏱️ 10:30 AM, 02/07/2026                                │
+        └─────────────────────────────────────────────────────────────┘
+
+        ---
+
+        ## 4. CHECK-IN / CHECK-OUT
+
+        ### 4.1 Why Check In?
+
+        - Confirms you are at your assigned polling unit
+        - Allows HQ to track agent deployment
+        - Essential for coverage heatmap
+        - Shows you are ready for duty
+
+        ### 4.2 How to Check In
+
+        1. Tap the **📍 CHECK-IN** button on your dashboard
+        2. Confirm your location:
+           - Polling Unit: ALK-001
+           - Address: Alkaleri LGA, Ward 1, PU 001
+           - Your GPS Location: Latitude, Longitude
+        3. Tap **YES, I'M HERE**
+        4. You will see confirmation: ✅ Check-in successful at 07:02 AM
+
+        ### 4.3 How to Check Out
+
+        1. Tap the **📍 CHECK-OUT** button
+        2. You will see confirmation: ✅ Check-out successful at 06:30 PM
+
+        ### 4.4 Important Rules
+
+        | Rule | Description |
+        |------|-------------|
+        | **One check-in per day** | Check-in once at the start of duty |
+        | **Check-in before voting** | Must be checked in before voting starts |
+        | **Accurate location** | Ensure GPS accuracy is good (✓ icon) |
+        | **Report if wrong location** | Tap "No, wrong location" and contact HQ |
+
+        ---
+
+        ## 5. SUBMIT RESULTS
+
+        ### 5.1 When to Submit
+
+        - Immediately after voting ends at your polling unit
+        - After the official count is announced
+        - Before leaving the polling unit
+
+        ### 5.2 How to Submit
+
+        1. Tap the **📊 SUBMIT RESULTS** button
+        2. Select your polling unit (auto-selected)
+        3. Enter the vote counts:
+           - Polling Unit: ALK-001
+           - Total Registered Voters: 800
+           - 🔵 Party A Votes: [400]
+           - 🔴 Party B Votes: [350]
+           - 🟡 Party C Votes: [30]
+           - ⚪ Other Votes: [20]
+        4. Tap **TAKE PHOTO** to capture the tally sheet:
+           - Place the sheet flat on a surface
+           - Ensure good lighting
+           - Make sure all numbers are visible
+           - Tap the shutter button
+        5. Tap **SUBMIT** to send results
+        6. You will see confirmation: ✅ Results submitted successfully!
+
+        ---
+
+        ## 6. REPORT INCIDENTS
+
+        ### 6.1 What is an Incident?
+
+        Any problem that affects the voting process:
+        - ⚠️ Vote buying
+        - ⚠️ Thugs or violence
+        - ⚠️ Ballot box issues
+        - ⚠️ INEC official misconduct
+        - ⚠️ Voter suppression
+        - ⚠️ Technical issues (BVAS not working)
+        - ⚠️ Security concerns
+
+        ### 6.2 How to Report an Incident
+
+        1. Tap the **🚨 REPORT INCIDENT** button
+        2. Select your polling unit (auto-selected)
+        3. Enter incident details:
+           - Severity: Low / Medium / High
+           - Description: Detailed description of what happened
+        4. Tap **TAKE PHOTO** to capture evidence
+        5. Tap **SUBMIT** to send the report
+        6. You will see confirmation: ✅ Incident reported successfully!
+        7. HQ will review and respond within 15 minutes
+
+        ---
+
+        ## 7. BROADCAST MESSAGES
+
+        ### 7.1 What are Broadcasts?
+
+        Messages sent from party HQ to all agents or specific groups:
+        - Important instructions
+        - Updates on the election
+        - Security alerts
+        - Reminders
+
+        ### 7.2 How to Read Broadcasts
+
+        1. Tap the **📩 BROADCAST INBOX** on your dashboard
+        2. You will see the list of messages
+        3. Tap any message to read the full content
+
+        ---
+
+        ## 8. PROFILE & SETTINGS
+
+        ### 8.1 View Your Profile
+
+        1. Tap the **⚙️ PROFILE** icon at the bottom of the app
+        2. You can see:
+           - Your name
+           - Your phone number
+           - Your assigned polling unit
+           - Your verification status
+           - App version
+
+        ---
+
+        ## 9. TROUBLESHOOTING
+
+        ### 9.1 Can't Log In
+
+        | Problem | Solution |
+        |---------|----------|
+        | Not receiving OTP | Wait 2 minutes, tap "Resend OTP" |
+        | Wrong OTP entered | Enter the exact 6-digit code |
+        | Phone number not registered | Contact your ward coordinator |
+
+        ### 9.2 GPS Not Working
+
+        | Problem | Solution |
+        |---------|----------|
+        | GPS not accurate | Move to open area, wait for "✓" icon |
+        | GPS permission denied | Go to Settings → Apps → Permissions → Enable Location |
+        | No GPS signal | Check that you have a clear view of the sky |
+
+        ### 9.3 Photo Not Uploading
+
+        | Problem | Solution |
+        |---------|----------|
+        | No internet connection | Wait for network to reconnect |
+        | Photo too large | Take a smaller photo (reduce resolution) |
+        | Permission denied | Go to Settings → Apps → Permissions → Enable Camera |
+
+        ---
+
+        ## 10. CONTACT SUPPORT
+
+        | Contact | Method |
+        |---------|--------|
+        | **Ward Coordinator** | [PHONE NUMBER] |
+        | **LGA Coordinator** | [PHONE NUMBER] |
+        | **HQ Support** | [PHONE NUMBER] |
+        | **SMS** | Send "HELP" to [SHORT CODE] |
+        | **App Support** | Tap "Contact Support" in Settings |
+
+        ---
+
+        ## 11. BEST PRACTICES
+
+        | Practice | Description |
+        |----------|-------------|
+        | **✅ Check in early** | Before voting starts (7:00 AM) |
+        | **✅ Keep battery charged** | Carry a power bank |
+        | **✅ Submit results quickly** | Within 30 minutes of count |
+        | **✅ Take clear photos** | Good lighting, all numbers visible |
+        | **✅ Report incidents immediately** | Don't wait |
+        | **✅ Keep app updated** | Enable auto-updates |
+        | **✅ Stay on assigned PU** | Don't move without HQ approval |
+        | **✅ Follow HQ instructions** | Read all broadcast messages |
+
+        ---
+
+        ## 12. CONCLUSION
+
+        You are now ready to use the Party Command Center app. Your contribution is essential to the party's success. Thank you for your service!
+
+        ---
+
+        **END OF MANUAL**`
+        }, {
+            id: 8,
+            title: 'Polling Unit Data Template',
+            desc: 'CSV template for loading Bauchi State\'s 4,074 polling units into the system with PU codes, coordinates, and hierarchical structure.',
+            fileName: 'POLLING_UNIT_DATA_TEMPLATE',
+            content: `pu_code,pu_name,ward_id,ward_name,lga_id,lga_name,latitude,longitude,address
+        ALK-001,Alkaleri Primary School,1,Alkaleri Ward,1,Alkaleri,10.123456,9.123456,Alkaleri Town
+        ALK-002,Government Day Secondary School,1,Alkaleri Ward,1,Alkaleri,10.124567,9.124567,Alkaleri Town
+        ALK-003,Alkaleri Central Mosque,1,Alkaleri Ward,1,Alkaleri,10.125678,9.125678,Alkaleri Town
+        ALK-004,Alkaleri Market Square,1,Alkaleri Ward,1,Alkaleri,10.126789,9.126789,Alkaleri Town
+        BAU-001,Bauchi Central Primary School,1,Bauchi Ward,2,Bauchi,11.234567,8.234567,Bauchi City
+        BAU-002,Abubakar Tafawa Balewa Stadium,1,Bauchi Ward,2,Bauchi,11.235678,8.235678,Bauchi City
+        BAU-003,Government House Ground,1,Bauchi Ward,2,Bauchi,11.236789,8.236789,Bauchi City
+        KAT-001,Katagum Primary School,1,Katagum Ward,3,Katagum,10.345678,9.345678,Katagum Town
+        NIN-001,Ningi Central School,1,Ningi Ward,4,Ningi,11.456789,9.456789,Ningi Town
+        TOR-001,Toro Primary School,1,Toro Ward,5,Toro,10.567890,9.567890,Toro Town`
+        }, {
+            id: 9,
+            title: 'Non-Disclosure Agreement (NDA)',
+            desc: 'Standard NDA template for protecting confidential information including source code, electoral data, agent lists, and business strategies.',
+            fileName: 'NDA',
+            content: `# NON-DISCLOSURE AGREEMENT (NDA)
+
+        ---
+
+        This Non-Disclosure Agreement (the "Agreement") is entered into on this ____ day of __________, 2026 (the "Effective Date") by and between:
+
+        **Disclosing Party:**
+        [CLIENT COMPANY NAME]
+        [CLIENT ADDRESS]
+        [CLIENT PHONE]
+
+        **Receiving Party:**
+        [RECEIVING PARTY NAME]
+        [RECEIVING PARTY ADDRESS]
+        [RECEIVING PARTY PHONE]
+
+        (Collectively referred to as the "Parties")
+
+        ---
+
+        ## 1. PURPOSE
+
+        The Disclosing Party wishes to disclose certain proprietary and confidential information to the Receiving Party for the purpose of [PROJECT NAME] (the "Purpose").
+
+        ---
+
+        ## 2. CONFIDENTIAL INFORMATION
+
+        "Confidential Information" includes all information disclosed by the Disclosing Party, whether in writing, orally, visually, or in any other form, including but not limited to:
+
+        | Category | Examples |
+        |----------|----------|
+        | **Technical Information** | Source code, algorithms, system architecture, databases |
+        | **Business Information** | Strategies, plans, financial data, partner information |
+        | **Electoral Data** | Polling unit data, agent lists, internal strategies |
+        | **Personnel Information** | Agent names, phone numbers, assignments |
+        | **Intellectual Property** | Patents, trademarks, copyrights, trade secrets |
+        | **Third-Party Information** | Information received from third parties |
+
+        ---
+
+        ## 3. OBLIGATIONS OF RECEIVING PARTY
+
+        The Receiving Party agrees to:
+
+        | Obligation | Description |
+        |------------|-------------|
+        | **Use Restriction** | Use Confidential Information ONLY for the Purpose |
+        | **Non-Disclosure** | Not disclose Confidential Information to any third party |
+        | **Protection** | Protect with reasonable security measures |
+        | **Limited Access** | Share only with personnel who need to know |
+        | **Return/Destroy** | Return or destroy all Confidential Information upon request |
+        | **No Reverse Engineering** | Not reverse engineer, decompile, or disassemble |
+
+        ---
+
+        ## 4. EXCEPTIONS
+
+        The obligations in Section 3 do not apply to Confidential Information that:
+
+        | Exception | Description |
+        |-----------|-------------|
+        | **Public Knowledge** | Is or becomes publicly known without breach |
+        | **Already Known** | Was already known to Receiving Party without restriction |
+        | **Independent Development** | Is independently developed by Receiving Party |
+        | **Third-Party Disclosure** | Is received from a third party without restriction |
+        | **Required Disclosure** | Is required by law (with prior notice to Disclosing Party) |
+
+        ---
+
+        ## 5. TERM
+
+        ### 5.1 Duration
+
+        This Agreement shall remain in effect for [NUMBER] years from the Effective Date, or until the Confidential Information becomes publicly known, whichever is earlier.
+
+        ### 5.2 Survival
+
+        The obligations under this Agreement shall survive the termination of this Agreement.
+
+        ---
+
+        ## 6. REMEDIES
+
+        The Receiving Party acknowledges that breach of this Agreement may cause irreparable harm to the Disclosing Party. In addition to any other remedies, the Disclosing Party shall be entitled to seek injunctive relief.
+
+        ---
+
+        ## 7. RETURN OR DESTRUCTION
+
+        Upon request or termination, the Receiving Party shall:
+
+        - Return all Confidential Information in physical form
+        - Destroy all Confidential Information in electronic form
+        - Provide written certification of destruction
+
+        ---
+
+        ## 8. GOVERNING LAW
+
+        This Agreement shall be governed by the laws of the Federal Republic of Nigeria.
+
+        ---
+
+        ## 9. ENTIRE AGREEMENT
+
+        This Agreement constitutes the entire agreement between the Parties regarding the subject matter and supersedes all prior agreements.
+
+        ---
+
+        ## 10. SIGNATURES
+
+        **Disclosing Party:**
+        ________________________
+        Signature
+
+        ________________________
+        Name (Print)
+
+        ________________________
+        Title
+
+        ________________________
+        Date
+
+        **Receiving Party:**
+        ________________________
+        Signature
+
+        ________________________
+        Name (Print)
+
+        ________________________
+        Title
+
+        ________________________
+        Date`
+        }];
+
+        // ----------------------------------------------
+        // 2. RENDER DOCUMENT CARDS
+        // ----------------------------------------------
+        function renderDocs(filter = '') {
+            const grid = document.getElementById('docGrid');
+            const q = filter.toLowerCase().trim();
+
+            const filtered = documents.filter(d =>
+                d.title.toLowerCase().includes(q) ||
+                d.desc.toLowerCase().includes(q) ||
+                d.fileName.toLowerCase().includes(q)
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:#718096;">
+                        <div style="font-size:48px;">🔍</div>
+                        <p style="font-size:18px; margin-top:10px;">No documents found matching "<strong>${filter}</strong>"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(d => `
+                <div class="doc-card" data-id="${d.id}">
+                    <div class="doc-number">DOCUMENT #${String(d.id).padStart(2, '0')}</div>
+                    <div class="doc-title">${d.title}</div>
+                    <div class="doc-desc">${d.desc}</div>
+                    <div class="doc-meta">
+                        <span>${d.fileName}</span>
+                        <span class="format-badge">📄 ${d.content.length} chars</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-pdf" onclick="downloadDoc(${d.id}, 'pdf')">📄 PDF</button>
+                        <button class="btn-docx" onclick="downloadDoc(${d.id}, 'docx')">📝 DOCX</button>
+                        <button class="btn-html" onclick="downloadDoc(${d.id}, 'html')">🌐 HTML</button>
+                        <button class="btn-txt" onclick="downloadDoc(${d.id}, 'txt')">📃 TXT</button>
+                        <button class="btn-md" onclick="downloadDoc(${d.id}, 'md')">📓 MD</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ----------------------------------------------
+        // 3. DOWNLOAD INDIVIDUAL DOCUMENT
+        // ----------------------------------------------
+        function downloadDoc(id, format) {
+            const doc = documents.find(d => d.id === id);
+            if (!doc) return;
+
+            let content = doc.content;
+            let filename = doc.fileName;
+            let mimeType = 'text/plain';
+            let ext = 'txt';
+
+            switch (format) {
+                case 'pdf':
+                    // For PDF, we create a simple HTML wrapper with print styles
+                    const htmlForPdf = `
+                    <!DOCTYPE html>
+                    <html><head><meta charset="UTF-8"><title>${doc.title}</title>
+                    <style>body{font-family:'Segoe UI',sans-serif;padding:40px;max-width:900px;margin:0 auto;line-height:1.6;}
+                    h1,h2,h3{color:#0f3460;} table{border-collapse:collapse;width:100%;margin:16px 0;}
+                    th,td{border:1px solid #ccc;padding:8px 12px;text-align:left;} th{background:#f0f4f8;}
+                    pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;}
+                    blockquote{border-left:4px solid #e94560;padding:8px 20px;background:#fef0f2;}
+                    </style></head><body>
+                    <h1>${doc.title}</h1>
+                    <hr>
+                    ${doc.content.replace(/\n/g, '<br>')}
+                    </body></html>
+                    `;
+                    downloadFile(htmlForPdf, `${filename}.html`, 'text/html');
+                    showToast('📄 Downloading PDF version... (saved as HTML, open in browser to print to PDF)', 'success');
+                    return;
+
+                case 'docx':
+                    // For DOCX, we use HTML with Word-specific headers
+                    const htmlForWord = `
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                          xmlns:w='urn:schemas-microsoft-com:office:word'
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head><meta charset="UTF-8"><title>${doc.title}</title>
+                    <style>body{font-family:'Segoe UI',sans-serif;padding:40px;line-height:1.6;}
+                    h1{color:#0f3460;} table{border-collapse:collapse;width:100%;}
+                    th,td{border:1px solid #ccc;padding:8px 12px;}
+                    </style></head>
+                    <body>
+                    <h1>${doc.title}</h1>
+                    <hr>
+                    ${doc.content.replace(/\n/g, '<br>')}
+                    </body></html>
+                    `;
+                    downloadFile(htmlForWord, `${filename}.doc`, 'application/msword');
+                    showToast('📝 Downloading DOCX version...', 'success');
+                    return;
+
+                case 'html':
+                    const fullHtml = `
+                    <!DOCTYPE html>
+                    <html><head><meta charset="UTF-8"><title>${doc.title}</title>
+                    <style>body{font-family:'Segoe UI',sans-serif;padding:40px;max-width:900px;margin:0 auto;line-height:1.6;}
+                    h1,h2,h3{color:#0f3460;} table{border-collapse:collapse;width:100%;margin:16px 0;}
+                    th,td{border:1px solid #ccc;padding:8px 12px;text-align:left;} th{background:#f0f4f8;}
+                    pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;}
+                    blockquote{border-left:4px solid #e94560;padding:8px 20px;background:#fef0f2;}
+                    </style></head><body>
+                    <h1>${doc.title}</h1>
+                    <hr>
+                    ${doc.content.replace(/\n/g, '<br>')}
+                    </body></html>
+                    `;
+                    downloadFile(fullHtml, `${filename}.html`, 'text/html');
+                    showToast('🌐 Downloading HTML version...', 'success');
+                    return;
+
+                case 'txt':
+                    downloadFile(doc.content, `${filename}.txt`, 'text/plain');
+                    showToast('📃 Downloading TXT version...', 'success');
+                    return;
+
+                case 'md':
+                    downloadFile(doc.content, `${filename}.md`, 'text/markdown');
+                    showToast('📓 Downloading Markdown version...', 'success');
+                    return;
+
+                default:
+                    showToast('❌ Unknown format', 'error');
+            }
+        }
+
+        // ----------------------------------------------
+        // 4. DOWNLOAD HELPER
+        // ----------------------------------------------
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ----------------------------------------------
+        // 5. EXPORT ALL
+        // ----------------------------------------------
+        function exportAll(type) {
+            if (type === 'pdf') {
+                showToast('📄 Generating combined PDF for all documents... (Open in browser and print to PDF)', 'success');
+                // Build combined HTML with all documents
+                let combined = `
+                <!DOCTYPE html>
+                <html><head><meta charset="UTF-8"><title>All Project Documents</title>
+                <style>body{font-family:'Segoe UI',sans-serif;padding:40px;max-width:1000px;margin:0 auto;line-height:1.6;}
+                .doc-section{border-bottom:2px solid #e94560;padding-bottom:20px;margin-bottom:30px;page-break-after:always;}
+                h1{color:#0f3460;} h2{color:#e94560;margin-top:30px;}
+                table{border-collapse:collapse;width:100%;margin:16px 0;}
+                th,td{border:1px solid #ccc;padding:8px 12px;text-align:left;} th{background:#f0f4f8;}
+                pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;}
+                blockquote{border-left:4px solid #e94560;padding:8px 20px;background:#fef0f2;}
+                @media print{body{padding:20px;} .doc-section{page-break-after:always;}}
+                </style></head><body>
+                <h1>📄 PRIVATE PARTY ELECTION MONITORING SYSTEM</h1>
+                <h2>Complete Project Documentation</h2>
+                <p><strong>Bauchi State</strong> · 20 LGAs · 212 Wards · 4,074 Polling Units · ₦450,000 Budget</p>
+                <hr>
+                `;
+
+                documents.forEach(d => {
+                    combined += `
+                    <div class="doc-section">
+                        <h2>DOCUMENT #${String(d.id).padStart(2, '0')}: ${d.title}</h2>
+                        <p><em>${d.desc}</em></p>
+                        <hr>
+                        ${d.content.replace(/\n/g, '<br>')}
+                    </div>
+                    `;
+                });
+
+                combined += '</body></html>';
+                downloadFile(combined, 'ALL_PROJECT_DOCUMENTS.html', 'text/html');
+                return;
+            }
+
+            if (type === 'zip') {
+                showToast('📦 Generating ZIP file with all documents... (download as individual files)', 'success');
+                // Download each document as .md
+                documents.forEach(d => {
+                    downloadFile(d.content, `${d.fileName}.md`, 'text/markdown');
+                });
+                // Also download the CSV template separately
+                const csvDoc = documents.find(d => d.id === 8);
+                if (csvDoc) {
+                    downloadFile(csvDoc.content, `${csvDoc.fileName}.csv`, 'text/csv');
+                }
+                showToast('📦 All documents downloaded! Check your downloads folder.', 'success');
+            }
+        }
+
+        // ----------------------------------------------
+        // 6. TOAST NOTIFICATION
+        // ----------------------------------------------
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            // Force reflow
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // ----------------------------------------------
+        // 7. SEARCH
+        // ----------------------------------------------
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderDocs(this.value);
+        });
+
+        // ----------------------------------------------
+        // 8. INIT
+        // ----------------------------------------------
+        renderDocs();
+
+        // Show welcome toast
+        setTimeout(() => {
+            showToast('📄 9 documents ready · Click any download button', '');
+        }, 500);
+    </script>
+
+</body>
+</html>
