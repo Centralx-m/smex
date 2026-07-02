@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project File Structure – Election Monitoring System</title>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            max-width: 1300px;
+            margin: 0 auto 25px auto;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            padding: 25px 35px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 30px rgba(15, 52, 96, 0.3);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .header h1 span {
+            color: #e94560;
+        }
+
+        .header .badge {
+            background: #e94560;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .header .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .header .stats span {
+            opacity: 0.9;
+        }
+
+        .header .stats strong {
+            color: #e94560;
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            max-width: 1300px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #fff;
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .controls .search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .controls .search-box input {
+            width: 100%;
+            padding: 9px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        .controls .search-box input:focus {
+            border-color: #0f3460;
+        }
+
+        .controls .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .controls .btn-group button {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-expand {
+            background: #0f3460;
+            color: #fff;
+        }
+        .btn-expand:hover {
+            background: #1a4a7a;
+        }
+
+        .btn-collapse {
+            background: #4a5568;
+            color: #fff;
+        }
+        .btn-collapse:hover {
+            background: #2d3748;
+        }
+
+        .btn-export {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-export:hover {
+            background: #c73652;
+        }
+
+        /* ===== FILE TREE ===== */
+        .tree-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px 30px 30px;
+            overflow-x: auto;
+        }
+
+        .tree-container .tree-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #edf2f7;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tree-container .tree-header h2 {
+            font-size: 18px;
+            color: #0f3460;
+        }
+
+        .tree-container .tree-header .file-count {
+            font-size: 13px;
+            color: #4a5568;
+            background: #edf2f7;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+
+        /* ===== FILE TREE STYLES ===== */
+        .file-tree {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .file-tree ul {
+            list-style: none;
+            padding-left: 24px;
+            margin: 0;
+            border-left: 1px dashed #e2e8f0;
+            margin-left: 8px;
+        }
+
+        .file-tree ul.hidden {
+            display: none;
+        }
+
+        .file-tree li {
+            position: relative;
+            padding: 2px 0 2px 16px;
+            cursor: pointer;
+            transition: 0.15s;
+            border-radius: 4px;
+        }
+
+        .file-tree li:hover {
+            background: #f7fafc;
+        }
+
+        .file-tree li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 12px;
+            height: 1px;
+            background: #cbd5e0;
+        }
+
+        .file-tree li:last-child::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            height: calc(100% - 12px);
+            width: 1px;
+            background: #fff;
+        }
+
+        .file-tree .folder {
+            color: #0f3460;
+            font-weight: 600;
+        }
+
+        .file-tree .folder .icon {
+            color: #e94560;
+            margin-right: 6px;
+        }
+
+        .file-tree .file {
+            color: #2d3748;
+        }
+
+        .file-tree .file .icon {
+            color: #4a5568;
+            margin-right: 6px;
+        }
+
+        .file-tree .file .ext {
+            color: #718096;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .file-tree .file .badge {
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .badge-ts {
+            background: #3178c6;
+            color: #fff;
+        }
+        .badge-js {
+            background: #f7df1e;
+            color: #000;
+        }
+        .badge-json {
+            background: #5a3fd4;
+            color: #fff;
+        }
+        .badge-css {
+            background: #2965f1;
+            color: #fff;
+        }
+        .badge-html {
+            background: #e34f26;
+            color: #fff;
+        }
+        .badge-md {
+            background: #083fa1;
+            color: #fff;
+        }
+        .badge-sh {
+            background: #4eaa25;
+            color: #fff;
+        }
+        .badge-yaml {
+            background: #cb171e;
+            color: #fff;
+        }
+        .badge-env {
+            background: #8b5cf6;
+            color: #fff;
+        }
+        .badge-git {
+            background: #f05032;
+            color: #fff;
+        }
+        .badge-doc {
+            background: #2b6cb0;
+            color: #fff;
+        }
+
+        .file-tree .toggle {
+            cursor: pointer;
+            margin-right: 4px;
+            font-size: 12px;
+            color: #a0aec0;
+            transition: 0.2s;
+        }
+
+        .file-tree .toggle.open {
+            transform: rotate(90deg);
+        }
+
+        .file-tree .file-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 1px 0;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f3460;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 999;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: #38a169;
+        }
+        .toast.error {
+            background: #e94560;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            max-width: 1300px;
+            margin: 15px auto 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            background: #fff;
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .stats-bar .stat-item {
+            text-align: center;
+        }
+
+        .stats-bar .stat-item .number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f3460;
+        }
+
+        .stats-bar .stat-item .label {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px 20px;
+            }
+            .header .stats {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .controls .search-box {
+                max-width: 100%;
+            }
+            .tree-container {
+                padding: 12px 14px;
+            }
+            .file-tree {
+                font-size: 12px;
+            }
+            .file-tree ul {
+                padding-left: 14px;
+            }
+        }
+
+        @media print {
+            .controls,
+            .header .badge,
+            .btn-group {
+                display: none !important;
+            }
+            .tree-container {
+                box-shadow: none;
+            }
+            body {
+                background: #fff;
+                padding: 10px;
+            }
+            .toast {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div>
+            <h1>📁 Project File <span>Structure</span></h1>
+            <div style="font-size:13px; opacity:0.8; margin-top:2px;">
+                Private Party Election Monitoring System · Bauchi State
+            </div>
+        </div>
+        <div class="stats">
+            <span>📄 <strong id="totalFiles">0</strong> files</span>
+            <span>📁 <strong id="totalFolders">0</strong> folders</span>
+            <span>📂 <strong id="totalItems">0</strong> total</span>
+        </div>
+        <div class="badge">⚡ ₦450,000 Budget</div>
+    </header>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search files &amp; folders..." />
+        </div>
+        <div class="btn-group">
+            <button class="btn-expand" onclick="expandAll()">📂 Expand All</button>
+            <button class="btn-collapse" onclick="collapseAll()">📁 Collapse All</button>
+            <button class="btn-export" onclick="exportStructure()">📥 Export as JSON</button>
+            <button class="btn-export" onclick="window.print()" style="background:#6b46c1;">🖨️ Print</button>
+        </div>
+    </div>
+
+    <!-- ===== FILE TREE ===== -->
+    <div class="tree-container">
+        <div class="tree-header">
+            <h2>📂 party-command-center/</h2>
+            <span class="file-count" id="fileCount">Loading...</span>
+        </div>
+        <div class="file-tree" id="fileTree">
+            <!-- Rendered by JavaScript -->
+        </div>
+    </div>
+
+    <!-- ===== STATS BAR ===== -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="number" id="statFiles">0</div>
+            <div class="label">📄 Files</div>
+        </div>
+        <div class="stat-item">
+            <div class="number" id="statFolders">0</div>
+            <div class="label">📁 Folders</div>
+        </div>
+        <div class="stat-item">
+            <div class="number" id="statLines">0</div>
+            <div class="label">📝 Lines of Code</div>
+        </div>
+        <div class="stat-item">
+            <div class="number" id="statSize">0</div>
+            <div class="label">📦 Estimated Size</div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===================================================================== -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // =============================================
+        // 1. FILE STRUCTURE DATA
+        // =============================================
+
+        const fileStructure = {
+            name: 'party-command-center',
+            type: 'folder',
+            children: [{
+                name: '.github',
+                type: 'folder',
+                children: [{
+                    name: 'workflows',
+                    type: 'folder',
+                    children: [
+                        { name: 'deploy-firebase.yml', type: 'file', ext: 'yaml' },
+                        { name: 'deploy-vercel.yml', type: 'file', ext: 'yaml' }
+                    ]
+                }]
+            }, {
+                name: 'api',
+                type: 'folder',
+                children: [{
+                    name: 'auth',
+                    type: 'folder',
+                    children: [
+                        { name: 'login.ts', type: 'file', ext: 'ts' },
+                        { name: 'verify-otp.ts', type: 'file', ext: 'ts' },
+                        { name: 'get-role.ts', type: 'file', ext: 'ts' },
+                        { name: 'refresh-token.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'agents',
+                    type: 'folder',
+                    children: [
+                        { name: 'register.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'get.ts', type: 'file', ext: 'ts' },
+                        { name: 'update.ts', type: 'file', ext: 'ts' },
+                        { name: 'verify-photo.ts', type: 'file', ext: 'ts' },
+                        { name: 'block.ts', type: 'file', ext: 'ts' },
+                        { name: 'unblock.ts', type: 'file', ext: 'ts' },
+                        { name: 'reassign.ts', type: 'file', ext: 'ts' },
+                        { name: 'checkin.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'results',
+                    type: 'folder',
+                    children: [
+                        { name: 'submit.ts', type: 'file', ext: 'ts' },
+                        { name: 'verify.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'anomalies.ts', type: 'file', ext: 'ts' },
+                        { name: 'investigate.ts', type: 'file', ext: 'ts' },
+                        { name: 'export.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'incidents',
+                    type: 'folder',
+                    children: [
+                        { name: 'report.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'get.ts', type: 'file', ext: 'ts' },
+                        { name: 'resolve.ts', type: 'file', ext: 'ts' },
+                        { name: 'escalate.ts', type: 'file', ext: 'ts' },
+                        { name: 'assign.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'devices',
+                    type: 'folder',
+                    children: [
+                        { name: 'register.ts', type: 'file', ext: 'ts' },
+                        { name: 'approve.ts', type: 'file', ext: 'ts' },
+                        { name: 'deny.ts', type: 'file', ext: 'ts' },
+                        { name: 'block.ts', type: 'file', ext: 'ts' },
+                        { name: 'unblock.ts', type: 'file', ext: 'ts' },
+                        { name: 'pending.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'revoke.ts', type: 'file', ext: 'ts' },
+                        { name: 'verify-access.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'broadcasts',
+                    type: 'folder',
+                    children: [
+                        { name: 'send.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'get.ts', type: 'file', ext: 'ts' },
+                        { name: 'delete.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'dashboard',
+                    type: 'folder',
+                    children: [
+                        { name: 'summary.ts', type: 'file', ext: 'ts' },
+                        { name: 'map-data.ts', type: 'file', ext: 'ts' },
+                        { name: 'coverage.ts', type: 'file', ext: 'ts' },
+                        { name: 'victory.ts', type: 'file', ext: 'ts' },
+                        { name: 'alerts.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'admin',
+                    type: 'folder',
+                    children: [
+                        { name: 'create.ts', type: 'file', ext: 'ts' },
+                        { name: 'list.ts', type: 'file', ext: 'ts' },
+                        { name: 'update.ts', type: 'file', ext: 'ts' },
+                        { name: 'delete.ts', type: 'file', ext: 'ts' },
+                        { name: 'set-role.ts', type: 'file', ext: 'ts' },
+                        { name: 'audit-logs.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'utils',
+                    type: 'folder',
+                    children: [
+                        { name: 'firebase-admin.ts', type: 'file', ext: 'ts' },
+                        { name: 'auth-middleware.ts', type: 'file', ext: 'ts' },
+                        { name: 'device-middleware.ts', type: 'file', ext: 'ts' },
+                        { name: 'role-middleware.ts', type: 'file', ext: 'ts' },
+                        { name: 'validation.ts', type: 'file', ext: 'ts' },
+                        { name: 'logger.ts', type: 'file', ext: 'ts' },
+                        { name: 'constants.ts', type: 'file', ext: 'ts' }
+                    ]
+                }, {
+                    name: 'types',
+                    type: 'folder',
+                    children: [
+                        { name: 'index.ts', type: 'file', ext: 'ts' },
+                        { name: 'user.ts', type: 'file', ext: 'ts' },
+                        { name: 'agent.ts', type: 'file', ext: 'ts' },
+                        { name: 'device.ts', type: 'file', ext: 'ts' },
+                        { name: 'result.ts', type: 'file', ext: 'ts' },
+                        { name: 'incident.ts', type: 'file', ext: 'ts' }
+                    ]
+                }]
+            }, {
+                name: 'src',
+                type: 'folder',
+                children: [{
+                    name: 'admin-dashboard',
+                    type: 'folder',
+                    children: [{
+                        name: 'public',
+                        type: 'folder',
+                        children: [
+                            { name: 'index.html', type: 'file', ext: 'html' },
+                            { name: 'favicon.ico', type: 'file', ext: 'ico' }
+                        ]
+                    }, {
+                        name: 'src',
+                        type: 'folder',
+                        children: [{
+                            name: 'components',
+                            type: 'folder',
+                            children: [{
+                                name: 'common',
+                                type: 'folder',
+                                children: [
+                                    { name: 'Header.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Footer.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Sidebar.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Loader.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Toast.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'auth',
+                                type: 'folder',
+                                children: [
+                                    { name: 'Login.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'OTPVerify.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'ProtectedRoute.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'dashboard',
+                                type: 'folder',
+                                children: [
+                                    { name: 'SummaryCards.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AlertsFeed.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'QuickActions.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'map',
+                                type: 'folder',
+                                children: [
+                                    { name: 'BauchiMap.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'MapLegend.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AgentMarker.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'CoverageHeatmap.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'VictoryOverlay.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentPin.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'agents',
+                                type: 'folder',
+                                children: [
+                                    { name: 'AgentList.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AgentCard.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AgentDetails.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AgentFilters.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'PhotoVerificationQueue.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AgentReassign.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'results',
+                                type: 'folder',
+                                children: [
+                                    { name: 'ResultsTable.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'ResultDetail.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AnomalyDetection.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'VictoryDashboard.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'ExportResults.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'incidents',
+                                type: 'folder',
+                                children: [
+                                    { name: 'IncidentList.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentDetail.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentFilters.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentResolver.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'devices',
+                                type: 'folder',
+                                children: [
+                                    { name: 'DeviceList.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'DeviceApproval.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'DeviceHistory.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'DeviceBlock.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'broadcasts',
+                                type: 'folder',
+                                children: [
+                                    { name: 'BroadcastForm.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'BroadcastList.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'BroadcastTarget.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'admin',
+                                type: 'folder',
+                                children: [
+                                    { name: 'AdminSettings.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AdminUsers.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'AuditLogs.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'SystemHealth.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }]
+                        }, {
+                            name: 'pages',
+                            type: 'folder',
+                            children: [
+                                { name: 'Dashboard.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'MapView.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Agents.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Results.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Incidents.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Devices.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Broadcasts.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'Settings.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'NotFound.tsx', type: 'file', ext: 'tsx' }
+                            ]
+                        }, {
+                            name: 'hooks',
+                            type: 'folder',
+                            children: [
+                                { name: 'useAuth.ts', type: 'file', ext: 'ts' },
+                                { name: 'useFirestore.ts', type: 'file', ext: 'ts' },
+                                { name: 'useRealtime.ts', type: 'file', ext: 'ts' },
+                                { name: 'useMap.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'context',
+                            type: 'folder',
+                            children: [
+                                { name: 'AuthContext.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'DeviceContext.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'AlertContext.tsx', type: 'file', ext: 'tsx' }
+                            ]
+                        }, {
+                            name: 'services',
+                            type: 'folder',
+                            children: [
+                                { name: 'firebase.ts', type: 'file', ext: 'ts' },
+                                { name: 'auth.ts', type: 'file', ext: 'ts' },
+                                { name: 'api.ts', type: 'file', ext: 'ts' },
+                                { name: 'agents.ts', type: 'file', ext: 'ts' },
+                                { name: 'results.ts', type: 'file', ext: 'ts' },
+                                { name: 'incidents.ts', type: 'file', ext: 'ts' },
+                                { name: 'devices.ts', type: 'file', ext: 'ts' },
+                                { name: 'broadcasts.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'utils',
+                            type: 'folder',
+                            children: [
+                                { name: 'helpers.ts', type: 'file', ext: 'ts' },
+                                { name: 'validation.ts', type: 'file', ext: 'ts' },
+                                { name: 'formatters.ts', type: 'file', ext: 'ts' },
+                                { name: 'constants.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'types',
+                            type: 'folder',
+                            children: [
+                                { name: 'index.ts', type: 'file', ext: 'ts' },
+                                { name: 'user.ts', type: 'file', ext: 'ts' },
+                                { name: 'agent.ts', type: 'file', ext: 'ts' },
+                                { name: 'device.ts', type: 'file', ext: 'ts' },
+                                { name: 'result.ts', type: 'file', ext: 'ts' },
+                                { name: 'incident.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'styles',
+                            type: 'folder',
+                            children: [
+                                { name: 'globals.css', type: 'file', ext: 'css' },
+                                { name: 'variables.css', type: 'file', ext: 'css' }
+                            ]
+                        }, {
+                            name: 'App.tsx',
+                            type: 'file',
+                            ext: 'tsx'
+                        }, {
+                            name: 'index.tsx',
+                            type: 'file',
+                            ext: 'tsx'
+                        }, {
+                            name: 'routes.tsx',
+                            type: 'file',
+                            ext: 'tsx'
+                        }, {
+                            name: 'vite-env.d.ts',
+                            type: 'file',
+                            ext: 'ts'
+                        }]
+                    }, {
+                        name: 'package.json',
+                        type: 'file',
+                        ext: 'json'
+                    }, {
+                        name: 'vite.config.ts',
+                        type: 'file',
+                        ext: 'ts'
+                    }, {
+                        name: 'tsconfig.json',
+                        type: 'file',
+                        ext: 'json'
+                    }, {
+                        name: 'tailwind.config.js',
+                        type: 'file',
+                        ext: 'js'
+                    }, {
+                        name: '.env.local',
+                        type: 'file',
+                        ext: 'env'
+                    }]
+                }, {
+                    name: 'mobile-app',
+                    type: 'folder',
+                    children: [{
+                        name: 'android',
+                        type: 'folder',
+                        children: [{ name: '... (Android native files)', type: 'file', ext: 'doc' }]
+                    }, {
+                        name: 'ios',
+                        type: 'folder',
+                        children: [{ name: '... (iOS native files)', type: 'file', ext: 'doc' }]
+                    }, {
+                        name: 'src',
+                        type: 'folder',
+                        children: [{
+                            name: 'screens',
+                            type: 'folder',
+                            children: [
+                                { name: 'LoginScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'OTPScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'DashboardScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'CheckinScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'SubmitResultsScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'IncidentReportScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'BroadcastInboxScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'ProfileScreen.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'SettingsScreen.tsx', type: 'file', ext: 'tsx' }
+                            ]
+                        }, {
+                            name: 'components',
+                            type: 'folder',
+                            children: [{
+                                name: 'common',
+                                type: 'folder',
+                                children: [
+                                    { name: 'Header.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Button.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Input.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Card.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'Loader.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'auth',
+                                type: 'folder',
+                                children: [
+                                    { name: 'PhoneInput.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'OTPInput.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'dashboard',
+                                type: 'folder',
+                                children: [
+                                    { name: 'StatsCard.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'QuickActionButton.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'BroadcastItem.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'checkin',
+                                type: 'folder',
+                                children: [
+                                    { name: 'CheckinButton.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'LocationConfirm.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'CheckoutButton.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'results',
+                                type: 'folder',
+                                children: [
+                                    { name: 'VoteInput.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'PhotoCapture.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'SubmitButton.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }, {
+                                name: 'incidents',
+                                type: 'folder',
+                                children: [
+                                    { name: 'SeveritySelector.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentForm.tsx', type: 'file', ext: 'tsx' },
+                                    { name: 'IncidentPhoto.tsx', type: 'file', ext: 'tsx' }
+                                ]
+                            }]
+                        }, {
+                            name: 'navigation',
+                            type: 'folder',
+                            children: [
+                                { name: 'AppNavigator.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'AuthNavigator.tsx', type: 'file', ext: 'tsx' },
+                                { name: 'BottomTabNavigator.tsx', type: 'file', ext: 'tsx' }
+                            ]
+                        }, {
+                            name: 'services',
+                            type: 'folder',
+                            children: [
+                                { name: 'firebase.ts', type: 'file', ext: 'ts' },
+                                { name: 'auth.ts', type: 'file', ext: 'ts' },
+                                { name: 'location.ts', type: 'file', ext: 'ts' },
+                                { name: 'checkin.ts', type: 'file', ext: 'ts' },
+                                { name: 'results.ts', type: 'file', ext: 'ts' },
+                                { name: 'incidents.ts', type: 'file', ext: 'ts' },
+                                { name: 'device.ts', type: 'file', ext: 'ts' },
+                                { name: 'storage.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'hooks',
+                            type: 'folder',
+                            children: [
+                                { name: 'useAuth.ts', type: 'file', ext: 'ts' },
+                                { name: 'useLocation.ts', type: 'file', ext: 'ts' },
+                                { name: 'useCamera.ts', type: 'file', ext: 'ts' },
+                                { name: 'useOffline.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'utils',
+                            type: 'folder',
+                            children: [
+                                { name: 'helpers.ts', type: 'file', ext: 'ts' },
+                                { name: 'validation.ts', type: 'file', ext: 'ts' },
+                                { name: 'formatters.ts', type: 'file', ext: 'ts' },
+                                { name: 'deviceInfo.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'types',
+                            type: 'folder',
+                            children: [
+                                { name: 'index.ts', type: 'file', ext: 'ts' },
+                                { name: 'user.ts', type: 'file', ext: 'ts' },
+                                { name: 'agent.ts', type: 'file', ext: 'ts' },
+                                { name: 'result.ts', type: 'file', ext: 'ts' },
+                                { name: 'incident.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'constants',
+                            type: 'folder',
+                            children: [
+                                { name: 'colors.ts', type: 'file', ext: 'ts' },
+                                { name: 'strings.ts', type: 'file', ext: 'ts' },
+                                { name: 'config.ts', type: 'file', ext: 'ts' }
+                            ]
+                        }, {
+                            name: 'App.tsx',
+                            type: 'file',
+                            ext: 'tsx'
+                        }]
+                    }, {
+                        name: 'package.json',
+                        type: 'file',
+                        ext: 'json'
+                    }, {
+                        name: 'app.json',
+                        type: 'file',
+                        ext: 'json'
+                    }, {
+                        name: 'metro.config.js',
+                        type: 'file',
+                        ext: 'js'
+                    }, {
+                        name: 'babel.config.js',
+                        type: 'file',
+                        ext: 'js'
+                    }, {
+                        name: '.env',
+                        type: 'file',
+                        ext: 'env'
+                    }]
+                }, {
+                    name: 'shared',
+                    type: 'folder',
+                    children: [{
+                        name: 'types',
+                        type: 'folder',
+                        children: [
+                            { name: 'index.ts', type: 'file', ext: 'ts' },
+                            { name: 'user.ts', type: 'file', ext: 'ts' },
+                            { name: 'agent.ts', type: 'file', ext: 'ts' },
+                            { name: 'device.ts', type: 'file', ext: 'ts' },
+                            { name: 'result.ts', type: 'file', ext: 'ts' },
+                            { name: 'incident.ts', type: 'file', ext: 'ts' }
+                        ]
+                    }, {
+                        name: 'utils',
+                        type: 'folder',
+                        children: [
+                            { name: 'validators.ts', type: 'file', ext: 'ts' },
+                            { name: 'formatters.ts', type: 'file', ext: 'ts' },
+                            { name: 'constants.ts', type: 'file', ext: 'ts' }
+                        ]
+                    }]
+                }]
+            }, {
+                name: 'data',
+                type: 'folder',
+                children: [{
+                    name: 'bauchi-state',
+                    type: 'folder',
+                    children: [
+                        { name: 'lgas.json', type: 'file', ext: 'json' },
+                        { name: 'wards.json', type: 'file', ext: 'json' },
+                        { name: 'polling-units.csv', type: 'file', ext: 'csv' },
+                        { name: 'polling-units.geojson', type: 'file', ext: 'geojson' },
+                        { name: 'historical-data.json', type: 'file', ext: 'json' }
+                    ]
+                }, {
+                    name: 'templates',
+                    type: 'folder',
+                    children: [
+                        { name: 'agent-registration.csv', type: 'file', ext: 'csv' },
+                        { name: 'agent-consent-form.docx', type: 'file', ext: 'docx' },
+                        { name: 'polling-unit-template.csv', type: 'file', ext: 'csv' },
+                        { name: 'incident-report-template.pdf', type: 'file', ext: 'pdf' }
+                    ]
+                }, {
+                    name: 'seed',
+                    type: 'folder',
+                    children: [
+                        { name: 'seed-agents.js', type: 'file', ext: 'js' },
+                        { name: 'seed-polling-units.js', type: 'file', ext: 'js' },
+                        { name: 'seed-admins.js', type: 'file', ext: 'js' }
+                    ]
+                }]
+            }, {
+                name: 'docs',
+                type: 'folder',
+                children: [{
+                    name: 'proposals',
+                    type: 'folder',
+                    children: [
+                        { name: 'project-proposal.md', type: 'file', ext: 'md' }
+                    ]
+                }, {
+                    name: 'manuals',
+                    type: 'folder',
+                    children: [
+                        { name: 'admin-user-manual.md', type: 'file', ext: 'md' },
+                        { name: 'agent-training-manual.md', type: 'file', ext: 'md' },
+                        { name: 'developer-setup-guide.md', type: 'file', ext: 'md' }
+                    ]
+                }, {
+                    name: 'api',
+                    type: 'folder',
+                    children: [
+                        { name: 'api-reference.md', type: 'file', ext: 'md' },
+                        { name: 'postman-collection.json', type: 'file', ext: 'json' }
+                    ]
+                }, {
+                    name: 'deployment',
+                    type: 'folder',
+                    children: [
+                        { name: 'firebase-setup.md', type: 'file', ext: 'md' },
+                        { name: 'vercel-setup.md', type: 'file', ext: 'md' },
+                        { name: 'deployment-checklist.md', type: 'file', ext: 'md' }
+                    ]
+                }, {
+                    name: 'security',
+                    type: 'folder',
+                    children: [
+                        { name: 'security-audit-checklist.md', type: 'file', ext: 'md' },
+                        { name: 'ndpa-compliance-checklist.md', type: 'file', ext: 'md' },
+                        { name: 'incident-response-plan.md', type: 'file', ext: 'md' }
+                    ]
+                }, {
+                    name: 'legal',
+                    type: 'folder',
+                    children: [
+                        { name: 'nda-template.md', type: 'file', ext: 'md' },
+                        { name: 'developer-contract-template.md', type: 'file', ext: 'md' },
+                        { name: 'consent-form-template.md', type: 'file', ext: 'md' }
+                    ]
+                }]
+            }, {
+                name: 'scripts',
+                type: 'folder',
+                children: [
+                    { name: 'deploy-firebase.sh', type: 'file', ext: 'sh' },
+                    { name: 'deploy-vercel.sh', type: 'file', ext: 'sh' },
+                    { name: 'backup-database.sh', type: 'file', ext: 'sh' },
+                    { name: 'restore-database.sh', type: 'file', ext: 'sh' },
+                    { name: 'seed-data.sh', type: 'file', ext: 'sh' },
+                    { name: 'test-api.sh', type: 'file', ext: 'sh' }
+                ]
+            }, {
+                name: 'tests',
+                type: 'folder',
+                children: [{
+                    name: 'unit',
+                    type: 'folder',
+                    children: [{
+                        name: 'api',
+                        type: 'folder',
+                        children: [{ name: '... (unit tests)', type: 'file', ext: 'doc' }]
+                    }, {
+                        name: 'utils',
+                        type: 'folder',
+                        children: [{ name: '... (unit tests)', type: 'file', ext: 'doc' }]
+                    }]
+                }, {
+                    name: 'integration',
+                    type: 'folder',
+                    children: [{
+                        name: 'api',
+                        type: 'folder',
+                        children: [{ name: '... (integration tests)', type: 'file', ext: 'doc' }]
+                    }, {
+                        name: 'firebase',
+                        type: 'folder',
+                        children: [{ name: '... (integration tests)', type: 'file', ext: 'doc' }]
+                    }]
+                }, {
+                    name: 'e2e',
+                    type: 'folder',
+                    children: [
+                        { name: 'admin-dashboard.spec.ts', type: 'file', ext: 'ts' },
+                        { name: 'mobile-app.spec.ts', type: 'file', ext: 'ts' }
+                    ]
+                }]
+            }, {
+                name: '.vscode',
+                type: 'folder',
+                children: [
+                    { name: 'settings.json', type: 'file', ext: 'json' },
+                    { name: 'extensions.json', type: 'file', ext: 'json' }
+                ]
+            }, {
+                name: 'vercel.json',
+                type: 'file',
+                ext: 'json'
+            }, {
+                name: 'firebase.json',
+                type: 'file',
+                ext: 'json'
+            }, {
+                name: 'firestore.rules',
+                type: 'file',
+                ext: 'yaml'
+            }, {
+                name: 'firestore.indexes.json',
+                type: 'file',
+                ext: 'json'
+            }, {
+                name: 'storage.rules',
+                type: 'file',
+                ext: 'yaml'
+            }, {
+                name: 'package.json',
+                type: 'file',
+                ext: 'json'
+            }, {
+                name: 'pnpm-workspace.yaml',
+                type: 'file',
+                ext: 'yaml'
+            }, {
+                name: '.env.example',
+                type: 'file',
+                ext: 'env'
+            }, {
+                name: '.gitignore',
+                type: 'file',
+                ext: 'git'
+            }, {
+                name: 'README.md',
+                type: 'file',
+                ext: 'md'
+            }, {
+                name: 'LICENSE',
+                type: 'file',
+                ext: 'txt'
+            }]
+        };
+
+        // =============================================
+        // 2. RENDER FILE TREE
+        // =============================================
+
+        function renderTree(node, isRoot = true) {
+            let html = '';
+
+            if (isRoot) {
+                html += `<ul class="root">`;
+            }
+
+            if (node.type === 'folder') {
+                const hasChildren = node.children && node.children.length > 0;
+                const id = 'folder-' + Math.random().toString(36).substr(2, 9);
+
+                html += `<li class="folder-item" data-folder="${id}">
+                            <span class="file-item">
+                                <span class="toggle open" onclick="toggleFolder('${id}')">▶</span>
+                                <span class="icon">📁</span>
+                                <span class="folder">${node.name}</span>
+                                <span style="font-size:11px; color:#718096; margin-left:6px;">${node.children ? node.children.length : 0} items</span>
+                            </span>
+                            <ul id="${id}" class="folder-content">`;
+
+                if (hasChildren) {
+                    node.children.forEach(child => {
+                        html += renderTree(child, false);
+                    });
+                }
+
+                html += `</ul></li>`;
+            } else {
+                // File
+                const ext = node.ext || 'txt';
+                const badgeClass = getBadgeClass(ext);
+                const icon = getFileIcon(ext);
+
+                html += `<li class="file-item">
+                            <span class="file-item">
+                                <span class="icon">${icon}</span>
+                                <span class="file">${node.name}</span>
+                                <span class="ext">.${ext}</span>
+                                <span class="badge ${badgeClass}">${ext.toUpperCase()}</span>
+                            </span>
+                        </li>`;
+            }
+
+            if (isRoot) {
+                html += `</ul>`;
+            }
+
+            return html;
+        }
+
+        function getBadgeClass(ext) {
+            const map = {
+                ts: 'badge-ts',
+                tsx: 'badge-ts',
+                js: 'badge-js',
+                json: 'badge-json',
+                css: 'badge-css',
+                html: 'badge-html',
+                md: 'badge-md',
+                sh: 'badge-sh',
+                yaml: 'badge-yaml',
+                env: 'badge-env',
+                git: 'badge-git',
+                docx: 'badge-doc',
+                pdf: 'badge-doc',
+                csv: 'badge-doc',
+                txt: 'badge-doc',
+                ico: 'badge-doc',
+                geojson: 'badge-json',
+                doc: 'badge-doc'
+            };
+            return map[ext] || 'badge-doc';
+        }
+
+        function getFileIcon(ext) {
+            const map = {
+                ts: '📄',
+                tsx: '⚛️',
+                js: '📜',
+                json: '📋',
+                css: '🎨',
+                html: '🌐',
+                md: '📓',
+                sh: '💻',
+                yaml: '⚙️',
+                env: '🔐',
+                git: '🔒',
+                docx: '📝',
+                pdf: '📄',
+                csv: '📊',
+                txt: '📃',
+                ico: '🖼️',
+                geojson: '🗺️',
+                doc: '📄'
+            };
+            return map[ext] || '📄';
+        }
+
+        // =============================================
+        // 3. TOGGLE FOLDER
+        // =============================================
+
+        function toggleFolder(id) {
+            const ul = document.getElementById(id);
+            const toggle = document.querySelector(`[data-folder="${id}"] .toggle`);
+            if (ul) {
+                ul.classList.toggle('hidden');
+                if (toggle) {
+                    toggle.classList.toggle('open');
+                }
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.folder-content').forEach(el => {
+                el.classList.remove('hidden');
+            });
+            document.querySelectorAll('.toggle').forEach(el => {
+                el.classList.add('open');
+            });
+            showToast('📂 All folders expanded', 'success');
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.folder-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.querySelectorAll('.toggle').forEach(el => {
+                el.classList.remove('open');
+            });
+            showToast('📁 All folders collapsed', 'success');
+        }
+
+        // =============================================
+        // 4. SEARCH
+        // =============================================
+
+        function searchFiles(query) {
+            const items = document.querySelectorAll('.file-item');
+            const q = query.toLowerCase().trim();
+
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (q === '' || text.includes(q)) {
+                    item.style.display = '';
+                    // Expand parent folders
+                    let parent = item.closest('li');
+                    while (parent) {
+                        const folderContent = parent.querySelector('.folder-content');
+                        if (folderContent) {
+                            folderContent.classList.remove('hidden');
+                            const toggle = parent.querySelector('.toggle');
+                            if (toggle) toggle.classList.add('open');
+                        }
+                        parent = parent.parentElement?.closest('li');
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            const visible = document.querySelectorAll('.file-item:not([style*="display: none"])');
+            document.getElementById('fileCount').textContent = `${visible.length} visible items`;
+        }
+
+        // =============================================
+        // 5. EXPORT STRUCTURE
+        // =============================================
+
+        function exportStructure() {
+            const data = JSON.stringify(fileStructure, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'file-structure.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('📥 File structure exported as JSON', 'success');
+        }
+
+        // =============================================
+        // 6. COUNT STATS
+        // =============================================
+
+        function countItems(node) {
+            let files = 0;
+            let folders = 0;
+
+            if (node.type === 'folder') {
+                folders++;
+                if (node.children) {
+                    node.children.forEach(child => {
+                        const counts = countItems(child);
+                        files += counts.files;
+                        folders += counts.folders;
+                    });
+                }
+            } else {
+                files++;
+            }
+
+            return { files, folders };
+        }
+
+        // =============================================
+        // 7. TOAST NOTIFICATION
+        // =============================================
+
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // =============================================
+        // 8. INIT
+        // =============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render tree
+            const treeContainer = document.getElementById('fileTree');
+            treeContainer.innerHTML = renderTree(fileStructure, true);
+
+            // Update stats
+            const stats = countItems(fileStructure);
+            document.getElementById('totalFiles').textContent = stats.files;
+            document.getElementById('totalFolders').textContent = stats.folders;
+            document.getElementById('totalItems').textContent = stats.files + stats.folders;
+            document.getElementById('statFiles').textContent = stats.files;
+            document.getElementById('statFolders').textContent = stats.folders;
+
+            // Estimate lines of code (rough)
+            const estLines = stats.files * 45;
+            document.getElementById('statLines').textContent = estLines.toLocaleString();
+
+            // Estimate size (rough)
+            const estSize = (stats.files * 2.5);
+            if (estSize > 1024) {
+                document.getElementById('statSize').textContent = (estSize / 1024).toFixed(1) + ' MB';
+            } else {
+                document.getElementById('statSize').textContent = estSize.toFixed(1) + ' KB';
+            }
+
+            // File count
+            document.getElementById('fileCount').textContent = `${stats.files + stats.folders} total items`;
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', function() {
+                searchFiles(this.value);
+            });
+
+            // Welcome
+            setTimeout(() => {
+                showToast(`📁 ${stats.files} files, ${stats.folders} folders loaded`, '');
+            }, 500);
+        });
+    </script>
+
+</body>
+</html>
