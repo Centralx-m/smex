@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Command Center · Bauchi State - 4 Computer Stations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- DOCX Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.3.0/html-docx.js"></script>
+    <style>
+        /* ============================================================
+           ROOT VARIABLES & RESET
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary: #0a2a5c;
+            --primary-light: #1a4a8c;
+            --primary-dark: #061a3a;
+            --accent: #d4a843;
+            --accent-light: #e8c96a;
+            --success: #2e7d32;
+            --danger: #b33c3c;
+            --warning: #b8860b;
+            --bg: #f0f4fa;
+            --surface: #ffffff;
+            --surface-hover: #f8faff;
+            --text: #0b1a33;
+            --text-muted: #4a6580;
+            --border: #dce3ed;
+            --shadow: 0 8px 24px rgba(0, 20, 40, 0.08);
+            --shadow-lg: 0 20px 48px rgba(0, 20, 40, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-full: 40px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark {
+            --bg: #0f1a2e;
+            --surface: #152238;
+            --surface-hover: #1d2f4a;
+            --text: #eef4fc;
+            --text-muted: #a9bedb;
+            --border: #2d4463;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .app {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .command-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0 16px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 28px;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(10, 42, 92, 0.3);
+        }
+
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .brand-title span {
+            color: var(--accent);
+        }
+        .brand-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            padding: 2px 14px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            background: var(--success);
+            color: white;
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-badge i {
+            font-size: 0.5rem;
+        }
+
+        .dark-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-full);
+            font-size: 1.2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark-toggle:hover {
+            background: var(--border);
+            transform: rotate(15deg);
+        }
+
+        /* ============================================================
+           DOWNLOAD TOOLBAR
+           ============================================================ */
+        .download-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding: 14px 20px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+        .download-toolbar .label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-right: 8px;
+        }
+        .download-btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+        .download-btn.pdf {
+            background: #dc3545;
+            color: white;
+        }
+        .download-btn.pdf:hover {
+            background: #c82333;
+        }
+        .download-btn.docx {
+            background: #2b579a;
+            color: white;
+        }
+        .download-btn.docx:hover {
+            background: #1a3f6d;
+        }
+        .download-btn.csv {
+            background: #28a745;
+            color: white;
+        }
+        .download-btn.csv:hover {
+            background: #1e7e34;
+        }
+        .download-btn.html {
+            background: #ff6b35;
+            color: white;
+        }
+        .download-btn.html:hover {
+            background: #e55a2b;
+        }
+        .download-btn.json {
+            background: #6f42c1;
+            color: white;
+        }
+        .download-btn.json:hover {
+            background: #5a32a3;
+        }
+        .download-btn.all {
+            background: var(--primary);
+            color: white;
+        }
+        .download-btn.all:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ============================================================
+           COMMAND STATIONS GRID
+           ============================================================ */
+        .stations-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .stations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           STATION CARD
+           ============================================================ */
+        .station-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        .station-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+        .station-card.station-1 {
+            border-top: 5px solid #0a2a5c;
+        }
+        .station-card.station-2 {
+            border-top: 5px solid #2b579a;
+        }
+        .station-card.station-3 {
+            border-top: 5px solid #28a745;
+        }
+        .station-card.station-4 {
+            border-top: 5px solid #dc3545;
+        }
+
+        .station-header {
+            padding: 18px 24px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .station-header .station-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .station-header .station-title .icon {
+            font-size: 1.5rem;
+        }
+        .station-header .station-title h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .station-header .station-title .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .station-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            background: var(--success);
+            color: white;
+        }
+        .station-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .station-body {
+            padding: 20px 24px;
+        }
+
+        /* ============================================================
+           STATION CONTENT
+           ============================================================ */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .metric-item {
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+        .metric-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .metric-item .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .station-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .station-table th {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+        .station-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .station-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-status {
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-status.online {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+        .badge-status.offline {
+            background: #fde8e8;
+            color: var(--danger);
+        }
+        .badge-status.pending {
+            background: #fff3e0;
+            color: var(--warning);
+        }
+        .badge-status.resolved {
+            background: #e3f2fd;
+            color: var(--primary-light);
+        }
+
+        /* ============================================================
+           SHARED VIEW
+           ============================================================ */
+        .shared-view {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 2px solid var(--accent);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .shared-header {
+            padding: 16px 24px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .shared-header h3 {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .shared-body {
+            padding: 20px 24px;
+        }
+
+        .shared-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .shared-stat {
+            text-align: center;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+        }
+        .shared-stat .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .shared-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .command-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .brand {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .download-toolbar {
+                justify-content: center;
+            }
+            .download-btn {
+                font-size: 0.75rem;
+                padding: 6px 14px;
+            }
+            .stations-grid {
+                grid-template-columns: 1fr;
+            }
+            .shared-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .metric-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .brand-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .shared-stats {
+                grid-template-columns: 1fr;
+            }
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            .station-table {
+                font-size: 0.7rem;
+            }
+            .station-table th,
+            .station-table td {
+                padding: 4px 6px;
+            }
+        }
+
+        /* ============================================================
+           PRINT STYLES
+           ============================================================ */
+        @media print {
+            .download-toolbar,
+            .dark-toggle,
+            .status-badge {
+                display: none !important;
+            }
+            .station-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: 1px solid #ccc !important;
+            }
+            .shared-view {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            body {
+                background: white !important;
+            }
+            .station-header {
+                background: #f5f5f5 !important;
+            }
+        }
+
+        /* ============================================================
+           TOAST NOTIFICATION
+           ============================================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            max-width: 400px;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        .toast .icon {
+            font-size: 1.5rem;
+        }
+        .toast .message {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+
+        <!-- ==========================================================
+        HEADER
+        ========================================================== -->
+        <header class="command-header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-flag"></i></div>
+                <div>
+                    <div class="brand-title">Command<span>Center</span></div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span style="font-weight:600; font-size:0.95rem;">Bauchi State</span>
+                        <span class="brand-sub"><i class="fas fa-map-pin"></i> 20 LGAs · 323 Wards · 4,074 Agents</span>
+                        <span class="brand-sub"><i class="fas fa-desktop"></i> 4 Stations</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <span class="status-badge"><i class="fas fa-circle"></i> LIVE</span>
+                <button class="dark-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- ==========================================================
+        DOWNLOAD TOOLBAR
+        ========================================================== -->
+        <div class="download-toolbar" id="downloadToolbar">
+            <span class="label"><i class="fas fa-download"></i> Export Report:</span>
+            <button class="download-btn pdf" onclick="downloadPDF()">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button class="download-btn docx" onclick="downloadDOCX()">
+                <i class="fas fa-file-word"></i> DOCX
+            </button>
+            <button class="download-btn csv" onclick="downloadCSV()">
+                <i class="fas fa-file-csv"></i> CSV
+            </button>
+            <button class="download-btn html" onclick="downloadHTML()">
+                <i class="fas fa-file-code"></i> HTML
+            </button>
+            <button class="download-btn json" onclick="downloadJSON()">
+                <i class="fas fa-file-code"></i> JSON
+            </button>
+            <button class="download-btn all" onclick="downloadAll()">
+                <i class="fas fa-archive"></i> All Formats
+            </button>
+        </div>
+
+        <!-- ==========================================================
+        SHARED VIEW (Big Screen)
+        ========================================================== -->
+        <div class="shared-view" id="sharedView">
+            <div class="shared-header">
+                <h3><i class="fas fa-tv"></i> Command Center - Master View</h3>
+                <span style="font-size:0.85rem;"><i class="fas fa-clock"></i> <span id="liveTime">14:32:45</span></span>
+            </div>
+            <div class="shared-body">
+                <div class="shared-stats">
+                    <div class="shared-stat">
+                        <div class="value" style="color:var(--primary);">2,370</div>
+                        <div class="label">Polling Units</div>
+                    </div>
+                    <div class="shared-stat">
+                        <div class="value" style="color:var(--success);">4,074</div>
+                        <div class="label">Agents Deployed</div>
+                    </div>
+                    <div class="shared-stat">
+                        <div class="value" style="color:var(--warning);">68%</div>
+                        <div class="label">Turnout Rate</div>
+                    </div>
+                    <div class="shared-stat">
+                        <div class="value" style="color:var(--primary-light);">52.3%</div>
+                        <div class="label">Leading Party (APC)</div>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px;">
+                    <div style="background:var(--bg); padding:12px 16px; border-radius:var(--radius-sm);">
+                        <div style="font-weight:700; font-size:0.8rem; color:var(--text-muted);">LGA STATUS</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:6px;">
+                            <span class="badge-status online">Bauchi ✅</span>
+                            <span class="badge-status online">Katagum ✅</span>
+                            <span class="badge-status online">Misau ✅</span>
+                            <span class="badge-status pending">Ganjuwa ⚠️</span>
+                            <span class="badge-status online">Ningi ✅</span>
+                            <span class="badge-status online">Darazo ✅</span>
+                            <span class="badge-status pending">Itas/Gadau ⚠️</span>
+                            <span class="badge-status online">Jama'are ✅</span>
+                        </div>
+                    </div>
+                    <div style="background:var(--bg); padding:12px 16px; border-radius:var(--radius-sm);">
+                        <div style="font-weight:700; font-size:0.8rem; color:var(--text-muted);">LIVE INCIDENTS</div>
+                        <div style="margin-top:4px; font-size:0.85rem;">
+                            <span style="color:var(--danger);">🔴 3 Critical</span>
+                            <span style="color:var(--warning);">🟡 7 Medium</span>
+                            <span style="color:var(--success);">🟢 12 Resolved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        STATIONS GRID
+        ========================================================== -->
+        <div class="stations-grid" id="stationsGrid">
+
+            <!-- STATION 1: LEAD ADMIN -->
+            <div class="station-card station-1" id="station1">
+                <div class="station-header">
+                    <div class="station-title">
+                        <span class="icon">👤</span>
+                        <div>
+                            <h3>Station 1: Lead Admin</h3>
+                            <span class="subtitle">Command & Control · Strategic Oversight</span>
+                        </div>
+                    </div>
+                    <span class="station-status"><span class="dot"></span> Online</span>
+                </div>
+                <div class="station-body">
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="value">4,074</div>
+                            <div class="label">Total Agents</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">3,892</div>
+                            <div class="label">Live Agents</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">17</div>
+                            <div class="label">Active Incidents</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">94%</div>
+                            <div class="label">System Health</div>
+                        </div>
+                    </div>
+                    <table class="station-table">
+                        <thead>
+                            <tr><th>LGA</th><th>Status</th><th>Wards</th><th>PUs</th><th>Agents</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Bauchi</td><td><span class="badge-status online">✅ Online</span></td><td>15</td><td>187</td><td>244</td></tr>
+                            <tr><td>Katagum</td><td><span class="badge-status online">✅ Online</span></td><td>14</td><td>165</td><td>198</td></tr>
+                            <tr><td>Misau</td><td><span class="badge-status online">✅ Online</span></td><td>11</td><td>142</td><td>167</td></tr>
+                            <tr><td>Ningi</td><td><span class="badge-status online">✅ Online</span></td><td>12</td><td>138</td><td>153</td></tr>
+                            <tr><td>Ganjuwa</td><td><span class="badge-status pending">⚠️ Partial</span></td><td>11</td><td>108</td><td>118</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STATION 2: DATA ANALYST -->
+            <div class="station-card station-2" id="station2">
+                <div class="station-header">
+                    <div class="station-title">
+                        <span class="icon">📊</span>
+                        <div>
+                            <h3>Station 2: Data Analyst</h3>
+                            <span class="subtitle">Results · Analytics · Anomaly Detection</span>
+                        </div>
+                    </div>
+                    <span class="station-status"><span class="dot"></span> Online</span>
+                </div>
+                <div class="station-body">
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="value">412k</div>
+                            <div class="label">Total Votes</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">68%</div>
+                            <div class="label">Turnout</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">23</div>
+                            <div class="label">Anomalies</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">89%</div>
+                            <div class="label">Confidence</div>
+                        </div>
+                    </div>
+                    <table class="station-table">
+                        <thead>
+                            <tr><th>LGA</th><th>APC</th><th>PDP</th><th>Other</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Bauchi</td><td>4,320</td><td>3,890</td><td>620</td><td><span class="badge-status resolved">✅ Verified</span></td></tr>
+                            <tr><td>Katagum</td><td>2,810</td><td>3,150</td><td>340</td><td><span class="badge-status resolved">✅ Verified</span></td></tr>
+                            <tr><td>Misau</td><td>2,230</td><td>1,950</td><td>280</td><td><span class="badge-status pending">⏳ Pending</span></td></tr>
+                            <tr><td>Ningi</td><td>1,860</td><td>2,040</td><td>190</td><td><span class="badge-status pending">⏳ Pending</span></td></tr>
+                            <tr><td>Darazo</td><td>1,590</td><td>1,710</td><td>130</td><td><span class="badge-status online">🔍 Anomaly</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STATION 3: OPERATIONS COORDINATOR -->
+            <div class="station-card station-3" id="station3">
+                <div class="station-header">
+                    <div class="station-title">
+                        <span class="icon">📍</span>
+                        <div>
+                            <h3>Station 3: Operations Coordinator</h3>
+                            <span class="subtitle">Agent Management · Deployment · Field Ops</span>
+                        </div>
+                    </div>
+                    <span class="station-status"><span class="dot"></span> Online</span>
+                </div>
+                <div class="station-body">
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="value">4,074</div>
+                            <div class="label">Total Agents</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">3,892</div>
+                            <div class="label">Checked In</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">182</div>
+                            <div class="label">Offline</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">96%</div>
+                            <div class="label">Coverage</div>
+                        </div>
+                    </div>
+                    <table class="station-table">
+                        <thead>
+                            <tr><th>Agent</th><th>LGA</th><th>Status</th><th>Check-in</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>A. Hamza</td><td>Bauchi</td><td><span class="badge-status online">🟢 Online</span></td><td>08:15</td><td><i class="fas fa-location-dot" style="color:var(--primary-light);"></i></td></tr>
+                            <tr><td>B. Kafi</td><td>Katagum</td><td><span class="badge-status online">🟢 Online</span></td><td>08:20</td><td><i class="fas fa-location-dot" style="color:var(--primary-light);"></i></td></tr>
+                            <tr><td>C. Musa</td><td>Misau</td><td><span class="badge-status pending">🟡 Checked</span></td><td>08:45</td><td><i class="fas fa-phone" style="color:var(--warning);"></i></td></tr>
+                            <tr><td>D. Yakubu</td><td>Ningi</td><td><span class="badge-status offline">🔴 Offline</span></td><td>--:--</td><td><i class="fas fa-phone" style="color:var(--danger);"></i></td></tr>
+                            <tr><td>E. Bello</td><td>Darazo</td><td><span class="badge-status online">🟢 Online</span></td><td>08:10</td><td><i class="fas fa-location-dot" style="color:var(--primary-light);"></i></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STATION 4: BACKUP & INCIDENT RESPONSE -->
+            <div class="station-card station-4" id="station4">
+                <div class="station-header">
+                    <div class="station-title">
+                        <span class="icon">🚨</span>
+                        <div>
+                            <h3>Station 4: Backup & Incident Response</h3>
+                            <span class="subtitle">Crisis Management · Emergency · Backup</span>
+                        </div>
+                    </div>
+                    <span class="station-status"><span class="dot"></span> Online</span>
+                </div>
+                <div class="station-body">
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="value" style="color:var(--danger);">3</div>
+                            <div class="label">Critical</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value" style="color:var(--warning);">7</div>
+                            <div class="label">Medium</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value" style="color:var(--success);">12</div>
+                            <div class="label">Resolved</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="value">100%</div>
+                            <div class="label">Backup Status</div>
+                        </div>
+                    </div>
+                    <table class="station-table">
+                        <thead>
+                            <tr><th>Incident</th><th>LGA</th><th>Severity</th><th>Status</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Dispute at PU014</td><td>Bauchi</td><td><span class="badge-status" style="background:#fde8e8;color:var(--danger);">🔴 Critical</span></td><td><span class="badge-status pending">⏳ Open</span></td><td><i class="fas fa-arrow-right" style="color:var(--primary-light);"></i></td></tr>
+                            <tr><td>Material Delay</td><td>Katagum</td><td><span class="badge-status" style="background:#fff3e0;color:var(--warning);">🟡 Medium</span></td><td><span class="badge-status pending">⏳ Open</span></td><td><i class="fas fa-arrow-right" style="color:var(--primary-light);"></i></td></tr>
+                            <tr><td>Intimidation Report</td><td>Misau</td><td><span class="badge-status" style="background:#fff3e0;color:var(--warning);">🟡 Medium</span></td><td><span class="badge-status resolved">✅ Resolved</span></td><td><i class="fas fa-check" style="color:var(--success);"></i></td></tr>
+                            <tr><td>Transmission Error</td><td>Ningi</td><td><span class="badge-status" style="background:#fde8e8;color:var(--danger);">🔴 Critical</span></td><td><span class="badge-status pending">⏳ Open</span></td><td><i class="fas fa-arrow-right" style="color:var(--primary-light);"></i></td></tr>
+                            <tr><td>Anomaly Detected</td><td>Darazo</td><td><span class="badge-status" style="background:#fff3e0;color:var(--warning);">🟡 Medium</span></td><td><span class="badge-status pending">⏳ Investigating</span></td><td><i class="fas fa-search" style="color:var(--primary-light);"></i></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        FOOTER
+        ========================================================== -->
+        <footer class="command-footer" style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border); display:flex; flex-wrap:wrap; justify-content:space-between; color:var(--text-muted); font-size:0.82rem; gap:10px;">
+            <span>© 2026 Command Center · Bauchi State Political Party</span>
+            <span><i class="fas fa-shield-alt"></i> secure · v3.0 · 20 LGAs · 323 Wards · 4,074 Agents · 4 Stations</span>
+        </footer>
+
+        <!-- ==========================================================
+        TOAST NOTIFICATION
+        ========================================================== -->
+        <div class="toast" id="toast">
+            <span class="icon">✅</span>
+            <span class="message" id="toastMessage">Download complete!</span>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  LIVE CLOCK
+        // ============================================================
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveTime').textContent = now.toLocaleTimeString('en-NG', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ============================================================
+        //  DARK MODE
+        // ============================================================
+        const toggle = document.getElementById('darkModeToggle');
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('commandCenterDark', document.body.classList.contains('dark') ? 'true' : 'false');
+        });
+        if (localStorage.getItem('commandCenterDark') === 'true') {
+            document.body.classList.add('dark');
+            icon.className = 'fas fa-sun';
+        }
+
+        // ============================================================
+        //  TOAST NOTIFICATION
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        //  DATA EXTRACTION
+        // ============================================================
+        function getReportData() {
+            const stations = document.querySelectorAll('.station-card');
+            const data = {
+                title: 'Command Center Report - Bauchi State',
+                date: new Date().toLocaleString('en-NG'),
+                stations: [],
+                shared: {
+                    totalPUs: 2370,
+                    totalAgents: 4074,
+                    turnout: '68%',
+                    leadingParty: 'APC (52.3%)',
+                    incidents: { critical: 3, medium: 7, resolved: 12 }
+                }
+            };
+
+            stations.forEach((station, index) => {
+                const header = station.querySelector('.station-header');
+                const title = header.querySelector('h3')?.textContent || `Station ${index + 1}`;
+                const subtitle = header.querySelector('.subtitle')?.textContent || '';
+                const metrics = [];
+                station.querySelectorAll('.metric-item').forEach(m => {
+                    metrics.push({
+                        value: m.querySelector('.value')?.textContent || '',
+                        label: m.querySelector('.label')?.textContent || ''
+                    });
+                });
+                const rows = [];
+                station.querySelectorAll('.station-table tbody tr').forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    cells.forEach(cell => rowData.push(cell.textContent.trim()));
+                    rows.push(rowData);
+                });
+                data.stations.push({
+                    title,
+                    subtitle,
+                    metrics,
+                    rows,
+                    headers: Array.from(station.querySelectorAll('.station-table thead th')).map(th => th.textContent
+                        .trim())
+                });
+            });
+
+            return data;
+        }
+
+        // ============================================================
+        //  DOWNLOAD: PDF
+        // ============================================================
+        function downloadPDF() {
+            const element = document.getElementById('app');
+            const opt = {
+                margin: 10,
+                filename: `Command_Center_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            showToast('Generating PDF...', 'success');
+            html2pdf().set(opt).from(element).save().then(() => {
+                showToast('✅ PDF downloaded successfully!', 'success');
+            }).catch(() => {
+                showToast('❌ Error generating PDF', 'error');
+            });
+        }
+
+        // ============================================================
+        //  DOWNLOAD: DOCX (using html-docx-js)
+        // ============================================================
+        function downloadDOCX() {
+            showToast('Generating DOCX...', 'success');
+            const content = document.getElementById('app').innerHTML;
+            const styles = `
+                <style>
+                    body { font-family: Arial, sans-serif; }
+                    .station-card { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+                    .station-header { background: #f5f5f5; padding: 10px; }
+                    .metric-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+                    .metric-item { padding: 5px 10px; background: #f9f9f9; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+                    .badge-status { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+                </style>
+            `;
+            const fullHtml = `
+                <html>
+                    <head><meta charset="UTF-8">${styles}</head>
+                    <body>
+                        <h1>Command Center Report - Bauchi State</h1>
+                        <p>Generated: ${new Date().toLocaleString('en-NG')}</p>
+                        ${content}
+                    </body>
+                </html>
+            `;
+
+            try {
+                const converted = htmlDocx.asBlob(fullHtml);
+                saveAs(converted, `Command_Center_Report_${new Date().toISOString().slice(0,10)}.docx`);
+                showToast('✅ DOCX downloaded successfully!', 'success');
+            } catch (e) {
+                showToast('❌ Error generating DOCX. Using fallback...', 'error');
+                // Fallback: simple HTML download as DOC
+                const blob = new Blob([fullHtml], { type: 'application/msword' });
+                saveAs(blob, `Command_Center_Report_${new Date().toISOString().slice(0,10)}.doc`);
+            }
+        }
+
+        // ============================================================
+        //  DOWNLOAD: CSV
+        // ============================================================
+        function downloadCSV() {
+            showToast('Generating CSV...', 'success');
+            const data = getReportData();
+            let csv = 'Command Center Report - Bauchi State\n';
+            csv += `Generated: ${data.date}\n\n`;
+
+            data.stations.forEach((station, idx) => {
+                csv += `Station ${idx + 1}: ${station.title}\n`;
+                csv += `${station.subtitle}\n`;
+                csv += 'Metrics:\n';
+                station.metrics.forEach(m => {
+                    csv += `${m.label},${m.value}\n`;
+                });
+                csv += '\n';
+                if (station.headers.length > 0) {
+                    csv += station.headers.join(',') + '\n';
+                    station.rows.forEach(row => {
+                        csv += row.join(',') + '\n';
+                    });
+                }
+                csv += '\n---\n\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            saveAs(blob, `Command_Center_Report_${new Date().toISOString().slice(0,10)}.csv`);
+            showToast('✅ CSV downloaded successfully!', 'success');
+        }
+
+        // ============================================================
+        //  DOWNLOAD: HTML
+        // ============================================================
+        function downloadHTML() {
+            showToast('Generating HTML...', 'success');
+            const content = document.getElementById('app').outerHTML;
+            const styles = document.querySelector('style').innerHTML;
+            const fullHtml = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Command Center Report</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+                    <style>${styles}</style>
+                    <style>
+                        .download-toolbar { display: none !important; }
+                        .dark-toggle { display: none !important; }
+                        .status-badge { display: none !important; }
+                        body { background: white !important; padding: 20px; }
+                    </style>
+                </head>
+                <body>${content}</body>
+                </html>
+            `;
+            const blob = new Blob([fullHtml], { type: 'text/html' });
+            saveAs(blob, `Command_Center_Report_${new Date().toISOString().slice(0,10)}.html`);
+            showToast('✅ HTML downloaded successfully!', 'success');
+        }
+
+        // ============================================================
+        //  DOWNLOAD: JSON
+        // ============================================================
+        function downloadJSON() {
+            showToast('Generating JSON...', 'success');
+            const data = getReportData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            saveAs(blob, `Command_Center_Report_${new Date().toISOString().slice(0,10)}.json`);
+            showToast('✅ JSON downloaded successfully!', 'success');
+        }
+
+        // ============================================================
+        //  DOWNLOAD: ALL FORMATS
+        // ============================================================
+        function downloadAll() {
+            showToast('📦 Downloading all formats...', 'success');
+            setTimeout(() => downloadPDF(), 500);
+            setTimeout(() => downloadDOCX(), 1500);
+            setTimeout(() => downloadCSV(), 2500);
+            setTimeout(() => downloadHTML(), 3500);
+            setTimeout(() => downloadJSON(), 4500);
+        }
+
+        // ============================================================
+        //  AUTO-REFRESH STATION STATUS (SIMULATED)
+        // ============================================================
+        setInterval(() => {
+            const statuses = document.querySelectorAll('.station-status');
+            statuses.forEach(status => {
+                const dot = status.querySelector('.dot');
+                if (dot) {
+                    // Randomly flicker to simulate live updates
+                    if (Math.random() > 0.95) {
+                        status.style.opacity = '0.6';
+                        setTimeout(() => { status.style.opacity = '1'; }, 500);
+                    }
+                }
+            });
+
+            // Update live time
+            updateClock();
+
+            // Update incident counts randomly
+            const incidentElements = document.querySelectorAll('.metric-item .value');
+            incidentElements.forEach(el => {
+                if (el.textContent.includes('Critical') || el.textContent === '3' || el.textContent === '7' || el
+                    .textContent === '12') {
+                    // Don't change these
+                }
+            });
+        }, 5000);
+
+        console.log('🏛️ Command Center Loaded Successfully');
+        console.log('📊 Bauchi State - 20 LGAs, 323 Wards, 4,074 Agents');
+        console.log('🖥️ 4 Stations Active');
+        console.log('📥 Use Download Toolbar to export reports');
+    </script>
+</body>
+</html>
