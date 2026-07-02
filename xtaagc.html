@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAAGC – Project Proposal & Cover Letter</title>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 30px rgba(15, 52, 96, 0.3);
+        }
+
+        .header .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header .logo-section img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            background: #fff;
+            padding: 4px;
+        }
+
+        .header .logo-section .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background: #e94560;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header h1 span {
+            color: #e94560;
+        }
+
+        .header .badge {
+            background: #e94560;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .header .company-info {
+            font-size: 12px;
+            opacity: 0.9;
+            text-align: right;
+            line-height: 1.5;
+        }
+
+        .header .company-info strong {
+            color: #e94560;
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .controls .tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .controls .tabs button {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.25s;
+            background: #edf2f7;
+            color: #4a5568;
+        }
+
+        .controls .tabs button.active {
+            background: #0f3460;
+            color: #fff;
+        }
+
+        .controls .tabs button:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        .controls .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .controls .btn-group button {
+            padding: 7px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-pdf {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-pdf:hover {
+            background: #c73652;
+        }
+        .btn-docx {
+            background: #2b6cb0;
+            color: #fff;
+        }
+        .btn-docx:hover {
+            background: #1e4e7a;
+        }
+        .btn-html {
+            background: #38a169;
+            color: #fff;
+        }
+        .btn-html:hover {
+            background: #2d7a4f;
+        }
+        .btn-print {
+            background: #6b46c1;
+            color: #fff;
+        }
+        .btn-print:hover {
+            background: #553c8a;
+        }
+
+        /* ===== PROPOSAL CONTAINER ===== */
+        .proposal-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 35px 45px;
+            display: none;
+        }
+
+        .proposal-container.active {
+            display: block;
+        }
+
+        /* ===== COMPANY HEADER ===== */
+        .company-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e94560;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .company-header .company-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .company-header .company-logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 8px;
+            background: #f8f9fa;
+            padding: 4px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .company-header .company-logo .logo-placeholder {
+            width: 70px;
+            height: 70px;
+            background: #0f3460;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            border: 3px solid #e94560;
+        }
+
+        .company-header .company-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f3460;
+            letter-spacing: 1px;
+        }
+
+        .company-header .company-name span {
+            color: #e94560;
+        }
+
+        .company-header .company-tagline {
+            font-size: 15px;
+            color: #4a5568;
+            margin-top: 2px;
+        }
+
+        .company-header .company-details {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .company-header .company-details a {
+            color: #0f3460;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .company-header .company-details a:hover {
+            color: #e94560;
+        }
+
+        .company-header .ceo-name {
+            margin-top: 6px;
+            font-size: 14px;
+            color: #0f3460;
+            font-weight: 600;
+        }
+
+        .company-header .ceo-name span {
+            color: #e94560;
+        }
+
+        /* ===== STAMP ===== */
+        .stamp-container {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            opacity: 0.7;
+        }
+
+        .stamp-container img {
+            max-height: 80px;
+            width: auto;
+        }
+
+        .stamp-container .stamp-placeholder {
+            width: 80px;
+            height: 80px;
+            border: 4px double #e94560;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: #e94560;
+            text-align: center;
+            padding: 8px;
+            line-height: 1.2;
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        @media (max-width: 600px) {
+            .stamp-container {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 10px;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        /* ===== PROPOSAL STYLES ===== */
+        .proposal-container h1 {
+            font-size: 26px;
+            color: #0f3460;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .proposal-container .subtitle {
+            text-align: center;
+            color: #e94560;
+            font-weight: 600;
+            font-size: 17px;
+            margin-bottom: 20px;
+        }
+
+        .proposal-container .meta-info {
+            text-align: center;
+            color: #4a5568;
+            font-size: 13px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .proposal-container .meta-info span {
+            margin: 0 8px;
+        }
+
+        .proposal-container h2 {
+            font-size: 20px;
+            color: #0f3460;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 3px solid #e94560;
+        }
+
+        .proposal-container h3 {
+            font-size: 17px;
+            color: #16213e;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        .proposal-container p {
+            line-height: 1.7;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .proposal-container ul,
+        .proposal-container ol {
+            padding-left: 22px;
+            margin-bottom: 12px;
+            color: #2d3748;
+            line-height: 1.7;
+        }
+
+        .proposal-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 20px 0;
+            font-size: 13px;
+        }
+
+        .proposal-container th {
+            background: #0f3460;
+            color: #fff;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .proposal-container td {
+            border: 1px solid #e2e8f0;
+            padding: 7px 12px;
+        }
+
+        .proposal-container tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .proposal-container blockquote {
+            border-left: 4px solid #e94560;
+            padding: 10px 18px;
+            background: #fef0f2;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .proposal-container .highlight-box {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 14px 0;
+        }
+
+        .proposal-container .highlight-box.danger {
+            background: #fef0f2;
+            border-color: #e94560;
+        }
+
+        .proposal-container .highlight-box.gold {
+            background: #fffbeb;
+            border-color: #f6c23e;
+        }
+
+        .proposal-container .budget-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+
+        .proposal-container .budget-card {
+            background: #f7fafc;
+            padding: 14px 16px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .proposal-container .budget-card .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f3460;
+        }
+
+        .proposal-container .budget-card .label {
+            font-size: 12px;
+            color: #4a5568;
+            margin-top: 3px;
+        }
+
+        .proposal-container .budget-card.total {
+            background: #0f3460;
+            color: #fff;
+            border-color: #0f3460;
+        }
+
+        .proposal-container .budget-card.total .amount {
+            color: #fff;
+        }
+
+        .proposal-container .budget-card.total .label {
+            color: #a0c4ff;
+        }
+
+        .proposal-container .signoff {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .proposal-container .signoff .field {
+            border-bottom: 1px solid #a0aec0;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            min-height: 28px;
+        }
+
+        .proposal-container .signoff .field.filled {
+            border-bottom-color: #0f3460;
+            font-weight: 600;
+            color: #0f3460;
+        }
+
+        .proposal-container .contact-block {
+            background: #f7fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin: 14px 0;
+        }
+
+        .proposal-container .contact-block a {
+            color: #0f3460;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .proposal-container .contact-block a:hover {
+            color: #e94560;
+        }
+
+        /* ===== COVER LETTER STYLES ===== */
+        .cover-letter {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cover-letter .letter-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .cover-letter .letter-header .sender {
+            text-align: left;
+        }
+
+        .cover-letter .letter-header .recipient {
+            text-align: right;
+        }
+
+        .cover-letter .letter-date {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .cover-letter .letter-body {
+            line-height: 1.8;
+        }
+
+        .cover-letter .letter-body p {
+            margin-bottom: 14px;
+        }
+
+        .cover-letter .letter-signature {
+            margin-top: 25px;
+        }
+
+        .cover-letter .letter-signature .sig-line {
+            margin-top: 25px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+            width: 220px;
+        }
+
+        /* ===== ONE PAGE SUMMARY ===== */
+        .one-page-summary {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .one-page-summary .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .one-page-summary .summary-item {
+            background: #f7fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #0f3460;
+        }
+
+        .one-page-summary .summary-item .label {
+            font-size: 11px;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .one-page-summary .summary-item .value {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f3460;
+            margin-top: 3px;
+        }
+
+        .one-page-summary .summary-item.highlight {
+            border-left-color: #e94560;
+        }
+
+        .one-page-summary .summary-item.highlight .value {
+            color: #e94560;
+        }
+
+        @media (max-width: 600px) {
+            .one-page-summary .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f3460;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: #38a169;
+        }
+        .toast.error {
+            background: #e94560;
+        }
+
+        /* ===== LOGO/STAMP ERROR HANDLING ===== */
+        .img-error {
+            display: none;
+        }
+
+        .img-error.visible {
+            display: inline-block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px 18px;
+            }
+            .header .company-info {
+                text-align: left;
+                width: 100%;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .controls .tabs {
+                justify-content: center;
+            }
+            .proposal-container {
+                padding: 14px 16px;
+            }
+            .proposal-container table {
+                font-size: 11px;
+            }
+            .proposal-container th,
+            .proposal-container td {
+                padding: 5px 6px;
+            }
+            .budget-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+            .company-header .company-details {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .company-header .company-logo img {
+                height: 50px;
+            }
+            .cover-letter .letter-header {
+                flex-direction: column;
+            }
+            .cover-letter .letter-header .recipient {
+                text-align: left;
+            }
+            .stamp-container {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 8px;
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        @media print {
+            .controls,
+            .header .badge,
+            .btn-group,
+            .tabs {
+                display: none !important;
+            }
+            .header {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .proposal-container {
+                box-shadow: none;
+                padding: 20px;
+                display: block !important;
+            }
+            .proposal-container table th {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .proposal-container .budget-card.total {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .toast {
+                display: none !important;
+            }
+            .company-header .company-name {
+                color: #0f3460 !important;
+            }
+            .proposal-container .signoff .field.filled {
+                border-bottom-color: #0f3460 !important;
+            }
+            .stamp-container {
+                opacity: 0.5 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="logo-section">
+            <!-- Logo with fallback -->
+            <img
+            id="headerLogo"
+            src="assets/logo/logo.png"
+            alt="TAAGC Logo"
+            onerror="this.style.display='none'; document.getElementById('headerLogoFallback').style.display='flex';"
+            />
+            <div class="logo-placeholder" id="headerLogoFallback" style="display:none;">TA</div>
+            <div>
+                <h1>TAAGC <span>Proposal</span></h1>
+                <div style="font-size:12px; opacity:0.8; margin-top:2px;">
+                    TRIPLE A AHAL GLOBAL CONCEPT
+                </div>
+            </div>
+        </div>
+        <div class="company-info">
+            <div><strong>TRIPLE A AHAL GLOBAL CONCEPT</strong> (TAAGC)</div>
+            <div style="font-size:11px; opacity:0.8;">CEO: Ahmad Hamza · Full-Stack Developer</div>
+            <div style="font-size:11px; opacity:0.8;">📞 +2348023566143 · ✉️ admin@taagc.site</div>
+        </div>
+        <div class="badge">₦450,000 · 8 Weeks</div>
+    </header>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls">
+        <div class="tabs">
+            <button class="active" onclick="switchTab('cover')">📄 Cover Letter</button>
+            <button onclick="switchTab('proposal')">📑 Full Proposal</button>
+            <button onclick="switchTab('summary')">📊 One-Page Summary</button>
+        </div>
+        <div class="btn-group">
+            <button class="btn-pdf" onclick="exportCurrent('pdf')">📄 PDF</button>
+            <button class="btn-docx" onclick="exportCurrent('docx')">📝 DOCX</button>
+            <button class="btn-html" onclick="exportCurrent('html')">🌐 HTML</button>
+            <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- ===== TAB 1: COVER LETTER ===== -->
+    <!-- ================================================================ -->
+    <div class="proposal-container active" id="tab-cover">
+
+        <!-- Company Header -->
+        <div class="company-header">
+            <div class="company-logo">
+                <!-- Logo with fallback -->
+                <img
+                id="companyLogo"
+                src="assets/logo/logo.png"
+                alt="TAAGC Logo"
+                onerror="this.style.display='none'; document.getElementById('companyLogoFallback').style.display='flex';"
+                />
+                <div class="logo-placeholder" id="companyLogoFallback" style="display:none;">TA</div>
+                <div>
+                    <div class="company-name">TRIPLE A AHAL <span>GLOBAL CONCEPT</span></div>
+                    <div class="company-tagline">(TAAGC) · Technology &amp; Innovation</div>
+                </div>
+            </div>
+            <div class="company-details">
+                <span>🏢 <strong>CEO:</strong> Ahmad Hamza</span>
+                <span>📞 <a href="tel:+2348023566143">+2348023566143</a></span>
+                <span>✉️ <a href="mailto:admin@taagc.site">admin@taagc.site</a></span>
+                <span>💻 <strong>Full-Stack Developer</strong></span>
+            </div>
+            <div class="ceo-name">Prepared by: <span>Ahmad Hamza</span> · CEO &amp; Lead Developer</div>
+
+            <!-- Stamp -->
+            <div class="stamp-container">
+                <img
+                id="companyStamp"
+                src="assets/stamp/stamp.png"
+                alt="TAAGC Stamp"
+                onerror="this.style.display='none'; document.getElementById('stampFallback').style.display='flex';"
+                />
+                <div class="stamp-placeholder" id="stampFallback" style="display:none;">
+                    TAAGC<br />APPROVED
+                </div>
+            </div>
+        </div>
+
+        <!-- Cover Letter -->
+        <div class="cover-letter">
+            <div class="letter-header">
+                <div class="sender">
+                    <p><strong>Ahmad Hamza</strong><br />
+                    CEO, TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)<br />
+                    +2348023566143 · admin@taagc.site</p>
+                </div>
+                <div class="recipient">
+                    <p><strong>To:</strong> The Project Owner<br />
+                    [Client Name]<br />
+                    [Client Address]</p>
+                </div>
+            </div>
+
+            <div class="letter-date">
+                <p><strong>Date:</strong> July 2026</p>
+            </div>
+
+            <div class="letter-body">
+                <p><strong>Dear Sir/Madam,</strong></p>
+
+                <p>
+                    I am pleased to submit this proposal for the development of a <strong>Private Party Election Monitoring System</strong> for your organization. As the CEO and Lead Developer at <strong>TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)</strong>, I have personally designed this solution to meet your specific needs for real-time agent tracking, results collation, and incident management in Bauchi State.
+                </p>
+
+                <p>
+                    With <strong>8+ years of experience</strong> as a full-stack developer specializing in Firebase, Vercel, React Native, and geospatial systems, I have successfully delivered similar projects for political organizations, NGOs, and private sector clients. My expertise includes building scalable real-time applications, secure authentication systems, and intuitive dashboards that empower decision-makers with actionable data.
+                </p>
+
+                <div class="highlight-box gold">
+                    <p><strong>Why TAAGC?</strong></p>
+                    <ul>
+                        <li>✅ <strong>Proven Expertise:</strong> Full-stack developer with hands-on experience in election monitoring systems</li>
+                        <li>✅ <strong>End-to-End Solution:</strong> From mobile app to admin dashboard – all built in-house</li>
+                        <li>✅ <strong>Data Security:</strong> NDPA-compliant, encrypted, and secure by design</li>
+                        <li>✅ <strong>Real-Time Capability:</strong> Live GPS tracking and instant results collation</li>
+                        <li>✅ <strong>Local Support:</strong> Based in Nigeria, available for on-ground training and support</li>
+                        <li>✅ <strong>Cost-Effective:</strong> Firebase + Vercel free tiers keep hosting costs near zero</li>
+                    </ul>
+                </div>
+
+                <p>
+                    This proposal outlines a comprehensive solution that includes:
+                </p>
+                <ul>
+                    <li><strong>Agent Mobile App:</strong> GPS check-in/out, results submission with photo evidence, incident reporting</li>
+                    <li><strong>Admin Dashboard:</strong> Interactive map, real-time agent tracking, anomaly detection, victory dashboard</li>
+                    <li><strong>Device Approval System:</strong> No unauthorized access without Super Admin approval</li>
+                    <li><strong>4-Computer Command Center:</strong> Dedicated stations for monitoring, analysis, dispatch, and incident response</li>
+                </ul>
+
+                <p>
+                    I am confident that this system will provide your party with the <strong>real-time intelligence</strong> needed to make strategic decisions during elections. I look forward to the opportunity to discuss this proposal in more detail and to demonstrate my capabilities.
+                </p>
+
+                <p>
+                    Thank you for your consideration.
+                </p>
+            </div>
+
+            <div class="letter-signature">
+                <p>Yours sincerely,</p>
+                <div style="margin-top:16px;">
+                    <p style="font-size:18px; font-weight:700; color:#0f3460;">Ahmad Hamza</p>
+                    <p style="color:#e94560; font-weight:600;">CEO &amp; Lead Developer</p>
+                    <p>TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)</p>
+                    <div class="sig-line">
+                        <p style="font-size:12px; color:#718096;">+2348023566143 · admin@taagc.site</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- ===== TAB 2: FULL PROPOSAL ===== -->
+    <!-- ================================================================ -->
+    <div class="proposal-container" id="tab-proposal">
+
+        <!-- Company Header -->
+        <div class="company-header">
+            <div class="company-logo">
+                <img
+                id="proposalLogo"
+                src="assets/logo/logo.png"
+                alt="TAAGC Logo"
+                onerror="this.style.display='none'; document.getElementById('proposalLogoFallback').style.display='flex';"
+                />
+                <div class="logo-placeholder" id="proposalLogoFallback" style="display:none;">TA</div>
+                <div>
+                    <div class="company-name">TRIPLE A AHAL <span>GLOBAL CONCEPT</span></div>
+                    <div class="company-tagline">(TAAGC) · Technology &amp; Innovation</div>
+                </div>
+            </div>
+            <div class="company-details">
+                <span>🏢 <strong>CEO:</strong> Ahmad Hamza</span>
+                <span>📞 <a href="tel:+2348023566143">+2348023566143</a></span>
+                <span>✉️ <a href="mailto:admin@taagc.site">admin@taagc.site</a></span>
+                <span>💻 <strong>Full-Stack Developer</strong></span>
+            </div>
+            <div class="ceo-name">Prepared by: <span>Ahmad Hamza</span> · CEO &amp; Lead Developer</div>
+
+            <!-- Stamp -->
+            <div class="stamp-container">
+                <img
+                id="proposalStamp"
+                src="assets/stamp/stamp.png"
+                alt="TAAGC Stamp"
+                onerror="this.style.display='none'; document.getElementById('proposalStampFallback').style.display='flex';"
+                />
+                <div class="stamp-placeholder" id="proposalStampFallback" style="display:none;">
+                    TAAGC<br />APPROVED
+                </div>
+            </div>
+        </div>
+
+        <h1>PROJECT PROPOSAL</h1>
+        <div class="subtitle">Private Party Election Monitoring System</div>
+        <div class="meta-info">
+            <span><strong>Bauchi State</strong></span>
+            <span>•</span>
+            <span><strong>20</strong> LGAs</span>
+            <span>•</span>
+            <span><strong>212</strong> Wards</span>
+            <span>•</span>
+            <span><strong>4,074</strong> Polling Units</span>
+            <span>•</span>
+            <span><strong>₦450,000</strong> Budget</span>
+            <span>•</span>
+            <span><strong>8</strong> Weeks</span>
+        </div>
+
+        <!-- ===== SECTION 1: EXECUTIVE SUMMARY ===== -->
+        <h2>1. Executive Summary</h2>
+        <p>
+            <strong>Company:</strong> TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)
+        </p>
+        <p>
+            <strong>CEO &amp; Lead Developer:</strong> Ahmad Hamza
+        </p>
+        <p>
+            <strong>Project:</strong> Private Party Election Monitoring System – Bauchi State Rollout
+        </p>
+        <p>
+            <strong>Objective:</strong> Build a private, internal election monitoring system for a political party to track agents, monitor polling units, collate results, and detect problems in real-time – entirely independent of INEC or government systems.
+        </p>
+        <p>
+            <strong>Technology Stack:</strong> Firebase (Database, Auth, Storage) + Vercel (Hosting, Serverless Functions) + React Native (Mobile App) + React (Admin Dashboard)
+        </p>
+
+        <div class="contact-block">
+            <strong>📞 Contact:</strong>
+            <a href="tel:+2348023566143">+2348023566143</a> &nbsp;|&nbsp;
+            <strong>✉️ Email:</strong>
+            <a href="mailto:admin@taagc.site">admin@taagc.site</a> &nbsp;|&nbsp;
+            <strong>👤 Lead Developer:</strong> Ahmad Hamza (Full-Stack Developer)
+        </div>
+
+        <div class="highlight-box">
+            <strong>🔑 Key Distinction:</strong> This system is strictly for internal party use. It does not:
+            <ul style="margin-top:6px;">
+                <li>Interface with INEC systems or portals</li>
+                <li>Claim authority to declare official winners</li>
+                <li>Replace constitutionally mandated electoral processes</li>
+                <li>Publish results publicly or to external audiences</li>
+            </ul>
+        </div>
+
+        <!-- ===== SECTION 2: ABOUT THE DEVELOPER ===== -->
+        <h2>2. About the Developer</h2>
+        <div class="highlight-box gold">
+            <p><strong>Ahmad Hamza</strong> – CEO, TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)</p>
+            <ul>
+                <li><strong>Role:</strong> Full-Stack Developer &amp; Project Lead</li>
+                <li><strong>Expertise:</strong> Firebase, Vercel, React Native, React, Node.js, PostgreSQL</li>
+                <li><strong>Experience:</strong> Building scalable real-time applications, geospatial systems, and secure authentication platforms</li>
+                <li><strong>Portfolio:</strong> Election monitoring systems, field data collection apps, real-time dashboards</li>
+                <li><strong>Contact:</strong> +2348023566143 | admin@taagc.site</li>
+            </ul>
+            <p style="margin-top:6px;">
+                <strong>Development Guarantee:</strong> Ahmad Hamza will personally oversee all development, ensuring:
+            </p>
+            <ul>
+                <li>✅ Clean, maintainable code</li>
+                <li>✅ NDPA-compliant data security</li>
+                <li>✅ 8-week delivery with weekly progress reviews</li>
+                <li>✅ 1 month post-deployment support</li>
+            </ul>
+        </div>
+
+        <!-- ===== SECTION 3: PROJECT OBJECTIVES ===== -->
+        <h2>3. Project Objectives</h2>
+
+        <h3>3.1 Primary Objectives</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Objective</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td><strong>Agent Tracking</strong></td><td>Track all 4,074 agents in real-time on an interactive map with GPS locations</td></tr>
+                <tr><td>2</td><td><strong>Results Collation</strong></td><td>Collate internal vote counts from PU → Ward → LGA → State levels</td></tr>
+                <tr><td>3</td><td><strong>Victory Dashboard</strong></td><td>Display real-time victory probability across all levels</td></tr>
+                <tr><td>4</td><td><strong>Anomaly Detection</strong></td><td>Automatically flag suspicious results (turnout variance, duplicates, missing evidence)</td></tr>
+                <tr><td>5</td><td><strong>Incident Management</strong></td><td>Receive, track, and resolve incidents reported by agents</td></tr>
+                <tr><td>6</td><td><strong>Coverage Optimization</strong></td><td>Identify uncovered PUs and enable rapid reassignment</td></tr>
+                <tr><td>7</td><td><strong>Broadcast Communication</strong></td><td>Send instant messages to agents via SMS and in-app notifications</td></tr>
+                <tr><td>8</td><td><strong>Device Approval</strong></td><td>Ensure only authorized computers access the dashboard</td></tr>
+                <tr><td>9</td><td><strong>Audit Trail</strong></td><td>Maintain complete logs of all admin actions</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 4: BUDGET ===== -->
+        <h2>4. Budget &amp; Expenditure Breakdown</h2>
+
+        <h3>4.1 Total Budget: ₦450,000</h3>
+
+        <div class="budget-summary">
+            <div class="budget-card">
+                <div class="amount">₦250,000</div>
+                <div class="label">Software Development</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦100,000</div>
+                <div class="label">Infrastructure &amp; Hosting</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦50,000</div>
+                <div class="label">APIs &amp; Services</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦50,000</div>
+                <div class="label">Contingency</div>
+            </div>
+            <div class="budget-card total">
+                <div class="amount">₦450,000</div>
+                <div class="label">TOTAL BUDGET</div>
+            </div>
+        </div>
+
+        <h3>4.2 Detailed Breakdown</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Cost (₦)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">A. Software Development (by Ahmad Hamza – TAAGC)</td>
+                </tr>
+                <tr><td>Backend Development</td><td>Vercel serverless functions, Firebase integration, API design</td><td>120,000</td></tr>
+                <tr><td>Mobile App Development</td><td>React Native app for agents (check-in, submit results, incidents)</td><td>130,000</td></tr>
+                <tr><td>Admin Dashboard</td><td>React dashboard with map, analytics, device approval system</td><td>100,000</td></tr>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">B. Infrastructure &amp; Hosting</td>
+                </tr>
+                <tr><td>Vercel Hosting (1 year)</td><td>Pro plan for production deployment</td><td>0 (free tier) – 12,000</td></tr>
+                <tr><td>Firebase</td><td>Firestore, Auth, Storage – free tier (Spark plan)</td><td>0</td></tr>
+                <tr><td>Map Engine Credits</td><td>Mapbox tiles for interactive maps</td><td>20,000</td></tr>
+                <tr><td>SMS API Credits</td><td>Termii/Twilio for OTP, alerts, broadcasts</td><td>20,000</td></tr>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">C. Contingency</td>
+                </tr>
+                <tr><td>Miscellaneous / Buffer</td><td>Unforeseen costs, testing, deployment support</td><td>20,000 – 48,000</td></tr>
+                <tr style="background:#0f3460; color:#fff; font-weight:700;">
+                    <td colspan="2">TOTAL</td>
+                    <td>₦380,000 – ₦442,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4.3 Payment Schedule</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Milestone</th>
+                    <th>Payment</th>
+                    <th>Percentage</th>
+                    <th>Deliverable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Upfront</strong></td><td>₦135,000</td><td>30%</td><td>Project kickoff, database design, Firebase setup</td></tr>
+                <tr><td><strong>Week 4</strong></td><td>₦180,000</td><td>40%</td><td>Mobile app + backend API complete</td></tr>
+                <tr><td><strong>Delivery</strong></td><td>₦135,000</td><td>30%</td><td>Full system, testing, deployment, training</td></tr>
+                <tr style="background:#0f3460; color:#fff; font-weight:700;">
+                    <td colspan="2">TOTAL</td><td>100%</td><td>₦450,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 5: TIMELINE ===== -->
+        <h2>5. Implementation Timeline (8 Weeks)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Milestone</th>
+                    <th>Deliverable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Week 1</strong></td><td>Firebase project setup, Firestore schema design, authentication system</td><td>Database structure complete</td></tr>
+                <tr><td><strong>Week 2</strong></td><td>Backend API development, device registration/approval logic</td><td>API endpoints complete</td></tr>
+                <tr><td><strong>Week 3</strong></td><td>Admin dashboard UI (login, summary, map skeleton)</td><td>Frontend scaffolding</td></tr>
+                <tr><td><strong>Week 4</strong></td><td>Mobile app UI + login + registration (photo + device fingerprint)</td><td>Agent registration flow</td></tr>
+                <tr><td><strong>Week 5</strong></td><td>Mobile app: GPS tracking, check-in/out, result submission</td><td>Core agent functionality</td></tr>
+                <tr><td><strong>Week 6</strong></td><td>Admin dashboard: Map integration, agent monitoring, device approval</td><td>Command center view</td></tr>
+                <tr><td><strong>Week 7</strong></td><td>Admin dashboard: Alerts, anomaly detection, broadcast system</td><td>Full admin functionality</td></tr>
+                <tr><td><strong>Week 8</strong></td><td>Testing, bug fixes, deployment, agent training</td><td>Production-ready system</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 6: SIGN-OFF ===== -->
+        <h2>6. Sign-Off</h2>
+
+        <div class="signoff">
+            <div>
+                <p><strong>Project Owner</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:12px; color:#718096;">Name &amp; Signature</p>
+            </div>
+            <div>
+                <p><strong>Lead Developer</strong></p>
+                <div class="field filled">Ahmad Hamza</div>
+                <p style="font-size:12px; color:#718096;">CEO, TAAGC · Full-Stack Developer</p>
+            </div>
+            <div>
+                <p><strong>Lead Admin</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:12px; color:#718096;">Name &amp; Signature</p>
+            </div>
+            <div>
+                <p><strong>Date</strong></p>
+                <div class="field">July 2026</div>
+                <p style="font-size:12px; color:#718096;">dd/mm/yyyy</p>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div style="margin-top:25px; padding-top:16px; border-top:1px solid #e2e8f0; text-align:center; color:#718096; font-size:12px;">
+            <p>
+                <strong>Prepared By:</strong> Ahmad Hamza · CEO, TRIPLE A AHAL GLOBAL CONCEPT (TAAGC) &bull;
+                <strong>Project:</strong> Private Party Election Monitoring System &bull;
+                <strong>Budget:</strong> ₦450,000 &bull;
+                <strong>Date:</strong> July 2026
+            </p>
+            <p style="margin-top:4px; font-size:11px;">
+                📞 <a href="tel:+2348023566143" style="color:#0f3460; text-decoration:none;">+2348023566143</a> &nbsp;|&nbsp;
+                ✉️ <a href="mailto:admin@taagc.site" style="color:#0f3460; text-decoration:none;">admin@taagc.site</a> &nbsp;|&nbsp;
+                🏢 TRIPLE A AHAL GLOBAL CONCEPT (TAAGC)
+            </p>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- ===== TAB 3: ONE-PAGE SUMMARY ===== -->
+    <!-- ================================================================ -->
+    <div class="proposal-container" id="tab-summary">
+
+        <!-- Company Header -->
+        <div class="company-header">
+            <div class="company-logo">
+                <img
+                id="summaryLogo"
+                src="assets/logo/logo.png"
+                alt="TAAGC Logo"
+                onerror="this.style.display='none'; document.getElementById('summaryLogoFallback').style.display='flex';"
+                />
+                <div class="logo-placeholder" id="summaryLogoFallback" style="display:none;">TA</div>
+                <div>
+                    <div class="company-name">TRIPLE A AHAL <span>GLOBAL CONCEPT</span></div>
+                    <div class="company-tagline">(TAAGC) · Technology &amp; Innovation</div>
+                </div>
+            </div>
+            <div class="company-details">
+                <span>🏢 <strong>CEO:</strong> Ahmad Hamza</span>
+                <span>📞 <a href="tel:+2348023566143">+2348023566143</a></span>
+                <span>✉️ <a href="mailto:admin@taagc.site">admin@taagc.site</a></span>
+                <span>💻 <strong>Full-Stack Developer</strong></span>
+            </div>
+            <div class="ceo-name">Prepared by: <span>Ahmad Hamza</span> · CEO &amp; Lead Developer</div>
+
+            <!-- Stamp -->
+            <div class="stamp-container">
+                <img
+                id="summaryStamp"
+                src="assets/stamp/stamp.png"
+                alt="TAAGC Stamp"
+                onerror="this.style.display='none'; document.getElementById('summaryStampFallback').style.display='flex';"
+                />
+                <div class="stamp-placeholder" id="summaryStampFallback" style="display:none;">
+                    TAAGC<br />APPROVED
+                </div>
+            </div>
+        </div>
+
+        <h1>PROJECT SUMMARY</h1>
+        <div class="subtitle">Private Party Election Monitoring System · Bauchi State</div>
+        <div class="meta-info">
+            <span><strong>20</strong> LGAs</span>
+            <span>•</span>
+            <span><strong>212</strong> Wards</span>
+            <span>•</span>
+            <span><strong>4,074</strong> Polling Units</span>
+            <span>•</span>
+            <span><strong>₦450,000</strong> Budget</span>
+            <span>•</span>
+            <span><strong>8</strong> Weeks</span>
+        </div>
+
+        <!-- Summary Grid -->
+        <div class="one-page-summary">
+            <div class="summary-grid">
+                <div class="summary-item highlight">
+                    <div class="label">Total Budget</div>
+                    <div class="value">₦450,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Project Timeline</div>
+                    <div class="value">8 Weeks</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Polling Units</div>
+                    <div class="value">4,074</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Agents to Track</div>
+                    <div class="value">4,074+</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">LGAs</div>
+                    <div class="value">20</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Wards</div>
+                    <div class="value">212</div>
+                </div>
+                <div class="summary-item highlight">
+                    <div class="label">Lead Developer</div>
+                    <div class="value" style="font-size:15px;">Ahmad Hamza</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Company</div>
+                    <div class="value" style="font-size:15px;">TAAGC</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:20px;">System Components</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Agent Mobile App</strong></td>
+                        <td>GPS tracking, check-in/out, results submission with photo, incident reporting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Admin Dashboard</strong></td>
+                        <td>Interactive map, real-time agent tracking, anomaly detection, victory dashboard</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Device Approval</strong></td>
+                        <td>No unauthorized access without Super Admin approval</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Command Center</strong></td>
+                        <td>4 computers for monitoring, analysis, dispatch, and incident response</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top:20px;">Technology Stack</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin:8px 0;">
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">Firebase</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">Vercel</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">React Native</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">React</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">Node.js</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">Mapbox</span>
+                <span style="background:#0f3460; color:#fff; padding:4px 12px; border-radius:20px; font-size:12px;">PostgreSQL</span>
+            </div>
+
+            <div class="highlight-box gold" style="margin-top:12px;">
+                <p><strong>📞 Contact:</strong>
+                <a href="tel:+2348023566143" style="color:#0f3460; font-weight:600;">+2348023566143</a> &nbsp;|&nbsp;
+                <strong>✉️ Email:</strong>
+                <a href="mailto:admin@taagc.site" style="color:#0f3460; font-weight:600;">admin@taagc.site</a></p>
+                <p style="margin-top:4px;"><strong>👤 Lead Developer:</strong> Ahmad Hamza · CEO, TAAGC · Full-Stack Developer</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===================================================================== -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // =============================================
+        // 1. TAB SWITCHING
+        // =============================================
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.proposal-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            document.querySelectorAll('.tabs button').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            const buttons = document.querySelectorAll('.tabs button');
+            const tabMap = { 'cover': 0, 'proposal': 1, 'summary': 2 };
+            if (tabMap[tabId] !== undefined) {
+                buttons[tabMap[tabId]].classList.add('active');
+            }
+
+            showToast('📄 Switched to ' + getTabName(tabId), '');
+        }
+
+        function getTabName(tabId) {
+            const names = { 'cover': 'Cover Letter', 'proposal': 'Full Proposal', 'summary': 'One-Page Summary' };
+            return names[tabId] || tabId;
+        }
+
+        // =============================================
+        // 2. EXPORT FUNCTIONS
+        // =============================================
+
+        function getCurrentHTML() {
+            const activeTab = document.querySelector('.proposal-container.active');
+            return `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>TAAGC – Project Proposal</title>
+            <style>
+                * { margin:0; padding:0; box-sizing:border-box; }
+                body { font-family:'Segoe UI',sans-serif; padding:40px; max-width:1100px; margin:0 auto; line-height:1.6; color:#1a1a2e; }
+                .company-header { text-align:center; padding-bottom:20px; border-bottom:3px solid #e94560; margin-bottom:20px; position:relative; }
+                .company-header .company-logo { display:flex; align-items:center; justify-content:center; gap:15px; flex-wrap:wrap; margin-bottom:6px; }
+                .company-header .company-logo img { height:60px; width:auto; border-radius:8px; background:#f8f9fa; padding:4px; border:1px solid #e2e8f0; }
+                .company-header .company-logo .logo-placeholder { width:60px; height:60px; background:#0f3460; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; color:#fff; border:3px solid #e94560; }
+                .company-header .company-name { font-size:24px; font-weight:800; color:#0f3460; letter-spacing:1px; }
+                .company-header .company-name span { color:#e94560; }
+                .company-header .company-tagline { font-size:14px; color:#4a5568; margin-top:2px; }
+                .company-header .company-details { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:8px; font-size:13px; color:#4a5568; }
+                .company-header .company-details a { color:#0f3460; font-weight:600; text-decoration:none; }
+                .company-header .ceo-name { margin-top:6px; font-size:14px; color:#0f3460; font-weight:600; }
+                .company-header .ceo-name span { color:#e94560; }
+                .stamp-container { position:absolute; bottom:10px; right:20px; opacity:0.7; }
+                .stamp-container img { max-height:70px; width:auto; }
+                .stamp-container .stamp-placeholder { width:70px; height:70px; border:4px double #e94560; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:#e94560; text-align:center; padding:6px; line-height:1.2; background:rgba(233,69,96,0.05); }
+                h1 { font-size:26px; color:#0f3460; text-align:center; }
+                .subtitle { text-align:center; color:#e94560; font-weight:600; font-size:17px; margin-bottom:18px; }
+                .meta-info { text-align:center; color:#4a5568; font-size:13px; margin-bottom:18px; padding:10px; background:#f7fafc; border-radius:8px; }
+                .meta-info span { margin:0 6px; }
+                h2 { font-size:20px; color:#0f3460; margin-top:25px; border-bottom:3px solid #e94560; padding-bottom:6px; }
+                h3 { font-size:17px; color:#16213e; margin-top:18px; }
+                table { width:100%; border-collapse:collapse; margin:14px 0; font-size:13px; }
+                th { background:#0f3460; color:#fff; padding:8px 12px; text-align:left; }
+                td { border:1px solid #e2e8f0; padding:6px 10px; }
+                tr:nth-child(even) { background:#f7fafc; }
+                .highlight-box { background:#ebf8ff; border:1px solid #bee3f8; padding:14px 18px; border-radius:8px; margin:14px 0; }
+                .highlight-box.gold { background:#fffbeb; border-color:#f6c23e; }
+                .contact-block { background:#f7fafc; padding:14px 18px; border-radius:8px; border:1px solid #e2e8f0; margin:14px 0; }
+                .contact-block a { color:#0f3460; font-weight:600; text-decoration:none; }
+                .budget-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:16px 0; }
+                .budget-card { background:#f7fafc; padding:12px 14px; border-radius:10px; text-align:center; border:1px solid #e2e8f0; }
+                .budget-card .amount { font-size:20px; font-weight:700; color:#0f3460; }
+                .budget-card .label { font-size:12px; color:#4a5568; margin-top:3px; }
+                .budget-card.total { background:#0f3460; color:#fff; border-color:#0f3460; }
+                .budget-card.total .amount { color:#fff; }
+                .budget-card.total .label { color:#a0c4ff; }
+                .signoff { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-top:25px; padding-top:18px; border-top:2px solid #e2e8f0; }
+                .signoff .field { border-bottom:1px solid #a0aec0; padding-bottom:4px; margin-bottom:4px; min-height:28px; }
+                .signoff .field.filled { border-bottom-color:#0f3460; font-weight:600; color:#0f3460; }
+                .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:16px 0; }
+                .summary-item { background:#f7fafc; padding:12px 16px; border-radius:8px; border-left:4px solid #0f3460; }
+                .summary-item .label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:0.5px; }
+                .summary-item .value { font-size:17px; font-weight:700; color:#0f3460; margin-top:3px; }
+                .summary-item.highlight { border-left-color:#e94560; }
+                .summary-item.highlight .value { color:#e94560; }
+                .cover-letter .letter-header { display:flex; justify-content:space-between; margin-bottom:25px; flex-wrap:wrap; gap:15px; }
+                .cover-letter .letter-body p { margin-bottom:14px; }
+                .cover-letter .letter-signature { margin-top:25px; }
+                .cover-letter .letter-signature .sig-line { margin-top:20px; padding-top:10px; border-top:1px solid #e2e8f0; width:200px; }
+                @media print { body { padding:20px; } .stamp-container { opacity:0.5 !important; } }
+                @media (max-width:600px) { .summary-grid { grid-template-columns:1fr; } .stamp-container { position:relative; bottom:auto; right:auto; margin-top:8px; display:flex; justify-content:center; } }
+            </style>
+        </head>
+        <body>
+            ${activeTab.innerHTML}
+        </body>
+        </html>`;
+        }
+
+        function exportCurrent(format) {
+            const html = getCurrentHTML();
+            const activeTab = document.querySelector('.proposal-container.active');
+            const tabId = activeTab.id.replace('tab-', '');
+            const tabName = getTabName(tabId);
+            const title = `TAAGC_${tabName.replace(/\s/g, '_')}`;
+
+            switch (format) {
+                case 'pdf':
+                    downloadFile(html, `${title}.html`, 'text/html');
+                    showToast('📄 HTML saved – open in browser and print to PDF', 'success');
+                    break;
+                case 'docx':
+                    const wordHtml = `<!DOCTYPE html>
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                          xmlns:w='urn:schemas-microsoft-com:office:word'
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head><meta charset="UTF-8"><title>${tabName}</title>
+                    <style>body{font-family:'Segoe UI',sans-serif;padding:40px;line-height:1.6;}
+                    h1{color:#0f3460;} h2{color:#0f3460;border-bottom:3px solid #e94560;padding-bottom:6px;}
+                    table{border-collapse:collapse;width:100%;margin:14px 0;}
+                    th,td{border:1px solid #ccc;padding:6px 10px;} th{background:#0f3460;color:#fff;}
+                    .company-header{text-align:center;padding-bottom:20px;border-bottom:3px solid #e94560;}
+                    .budget-card.total{background:#0f3460;color:#fff;}
+                    .highlight-box{background:#ebf8ff;border:1px solid #bee3f8;padding:14px;border-radius:8px;margin:14px 0;}
+                    </style></head>
+                    <body>
+                        ${activeTab.innerHTML}
+                    </body></html>`;
+                    downloadFile(wordHtml, `${title}.doc`, 'application/msword');
+                    showToast('📝 DOCX downloaded', 'success');
+                    break;
+                case 'html':
+                    downloadFile(html, `${title}.html`, 'text/html');
+                    showToast('🌐 HTML downloaded', 'success');
+                    break;
+                default:
+                    showToast('❌ Unknown format', 'error');
+            }
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // =============================================
+        // 3. TOAST NOTIFICATION
+        // =============================================
+
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // =============================================
+        // 4. INIT
+        // =============================================
+
+        // Check if images loaded successfully
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                // The onerror attribute handles the fallback
+            });
+        });
+
+        setTimeout(() => {
+            showToast('📄 TAAGC Proposal ready · Logo & Stamp loaded', '');
+        }, 500);
+    </script>
+
+</body>
+</html>
