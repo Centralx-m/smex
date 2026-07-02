@@ -3,61 +3,1475 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TAAGC – Election Monitoring System</title>
-    <meta name="description" content="Private party election monitoring system for Bauchi State. Real-time agent tracking, results collation, and incident management." />
-    <meta name="theme-color" content="#0f3460" />
+    <title>Command Center · Bauchi State - Complete Election Monitoring</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ============================================================
+           ROOT VARIABLES & RESET
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
 
-    <!-- Open Graph / Social Sharing -->
-    <meta property="og:title" content="TAAGC – Election Monitoring System" />
-    <meta property="og:description" content="Private party election monitoring system for Bauchi State. 20 LGAs, 212 Wards, 4,074 Polling Units." />
-    <meta property="og:image" content="/images/logo/logo-og-image.png" />
-    <meta property="og:url" content="https://taagc.site" />
-    <meta property="og:type" content="website" />
+        :root {
+            --primary: #0a2a5c;
+            --primary-light: #1a4a8c;
+            --primary-dark: #061a3a;
+            --accent: #d4a843;
+            --accent-light: #e8c96a;
+            --success: #2e7d32;
+            --danger: #b33c3c;
+            --warning: #b8860b;
+            --bg: #f0f4fa;
+            --surface: #ffffff;
+            --surface-hover: #f8faff;
+            --text: #0b1a33;
+            --text-muted: #4a6580;
+            --border: #dce3ed;
+            --shadow: 0 8px 24px rgba(0, 20, 40, 0.08);
+            --shadow-lg: 0 20px 48px rgba(0, 20, 40, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-full: 40px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/images/logo/logo-favicon.ico" />
-    <link rel="apple-touch-icon" href="/images/logo/logo-favicon.ico" />
+        body.dark {
+            --bg: #0f1a2e;
+            --surface: #152238;
+            --surface-hover: #1d2f4a;
+            --text: #eef4fc;
+            --text-muted: #a9bedb;
+            --border: #2d4463;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.7);
+        }
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/src/assets/css/styles.css" />
-    <link rel="stylesheet" href="/src/assets/css/responsive.css" />
-    <link rel="stylesheet" href="/src/assets/css/animations.css" />
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
 
-    <!-- Fonts (Google Fonts) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .app {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .command-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0 16px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 28px;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(10, 42, 92, 0.3);
+        }
+
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .brand-title span {
+            color: var(--accent);
+        }
+        .brand-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            padding: 2px 14px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            background: var(--success);
+            color: white;
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-badge i {
+            font-size: 0.5rem;
+        }
+
+        .dark-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-full);
+            font-size: 1.2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark-toggle:hover {
+            background: var(--border);
+            transform: rotate(15deg);
+        }
+
+        .search-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            padding: 8px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-box i {
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           STATS
+           ============================================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 6px;
+            line-height: 1.2;
+        }
+        .stat-change {
+            font-size: 0.75rem;
+            color: var(--success);
+            background: #e8f5e9;
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .stat-change.negative {
+            color: var(--danger);
+            background: #fde8e8;
+        }
+
+        /* ============================================================
+           FEATURES SECTION
+           ============================================================ */
+        .features-section {
+            margin-bottom: 30px;
+        }
+        .features-section .section-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .features-section .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .features-section .section-header h2 span {
+            color: var(--accent);
+        }
+        .features-section .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px 22px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+        .feature-card .icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ============================================================
+           DASHBOARD GRID
+           ============================================================ */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 26px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           CARDS
+           ============================================================ */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .card-header h3 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-header h3 i {
+            color: var(--primary-light);
+        }
+        .badge-soft {
+            background: var(--bg);
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        /* ============================================================
+           LGA LIST
+           ============================================================ */
+        .lga-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .lga-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .lga-item:hover {
+            border-color: var(--primary-light);
+            background: var(--surface-hover);
+        }
+        .lga-item.active {
+            border-color: var(--accent);
+            background: var(--surface-hover);
+        }
+        .lga-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .lga-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .lga-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .lga-stats .wards {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+        .lga-stats .units {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           INCIDENTS
+           ============================================================ */
+        .incident-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .incident-item:last-child {
+            border-bottom: none;
+        }
+        .incident-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .incident-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .incident-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .incident-status {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            background: var(--bg);
+            color: var(--text-muted);
+            align-self: center;
+            text-transform: capitalize;
+        }
+        .incident-status.resolved {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+        .incident-status.pending {
+            background: #fff3e0;
+            color: var(--warning);
+        }
+        .incident-status.critical {
+            background: #fde8e8;
+            color: var(--danger);
+        }
+
+        /* ============================================================
+           RESULTS
+           ============================================================ */
+        .result-row {
+            display: grid;
+            grid-template-columns: 1fr 0.8fr 0.8fr 0.6fr;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            align-items: center;
+            gap: 4px;
+        }
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        .result-row.header-row {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border);
+        }
+        .result-row .lga {
+            font-weight: 500;
+        }
+        .result-row .votes {
+            font-weight: 600;
+        }
+        .result-row .votes.apc {
+            color: var(--primary-light);
+        }
+        .result-row .votes.pdp {
+            color: var(--danger);
+        }
+
+        /* ============================================================
+           AGENT DEPLOYMENT
+           ============================================================ */
+        .deployment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .deploy-item {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+        .deploy-item:hover {
+            border-color: var(--border);
+        }
+        .deploy-item span:first-child {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .deploy-count {
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .party-breakdown {
+            margin-top: 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+        }
+        .party-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 4px 0;
+        }
+        .party-row .party-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .party-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .party-dot.apc {
+            background: var(--primary-light);
+        }
+        .party-dot.pdp {
+            background: var(--danger);
+        }
+        .party-dot.other {
+            background: var(--warning);
+        }
+
+        /* ============================================================
+           WARD DETAIL
+           ============================================================ */
+        .ward-detail {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent);
+        }
+        .ward-detail h4 {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ward-detail .ward-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .ward-detail .ward-tag {
+            background: var(--surface);
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           COMMAND CENTER (4 Computers)
+           ============================================================ */
+        .command-stations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .station-card {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            border-left: 4px solid var(--primary-light);
+            transition: var(--transition);
+        }
+        .station-card:hover {
+            transform: translateX(4px);
+        }
+        .station-card .station-role {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .station-card .station-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .station-card .station-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .station-card .station-status .dot.online {
+            background: var(--success);
+        }
+        .station-card .station-status .dot.offline {
+            background: var(--danger);
+        }
+        .station-card .station-status .dot.standby {
+            background: var(--warning);
+        }
+
+        /* ============================================================
+           BROADCAST
+           ============================================================ */
+        .broadcast-box {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+            margin-top: 14px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .broadcast-box input {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px 16px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            outline: none;
+        }
+        .broadcast-box input:focus {
+            border-color: var(--primary-light);
+        }
+        .broadcast-box .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-full);
+            background: var(--primary-light);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .broadcast-box .btn:hover {
+            background: var(--primary);
+            transform: scale(1.02);
+        }
+
+        /* ============================================================
+           MAP
+           ============================================================ */
+        .map-placeholder {
+            background: var(--bg);
+            height: 160px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: 500;
+            border: 1px dashed var(--border);
+            margin-top: 8px;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .map-placeholder i {
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        .map-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .command-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            gap: 10px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .command-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .brand {
+                justify-content: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .search-box {
+                width: 100%;
+                min-width: unset;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .lga-grid {
+                grid-template-columns: 1fr;
+            }
+            .deployment-grid {
+                grid-template-columns: 1fr;
+            }
+            .result-row {
+                grid-template-columns: 1fr 0.6fr 0.6fr 0.5fr;
+                font-size: 0.8rem;
+            }
+            .brand-title {
+                font-size: 1.3rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .command-stations {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .result-row {
+                grid-template-columns: 1fr 0.5fr 0.5fr 0.4fr;
+                font-size: 0.7rem;
+                gap: 2px;
+            }
+            .lga-item {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .command-stations {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================================
+           ANOMALY BADGE
+           ============================================================ */
+        .anomaly-badge {
+            background: #fde8e8;
+            color: var(--danger);
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+    </style>
 </head>
 <body>
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
-        <!-- Navbar content will be injected by JS -->
-    </nav>
+    <div class="app" id="app">
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <main>
-        <!-- Sections will be rendered by JS -->
-        <div id="app"></div>
-    </main>
+        <!-- ==========================================================
+        HEADER
+        ========================================================== -->
+        <header class="command-header">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-flag"></i></div>
+                <div>
+                    <div class="brand-title">Command<span>Center</span></div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span style="font-weight:600; font-size:0.95rem;">Bauchi State</span>
+                        <span class="brand-sub"><i class="fas fa-map-pin"></i> 20 LGAs · 323 Wards · 4,074 Agents</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search LGA, Ward, or PU..." />
+                </div>
+                <span class="status-badge"><i class="fas fa-circle"></i> LIVE</span>
+                <button class="dark-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer" id="footer" role="contentinfo">
-        <!-- Footer content will be injected by JS -->
-    </footer>
+        <!-- ==========================================================
+        STATS
+        ========================================================== -->
+        <section class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-label"><i class="fas fa-users"></i> Total Agents</div>
+                <div class="stat-value" id="totalAgents">0</div>
+                <span class="stat-change"><i class="fas fa-arrow-up"></i> 4,074 deployed</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label"><i class="fas fa-flag-checkered"></i> Polling Units</div>
+                <div class="stat-value" id="totalUnits">0</div>
+                <span class="stat-change">100% coverage</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Active Incidents</div>
+                <div class="stat-value" id="activeIncidents">0</div>
+                <span class="stat-change negative" id="incidentTrend"><i class="fas fa-arrow-up"></i> monitoring</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label"><i class="fas fa-vote-yea"></i> Total Votes (est.)</div>
+                <div class="stat-value" id="totalVotes">0</div>
+                <span class="stat-change" id="turnoutRate">68% turn out</span>
+            </div>
+        </section>
 
-    <!-- ===== SCRIPTS ===== -->
-    <script type="module" src="/src/assets/js/main.js"></script>
+        <!-- ==========================================================
+        FEATURES SECTION (Future System)
+        ========================================================== -->
+        <section class="features-section" id="features">
+            <div class="section-header">
+                <h2>System <span>Features</span></h2>
+                <p>Complete election monitoring solution for your party</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="icon">📍</span>
+                    <h3>Real-Time Agent Tracking</h3>
+                    <p>Track all 4,074 agents on an interactive map with live GPS locations, check-in/out status, and battery levels.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📊</span>
+                    <h3>Results Collation</h3>
+                    <p>Collate internal vote counts from Polling Unit → Ward → LGA → State level in real-time with photo evidence.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🚨</span>
+                    <h3>Incident Management</h3>
+                    <p>Report, assign, escalate, and resolve incidents with photos, GPS location, and severity levels.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔍</span>
+                    <h3>Anomaly Detection</h3>
+                    <p>Auto-flag suspicious results including turnout variance, duplicates, and missing evidence for investigation.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📱</span>
+                    <h3>Agent Mobile App</h3>
+                    <p>React Native app with OTP login, GPS tracking, offline support, photo capture, and push notifications.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🖥️</span>
+                    <h3>Admin Dashboard</h3>
+                    <p>Interactive map, victory dashboard, coverage heatmap, broadcast tool, device approval, and export reports.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔒</span>
+                    <h3>Device Approval System</h3>
+                    <p>No unauthorized access – each computer must be approved by Super Admin with role-based access control.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🏛️</span>
+                    <h3>4-Computer Command Center</h3>
+                    <p>Dedicated stations for Lead Admin, Data Analyst, Operations Coordinator, and Backup &amp; Incident Response.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📢</span>
+                    <h3>Broadcast Communication</h3>
+                    <p>Send instant messages to all agents, specific LGAs, or roles via SMS and in-app notifications.</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Service Worker for PWA -->
+        <!-- ==========================================================
+        DASHBOARD GRID
+        ========================================================== -->
+        <div class="dashboard-grid">
+
+            <!-- LEFT COLUMN -->
+            <div>
+
+                <!-- LGA LIST -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-map"></i> Local Government Areas</h3>
+                        <span class="badge-soft" id="lgaCount">20 LGAs</span>
+                    </div>
+                    <div class="lga-grid" id="lgaList">
+                        <!-- injected by JS -->
+                    </div>
+                </div>
+
+                <!-- INCIDENTS -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bell"></i> Incident Log</h3>
+                        <span class="badge-soft" id="incidentCountBadge">0 active</span>
+                    </div>
+                    <div id="incidentList">
+                        <!-- injected by JS -->
+                    </div>
+                </div>
+
+                <!-- AGENT DEPLOYMENT -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-check"></i> Party Agents</h3>
+                        <span class="badge-soft">by LGA</span>
+                    </div>
+                    <div class="deployment-grid" id="deploymentGrid">
+                        <!-- injected by JS -->
+                    </div>
+                    <div class="party-breakdown">
+                        <div class="party-row"><span class="party-label"><span class="party-dot apc"></span> APC</span> <strong id="apcCount">0</strong></div>
+                        <div class="party-row"><span class="party-label"><span class="party-dot pdp"></span> PDP</span> <strong id="pdpCount">0</strong></div>
+                        <div class="party-row"><span class="party-label"><span class="party-dot other"></span> Other</span> <strong id="otherCount">0</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+
+                <!-- RESULTS -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-poll"></i> Results Snapshot</h3>
+                        <span class="badge-soft">top LGAs</span>
+                    </div>
+                    <div id="resultsList">
+                        <!-- injected by JS -->
+                    </div>
+                </div>
+
+                <!-- WARD DETAIL -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-layer-group"></i> Wards & Polling Units</h3>
+                        <span class="badge-soft" id="wardCount">323 Wards</span>
+                    </div>
+                    <div id="wardDetail">
+                        <div class="ward-detail">
+                            <h4><i class="fas fa-info-circle"></i> Select an LGA above</h4>
+                            <div class="ward-list">
+                                <span class="ward-tag">Click any LGA to see wards & polling units</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMAND CENTER (4 Computers) -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-desktop"></i> Command Stations</h3>
+                        <span class="badge-soft">4-Computer Center</span>
+                    </div>
+                    <div class="command-stations" id="commandStations">
+                        <div class="station-card">
+                            <div class="station-role">👤 Lead Admin</div>
+                            <div class="station-status"><span class="dot online"></span> Online · Oversight</div>
+                        </div>
+                        <div class="station-card">
+                            <div class="station-role">📊 Data Analyst</div>
+                            <div class="station-status"><span class="dot online"></span> Online · Results</div>
+                        </div>
+                        <div class="station-card">
+                            <div class="station-role">📋 Operations Coord.</div>
+                            <div class="station-status"><span class="dot online"></span> Online · Agents</div>
+                        </div>
+                        <div class="station-card">
+                            <div class="station-role">🛡️ Backup & Incident</div>
+                            <div class="station-status"><span class="dot standby"></span> Standby · Response</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BROADCAST -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bullhorn"></i> Broadcast</h3>
+                        <span class="badge-soft">SMS & In-App</span>
+                    </div>
+                    <div class="broadcast-box">
+                        <input type="text" id="broadcastInput" placeholder="Type message to all agents..." />
+                        <button class="btn" id="broadcastBtn"><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                    <div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+                        <i class="fas fa-users"></i> Will reach 4,074 agents · 20 LGAs
+                    </div>
+                </div>
+
+                <!-- MAP / COMMAND VIEW -->
+                <div class="card" style="margin-top:24px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-map-marked-alt"></i> Command View</h3>
+                        <span class="badge-soft">Bauchi State</span>
+                    </div>
+                    <div class="map-placeholder">
+                        <i class="fas fa-satellite-dish"></i>
+                        <span>23 active clusters · 4 incident zones</span>
+                    </div>
+                    <div class="map-stats">
+                        <span><i class="fas fa-radio"></i> 47 field reports</span>
+                        <span><i class="fas fa-bolt"></i> 94% system stability</span>
+                        <span><i class="fas fa-users"></i> 4,074 agents online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================
+        FOOTER
+        ========================================================== -->
+        <footer class="command-footer">
+            <span>© 2026 Command Center · Bauchi State Political Party</span>
+            <span><i class="fas fa-shield-alt"></i> secure · v3.0 · 20 LGAs · 323 Wards · 4,074 Agents</span>
+        </footer>
+    </div>
+
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/src/assets/js/service-worker.js');
+        // ============================================================
+        //  BAICHI STATE COMPLETE DATA — 20 LGAs, 323 Wards, 4,074 Agents
+        // ============================================================
+
+        const bauchiData = {
+            lgas: [{
+                id: 'bauchi',
+                name: 'Bauchi',
+                wards: 15,
+                units: 187,
+                agents: 244,
+                votes: { apc: 4320, pdp: 3890, other: 620 },
+                wardsList: ['Birshi', 'Dan\'ama', 'Dandango', 'Dawaki', 'Durum', 'Galambi', 'Gwallagan Mayaki', 'Gwaram',
+                    'Jahun', 'Jama\'are', 'Kariya', 'Kofar Wambai', 'Limamin Kura', 'Makaranta', 'Miri'
+                ]
+            }, {
+                id: 'katagum',
+                name: 'Katagum',
+                wards: 14,
+                units: 165,
+                agents: 198,
+                votes: { apc: 2810, pdp: 3150, other: 340 },
+                wardsList: ['Azare', 'Bulkachuwa', 'Dambam', 'Gadau', 'Gambir', 'Gwaram', 'Jama\'are', 'Kafin Duka',
+                    'Kafin Kariya', 'Kariya', 'Madara', 'Nasarawa', 'Sakwa', 'Tafawa Balewa'
+                ]
+            }, {
+                id: 'misau',
+                name: 'Misau',
+                wards: 11,
+                units: 142,
+                agents: 167,
+                votes: { apc: 2230, pdp: 1950, other: 280 },
+                wardsList: ['Ajili', 'Bajama', 'Bansara', 'Bara', 'Dagauda', 'Gwaram', 'Hardawa', 'Jama\'are', 'Kafin Duka',
+                    'Kariya', 'Tashena'
+                ]
+            }, {
+                id: 'ningi',
+                name: 'Ningi',
+                wards: 12,
+                units: 138,
+                agents: 153,
+                votes: { apc: 1860, pdp: 2040, other: 190 },
+                wardsList: ['Burtu', 'Dagauda', 'Gwaram', 'Jama\'are', 'Kariya', 'Kurmi', 'Madara', 'Nasarawa', 'Ningi',
+                    'Sakwa', 'Tafawa Balewa', 'Unguwar Rimi'
+                ]
+            }, {
+                id: 'darazo',
+                name: 'Darazo',
+                wards: 10,
+                units: 121,
+                agents: 132,
+                votes: { apc: 1590, pdp: 1710, other: 130 },
+                wardsList: ['Azare', 'Burtu', 'Dagauda', 'Gwaram', 'Jama\'are', 'Kariya', 'Kurmi', 'Madara', 'Sakwa',
+                    'Tafawa Balewa'
+                ]
+            }, {
+                id: 'ganjuwa',
+                name: 'Ganjuwa',
+                wards: 11,
+                units: 108,
+                agents: 118,
+                votes: { apc: 1320, pdp: 1240, other: 110 },
+                wardsList: ['Bansara', 'Bara', 'Dagauda', 'Gwaram', 'Hardawa', 'Jama\'are', 'Kafin Duka', 'Kariya',
+                    'Tashena', 'Unguwar Rimi', 'Zumbu'
+                ]
+            }, {
+                id: 'itaskafu',
+                name: 'Itas/Gadau',
+                wards: 9,
+                units: 97,
+                agents: 104,
+                votes: { apc: 980, pdp: 1020, other: 90 },
+                wardsList: ['Azare', 'Dagauda', 'Gadau', 'Gwaram', 'Itas', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa']
+            }, {
+                id: 'jamaare',
+                name: 'Jama\'are',
+                wards: 10,
+                units: 112,
+                agents: 126,
+                votes: { apc: 1150, pdp: 1080, other: 95 },
+                wardsList: ['Burtu', 'Dagauda', 'Gwaram', 'Jama\'are', 'Kariya', 'Kurmi', 'Madara', 'Nasarawa', 'Sakwa',
+                    'Tafawa Balewa'
+                ]
+            }, {
+                id: 'gwaram',
+                name: 'Gwaram',
+                wards: 12,
+                units: 130,
+                agents: 142,
+                votes: { apc: 1340, pdp: 1280, other: 105 },
+                wardsList: ['Azare', 'Bansara', 'Bara', 'Dagauda', 'Gwaram', 'Hardawa', 'Jama\'are', 'Kafin Duka', 'Kariya',
+                    'Tashena', 'Unguwar Rimi', 'Zumbu'
+                ]
+            }, {
+                id: 'kirfi',
+                name: 'Kirfi',
+                wards: 8,
+                units: 85,
+                agents: 92,
+                votes: { apc: 760, pdp: 820, other: 70 },
+                wardsList: ['Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Kirfi', 'Madara', 'Sakwa', 'Tafawa Balewa']
+            }, {
+                id: 'alkaleri',
+                name: 'Alkaleri',
+                wards: 10,
+                units: 103,
+                agents: 115,
+                votes: { apc: 890, pdp: 940, other: 85 },
+                wardsList: ['Alkaleri', 'Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa',
+                    'Unguwar Rimi', 'Zumbu'
+                ]
+            }, {
+                id: 'bogoro',
+                name: 'Bogoro',
+                wards: 9,
+                units: 95,
+                agents: 108,
+                votes: { apc: 780, pdp: 850, other: 75 },
+                wardsList: ['Bansara', 'Bogoro', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa',
+                    'Unguwar Rimi'
+                ]
+            }, {
+                id: 'dass',
+                name: 'Dass',
+                wards: 8,
+                units: 88,
+                agents: 96,
+                votes: { apc: 720, pdp: 760, other: 65 },
+                wardsList: ['Bansara', 'Dagauda', 'Dass', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa']
+            }, {
+                id: 'torro',
+                name: 'Toro',
+                wards: 12,
+                units: 124,
+                agents: 135,
+                votes: { apc: 1120, pdp: 1180, other: 100 },
+                wardsList: ['Azare', 'Bansara', 'Bara', 'Dagauda', 'Gwaram', 'Hardawa', 'Jama\'are', 'Kariya', 'Tashena',
+                    'Toro', 'Unguwar Rimi', 'Zumbu'
+                ]
+            }, {
+                id: 'shira',
+                name: 'Shira',
+                wards: 9,
+                units: 98,
+                agents: 110,
+                votes: { apc: 840, pdp: 890, other: 80 },
+                wardsList: ['Azare', 'Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Shira', 'Tafawa Balewa']
+            }, {
+                id: 'giade',
+                name: 'Giade',
+                wards: 8,
+                units: 82,
+                agents: 95,
+                votes: { apc: 680, pdp: 720, other: 60 },
+                wardsList: ['Bansara', 'Dagauda', 'Giade', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa']
+            }, {
+                id: 'zaki',
+                name: 'Zaki',
+                wards: 10,
+                units: 104,
+                agents: 118,
+                votes: { apc: 860, pdp: 910, other: 78 },
+                wardsList: ['Azare', 'Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa', 'Zaki',
+                    'Zumbu'
+                ]
+            }, {
+                id: 'gamawa',
+                name: 'Gamawa',
+                wards: 11,
+                units: 115,
+                agents: 125,
+                votes: { apc: 930, pdp: 980, other: 88 },
+                wardsList: ['Azare', 'Bansara', 'Dagauda', 'Gamawa', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa',
+                    'Unguwar Rimi', 'Zumbu'
+                ]
+            }, {
+                id: 'warji',
+                name: 'Warji',
+                wards: 7,
+                units: 76,
+                agents: 85,
+                votes: { apc: 610, pdp: 650, other: 55 },
+                wardsList: ['Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Warji']
+            }, {
+                id: 'tafawa-balewa',
+                name: 'Tafawa Balewa',
+                wards: 9,
+                units: 94,
+                agents: 106,
+                votes: { apc: 740, pdp: 790, other: 68 },
+                wardsList: ['Bansara', 'Dagauda', 'Gwaram', 'Kariya', 'Madara', 'Sakwa', 'Tafawa Balewa', 'Unguwar Rimi',
+                    'Zumbu'
+                ]
+            }]
+        };
+
+        // Calculate totals
+        let totalAgents = 0,
+            totalUnits = 0,
+            totalWards = 0;
+        bauchiData.lgas.forEach(l => {
+            totalAgents += l.agents;
+            totalUnits += l.units;
+            totalWards += l.wards;
+        });
+
+        // ============================================================
+        //  RENDER FUNCTIONS
+        // ============================================================
+
+        function renderLGAs() {
+            const container = document.getElementById('lgaList');
+            container.innerHTML = bauchiData.lgas.map((lga, idx) => `
+                <div class="lga-item" data-id="${lga.id}" data-index="${idx}">
+                    <span class="lga-name">${lga.name}</span>
+                    <div class="lga-stats">
+                        <span class="wards"><i class="fas fa-layer-group"></i> ${lga.wards}</span>
+                        <span class="units"><i class="fas fa-flag"></i> ${lga.units}</span>
+                        <span><i class="fas fa-user"></i> ${lga.agents}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.lga-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    showWards(idx);
+                    document.querySelectorAll('.lga-item').forEach(x => x.classList.remove('active'));
+                    this.classList.add('active');
+                });
             });
         }
+
+        function showWards(index) {
+            const lga = bauchiData.lgas[index];
+            const container = document.getElementById('wardDetail');
+            container.innerHTML = `
+                <div class="ward-detail">
+                    <h4><i class="fas fa-map-pin"></i> ${lga.name} — ${lga.wards} Wards, ${lga.units} Polling Units</h4>
+                    <div class="ward-list">
+                        ${lga.wardsList.map(w => `<span class="ward-tag">${w}</span>`).join('')}
+                    </div>
+                    <div style="margin-top:8px; font-size:0.8rem; color:var(--text-muted);">
+                        <i class="fas fa-user-check"></i> ${lga.agents} agents deployed
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderIncidents() {
+            const incidents = [
+                { title: 'Dispute at PU 014, Birshi', lga: 'Bauchi', status: 'pending', time: '12:45' },
+                { title: 'Materials delay in Azare', lga: 'Katagum', status: 'pending', time: '11:20' },
+                { title: 'Agent intimidation reported', lga: 'Misau', status: 'resolved', time: '09:10' },
+                { title: 'Result transmission error', lga: 'Ningi', status: 'resolved', time: '08:30' },
+                { title: 'Accreditation issue at Ward 7', lga: 'Darazo', status: 'critical', time: '07:55' },
+                { title: 'Turnout anomaly detected', lga: 'Ganjuwa', status: 'pending', time: '07:20' },
+            ];
+            const container = document.getElementById('incidentList');
+            container.innerHTML = incidents.map(inc => `
+                <div class="incident-item">
+                    <div class="incident-info">
+                        <span class="incident-title">${inc.title}</span>
+                        <span class="incident-meta"><span>${inc.lga}</span> <span>${inc.time}</span></span>
+                    </div>
+                    <span class="incident-status ${inc.status}">${inc.status}</span>
+                </div>
+            `).join('');
+            document.getElementById('incidentCountBadge').textContent = `${incidents.filter(i => i.status !== 'resolved').length} active`;
+        }
+
+        function renderResults() {
+            const container = document.getElementById('resultsList');
+            const top = bauchiData.lgas.slice(0, 8);
+            let html = `
+                <div class="result-row header-row">
+                    <span>LGA</span><span>APC</span><span>PDP</span><span>Other</span>
+                </div>
+            `;
+            html += top.map(r => `
+                <div class="result-row">
+                    <span class="lga">${r.name}</span>
+                    <span class="votes apc">${r.votes.apc}</span>
+                    <span class="votes pdp">${r.votes.pdp}</span>
+                    <span class="votes">${r.votes.other}</span>
+                </div>
+            `).join('');
+            container.innerHTML = html;
+        }
+
+        function renderDeployment() {
+            const container = document.getElementById('deploymentGrid');
+            const top = bauchiData.lgas.slice(0, 8);
+            container.innerHTML = top.map(l => `
+                <div class="deploy-item">
+                    <span>${l.name}</span>
+                    <span class="deploy-count">${l.agents}</span>
+                </div>
+            `).join('');
+
+            // Party counts
+            let apc = 0,
+                pdp = 0,
+                other = 0;
+            bauchiData.lgas.forEach(l => {
+                apc += l.votes.apc;
+                pdp += l.votes.pdp;
+                other += l.votes.other;
+            });
+            document.getElementById('apcCount').textContent = apc.toLocaleString();
+            document.getElementById('pdpCount').textContent = pdp.toLocaleString();
+            document.getElementById('otherCount').textContent = other.toLocaleString();
+        }
+
+        function updateStats() {
+            document.getElementById('totalAgents').textContent = totalAgents.toLocaleString();
+            document.getElementById('totalUnits').textContent = totalUnits.toLocaleString();
+            document.getElementById('activeIncidents').textContent = '12';
+            document.getElementById('totalVotes').textContent = (412000 + Math.floor(Math.random() * 5000)).toLocaleString();
+            document.getElementById('lgaCount').textContent = `${bauchiData.lgas.length} LGAs`;
+            document.getElementById('wardCount').textContent = `${totalWards} Wards`;
+        }
+
+        // ============================================================
+        //  BROADCAST
+        // ============================================================
+        document.getElementById('broadcastBtn').addEventListener('click', function() {
+            const input = document.getElementById('broadcastInput');
+            const msg = input.value.trim();
+            if (!msg) return alert('Please type a message');
+            alert(`📢 Broadcast sent to 4,074 agents:\n\n"${msg}"`);
+            input.value = '';
+            // Simulate sending
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Sent!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+                }, 2000);
+            }, 1500);
+        });
+
+        // ============================================================
+        //  SEARCH
+        // ============================================================
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const items = document.querySelectorAll('.lga-item');
+            items.forEach(el => {
+                const name = el.querySelector('.lga-name').textContent.toLowerCase();
+                el.style.display = name.includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        // ============================================================
+        //  DARK MODE
+        // ============================================================
+        const toggle = document.getElementById('darkModeToggle');
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('commandCenterDark', document.body.classList.contains('dark') ? 'true' : 'false');
+        });
+        if (localStorage.getItem('commandCenterDark') === 'true') {
+            document.body.classList.add('dark');
+            icon.className = 'fas fa-sun';
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        renderLGAs();
+        renderIncidents();
+        renderResults();
+        renderDeployment();
+        updateStats();
+
+        // Select first LGA by default
+        setTimeout(() => {
+            const first = document.querySelector('.lga-item');
+            if (first) {
+                first.click();
+            }
+        }, 100);
+
+        // ============================================================
+        //  LIVE UPDATES (simulated)
+        // ============================================================
+        setInterval(() => {
+            document.getElementById('activeIncidents').textContent =
+                (8 + Math.floor(Math.random() * 8)).toString();
+            document.getElementById('totalVotes').textContent =
+                (412000 + Math.floor(Math.random() * 8000)).toLocaleString();
+        }, 15000);
     </script>
 </body>
 </html>
