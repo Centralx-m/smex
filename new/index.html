@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAAGC – Election Monitoring System</title>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #1a1a2e;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 52, 96, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 6px;
+            background: #fff;
+            padding: 3px;
+        }
+
+        .navbar .logo .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background: #e94560;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .navbar .logo span {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .navbar .logo span.highlight {
+            color: #e94560;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.25s;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #fff;
+            background: rgba(233, 69, 96, 0.3);
+        }
+
+        .navbar .nav-links a.cta {
+            background: #e94560;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 8px;
+        }
+
+        .navbar .nav-links a.cta:hover {
+            background: #c73652;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Toggle */
+        .navbar .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .navbar .menu-toggle span {
+            width: 28px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 140px 0 80px 0;
+            background: linear-gradient(135deg, #0f3460 0%, #1a4a7a 50%, #16213e 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.15), transparent);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1), transparent);
+            border-radius: 50%;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .hero-content h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .hero .hero-content h1 span {
+            color: #e94560;
+        }
+
+        .hero .hero-content p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            max-width: 500px;
+        }
+
+        .hero .hero-content .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero .hero-content .hero-buttons .btn-primary {
+            background: #e94560;
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.25s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .hero .hero-content .hero-buttons .btn-primary:hover {
+            background: #c73652;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+        }
+
+        .hero .hero-content .hero-buttons .btn-secondary {
+            background: transparent;
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.25s;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .hero .hero-content .hero-buttons .btn-secondary:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hero .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero .hero-image .illustration {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .hero .hero-image .illustration .icon-big {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+
+        .hero .hero-image .illustration h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .hero .hero-image .illustration p {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        .hero .hero-image .illustration .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero .hero-image .illustration .badge-row span {
+            background: rgba(233, 69, 96, 0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+
+        /* ===== SECTION COMMON ===== */
+        .section {
+            padding: 70px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 34px;
+            color: #0f3460;
+            font-weight: 800;
+        }
+
+        .section-header h2 span {
+            color: #e94560;
+        }
+
+        .section-header p {
+            color: #4a5568;
+            max-width: 600px;
+            margin: 10px auto 0;
+            font-size: 17px;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stats-grid .stat-item {
+            padding: 20px;
+        }
+
+        .stats-grid .stat-item .number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f3460;
+        }
+
+        .stats-grid .stat-item .number span {
+            color: #e94560;
+        }
+
+        .stats-grid .stat-item .label {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+
+        /* ===== SERVICES / FEATURES ===== */
+        .features-section {
+            background: #f8fafc;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .features-grid .feature-card {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: 0.3s;
+            border: 1px solid #edf2f7;
+        }
+
+        .features-grid .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .features-grid .feature-card .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .features-grid .feature-card h3 {
+            font-size: 18px;
+            color: #0f3460;
+            margin-bottom: 8px;
+        }
+
+        .features-grid .feature-card p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ===== TECHNOLOGY STACK ===== */
+        .tech-section {
+            background: #fff;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .tech-grid .tech-item {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #edf2f7;
+            transition: 0.3s;
+        }
+
+        .tech-grid .tech-item:hover {
+            border-color: #e94560;
+            transform: translateY(-3px);
+        }
+
+        .tech-grid .tech-item .tech-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .tech-grid .tech-item .tech-name {
+            font-weight: 700;
+            color: #0f3460;
+            font-size: 15px;
+        }
+
+        .tech-grid .tech-item .tech-desc {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section {
+            background: #f8fafc;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .timeline-grid .timeline-item {
+            background: #fff;
+            padding: 20px 18px;
+            border-radius: 12px;
+            border-left: 4px solid #e94560;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .timeline-grid .timeline-item .week {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e94560;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-grid .timeline-item h4 {
+            font-size: 15px;
+            color: #0f3460;
+            margin: 6px 0 4px;
+        }
+
+        .timeline-grid .timeline-item p {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        /* ===== BUDGET SECTION ===== */
+        .budget-section {
+            background: #fff;
+        }
+
+        .budget-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .budget-grid .budget-item {
+            background: #f7fafc;
+            padding: 18px 14px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #edf2f7;
+        }
+
+        .budget-grid .budget-item .amount {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f3460;
+        }
+
+        .budget-grid .budget-item .label {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 3px;
+        }
+
+        .budget-grid .budget-item.total {
+            background: #0f3460;
+            border-color: #0f3460;
+        }
+
+        .budget-grid .budget-item.total .amount {
+            color: #fff;
+        }
+
+        .budget-grid .budget-item.total .label {
+            color: #a0c4ff;
+        }
+
+        /* ===== CONTACT / CTA ===== */
+        .cta-section {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .cta-section h2 span {
+            color: #e94560;
+        }
+
+        .cta-section p {
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            font-size: 17px;
+        }
+
+        .cta-section .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 16px;
+        }
+
+        .cta-section .contact-info a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.25s;
+        }
+
+        .cta-section .contact-info a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #e94560;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a1a2e;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer .footer-logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .footer .footer-logo span {
+            color: #e94560;
+        }
+
+        .footer a {
+            color: #e94560;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .budget-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 15px 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 10px;
+            }
+
+            .navbar .nav-links.open {
+                display: flex;
+            }
+
+            .navbar .menu-toggle {
+                display: flex;
+            }
+
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero .hero-content .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 120px 0 50px;
+            }
+
+            .hero .hero-content h1 {
+                font-size: 30px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .budget-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 50px 0;
+            }
+
+            .section-header h2 {
+                font-size: 26px;
+            }
+
+            .cta-section .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid .stat-item .number {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .budget-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .tech-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero .hero-content h1 {
+                font-size: 26px;
+            }
+            .hero .hero-content .hero-buttons .btn-primary,
+            .hero .hero-content .hero-buttons .btn-secondary {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo/logo.png" alt="TAAGC Logo" onerror="this.style.display='none'; document.getElementById('navLogoFallback').style.display='flex';" />
+                <div class="logo-placeholder" id="navLogoFallback" style="display:none;">TA</div>
+                <span>TAAGC <span class="highlight">·</span> Election</span>
+            </div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#features">Features</a>
+                <a href="#tech">Technology</a>
+                <a href="#timeline">Timeline</a>
+                <a href="#budget">Budget</a>
+                <a href="#contact" class="cta">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Private Party <span>Election Monitoring</span> System</h1>
+                <p>
+                    Real-time agent tracking, results collation, and incident management
+                    for Bauchi State – 20 LGAs, 212 Wards, 4,074 Polling Units.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-primary">Get Started</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="illustration">
+                    <div class="icon-big">🗳️</div>
+                    <h3>Command Center</h3>
+                    <p>Real-time monitoring dashboard</p>
+                    <div class="badge-row">
+                        <span>20 LGAs</span>
+                        <span>212 Wards</span>
+                        <span>4,074 PUs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="stats-section section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number">20</div>
+                    <div class="label">Local Government Areas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">212</div>
+                    <div class="label">Wards</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">4,074</div>
+                    <div class="label">Polling Units</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number"><span>₦</span>450K</div>
+                    <div class="label">Project Budget</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features-section section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>System <span>Features</span></h2>
+                <p>Complete election monitoring solution for your party</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="icon">📍</span>
+                    <h3>Real-Time Agent Tracking</h3>
+                    <p>Track all 4,074 agents on an interactive map with live GPS locations, check-in/out status, and battery levels.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📊</span>
+                    <h3>Results Collation</h3>
+                    <p>Collate internal vote counts from Polling Unit → Ward → LGA → State level in real-time with photo evidence.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🚨</span>
+                    <h3>Incident Management</h3>
+                    <p>Report, assign, escalate, and resolve incidents with photos, GPS location, and severity levels.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔍</span>
+                    <h3>Anomaly Detection</h3>
+                    <p>Auto-flag suspicious results including turnout variance, duplicates, and missing evidence for investigation.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📱</span>
+                    <h3>Agent Mobile App</h3>
+                    <p>React Native app with OTP login, GPS tracking, offline support, photo capture, and push notifications.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🖥️</span>
+                    <h3>Admin Dashboard</h3>
+                    <p>Interactive map, victory dashboard, coverage heatmap, broadcast tool, device approval, and export reports.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔒</span>
+                    <h3>Device Approval System</h3>
+                    <p>No unauthorized access – each computer must be approved by Super Admin with role-based access control.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🏛️</span>
+                    <h3>4-Computer Command Center</h3>
+                    <p>Dedicated stations for Lead Admin, Data Analyst, Operations Coordinator, and Backup &amp; Incident Response.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📢</span>
+                    <h3>Broadcast Communication</h3>
+                    <p>Send instant messages to all agents, specific LGAs, or roles via SMS and in-app notifications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TECHNOLOGY ===== -->
+    <section class="tech-section section" id="tech">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technology <span>Stack</span></h2>
+                <p>Modern, scalable, and cost-effective technologies</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="tech-icon">🔥</span>
+                    <div class="tech-name">Firebase</div>
+                    <div class="tech-desc">Database, Auth, Storage</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">⚡</span>
+                    <div class="tech-name">Vercel</div>
+                    <div class="tech-desc">Hosting, Serverless Functions</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📱</span>
+                    <div class="tech-name">React Native</div>
+                    <div class="tech-desc">Agent Mobile App</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">⚛️</span>
+                    <div class="tech-name">React</div>
+                    <div class="tech-desc">Admin Dashboard</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🟢</span>
+                    <div class="tech-name">Node.js</div>
+                    <div class="tech-desc">Backend API</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🗺️</span>
+                    <div class="tech-name">Mapbox</div>
+                    <div class="tech-desc">Interactive Maps</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🐘</span>
+                    <div class="tech-name">PostgreSQL</div>
+                    <div class="tech-desc">Geospatial Database</div>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📨</span>
+                    <div class="tech-name">Termii</div>
+                    <div class="tech-desc">SMS Notifications</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TIMELINE ===== -->
+    <section class="timeline-section section" id="timeline">
+        <div class="container">
+            <div class="section-header">
+                <h2>Implementation <span>Timeline</span></h2>
+                <p>8 weeks to a fully operational system</p>
+            </div>
+            <div class="timeline-grid">
+                <div class="timeline-item">
+                    <div class="week">Week 1</div>
+                    <h4>Firebase Setup &amp; Database</h4>
+                    <p>Firestore schema design, authentication system, security rules</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 2</div>
+                    <h4>Backend API</h4>
+                    <p>Device registration, approval logic, admin functions</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 3</div>
+                    <h4>Admin Dashboard UI</h4>
+                    <p>Login, summary, map skeleton, layout design</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 4</div>
+                    <h4>Mobile App UI</h4>
+                    <p>Login, registration, photo capture, device fingerprint</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 5</div>
+                    <h4>Core Agent Features</h4>
+                    <p>GPS tracking, check-in/out, result submission</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 6</div>
+                    <h4>Admin Map &amp; Monitoring</h4>
+                    <p>Map integration, agent tracking, device approval</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 7</div>
+                    <h4>Alerts &amp; Analytics</h4>
+                    <p>Anomaly detection, broadcast system, victory dashboard</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="week">Week 8</div>
+                    <h4>Testing &amp; Deployment</h4>
+                    <p>QA, bug fixes, production deploy, agent training</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BUDGET ===== -->
+    <section class="budget-section section" id="budget">
+        <div class="container">
+            <div class="section-header">
+                <h2>Budget <span>Breakdown</span></h2>
+                <p>Total investment: ₦450,000</p>
+            </div>
+            <div class="budget-grid">
+                <div class="budget-item">
+                    <div class="amount">₦250K</div>
+                    <div class="label">Software Development</div>
+                </div>
+                <div class="budget-item">
+                    <div class="amount">₦100K</div>
+                    <div class="label">Infrastructure &amp; Hosting</div>
+                </div>
+                <div class="budget-item">
+                    <div class="amount">₦50K</div>
+                    <div class="label">APIs &amp; Services</div>
+                </div>
+                <div class="budget-item">
+                    <div class="amount">₦50K</div>
+                    <div class="label">Contingency</div>
+                </div>
+                <div class="budget-item total">
+                    <div class="amount">₦450K</div>
+                    <div class="label">TOTAL BUDGET</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA / CONTACT ===== -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <h2>Ready to Build Your <span>Command Center</span>?</h2>
+            <p>
+                Let's discuss how TAAGC can build your private election monitoring system.
+                Contact us today to get started.
+            </p>
+            <div class="contact-info">
+                <a href="tel:+2348023566143">📞 +2348023566143</a>
+                <a href="mailto:admin@taagc.site">✉️ admin@taagc.site</a>
+                <a href="#">🏢 TRIPLE A AHAL GLOBAL CONCEPT</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">TAAGC <span>·</span> Election Monitoring</div>
+            <p style="margin-bottom:4px;">
+                &copy; 2026 TRIPLE A AHAL GLOBAL CONCEPT (TAAGC). All rights reserved.
+            </p>
+            <p style="font-size:12px; opacity:0.6;">
+                Built by <a href="mailto:admin@taagc.site">Ahmad Hamza</a> · Full-Stack Developer
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // =============================================
+        // 1. MOBILE MENU
+        // =============================================
+
+        function toggleMenu() {
+            const links = document.getElementById('navLinks');
+            links.classList.toggle('open');
+        }
+
+        // Close menu on link click (mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+
+        // =============================================
+        // 2. NAVBAR SCROLL EFFECT
+        // =============================================
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(15, 52, 96, 0.98)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.2)';
+            } else {
+                navbar.style.background = 'rgba(15, 52, 96, 0.95)';
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // =============================================
+        // 3. SMOOTH SCROLL FOR ANCHOR LINKS
+        // =============================================
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // =============================================
+        // 4. ANIMATE STATS ON SCROLL
+        // =============================================
+
+        const statNumbers = document.querySelectorAll('.stats-grid .stat-item .number');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = '0.6s ease';
+            observer.observe(el);
+        });
+
+        // Trigger animation after a moment
+        setTimeout(() => {
+            statNumbers.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
+        }, 300);
+
+        // =============================================
+        // 5. TOAST / WELCOME
+        // =============================================
+
+        console.log('🏛️ TAAGC Election Monitoring System');
+        console.log('👤 Developed by: Ahmad Hamza');
+        console.log('📞 Contact: +2348023566143');
+        console.log('✉️ Email: admin@taagc.site');
+
+        // Show welcome message after load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ TAAGC website loaded successfully!');
+        });
+    </script>
+
+</body>
+</html>
