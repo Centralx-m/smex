@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Proposal & Budget – Election Monitoring System</title>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: #fff;
+            padding: 30px 40px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 30px rgba(15, 52, 96, 0.3);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header h1 span {
+            color: #e94560;
+        }
+
+        .header .badge {
+            background: #e94560;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .controls .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls button {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pdf {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-pdf:hover {
+            background: #c73652;
+        }
+
+        .btn-docx {
+            background: #2b6cb0;
+            color: #fff;
+        }
+        .btn-docx:hover {
+            background: #1e4e7a;
+        }
+
+        .btn-html {
+            background: #38a169;
+            color: #fff;
+        }
+        .btn-html:hover {
+            background: #2d7a4f;
+        }
+
+        .btn-print {
+            background: #6b46c1;
+            color: #fff;
+        }
+        .btn-print:hover {
+            background: #553c8a;
+        }
+
+        /* ===== PROPOSAL CONTENT ===== */
+        .proposal-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            padding: 50px 60px;
+        }
+
+        .proposal-container h1 {
+            font-size: 28px;
+            color: #0f3460;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .proposal-container .subtitle {
+            text-align: center;
+            color: #e94560;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .proposal-container .meta-info {
+            text-align: center;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .proposal-container .meta-info span {
+            margin: 0 15px;
+        }
+
+        .proposal-container h2 {
+            font-size: 22px;
+            color: #0f3460;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e94560;
+        }
+
+        .proposal-container h3 {
+            font-size: 18px;
+            color: #16213e;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .proposal-container p {
+            line-height: 1.7;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .proposal-container ul,
+        .proposal-container ol {
+            padding-left: 25px;
+            margin-bottom: 15px;
+            color: #2d3748;
+            line-height: 1.7;
+        }
+
+        .proposal-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px 0;
+            font-size: 14px;
+        }
+
+        .proposal-container th {
+            background: #0f3460;
+            color: #fff;
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .proposal-container td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 14px;
+        }
+
+        .proposal-container tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .proposal-container tr:hover {
+            background: #edf2f7;
+        }
+
+        .proposal-container blockquote {
+            border-left: 4px solid #e94560;
+            padding: 12px 20px;
+            background: #fef0f2;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .proposal-container .highlight-box {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .proposal-container .budget-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .proposal-container .budget-card {
+            background: #f7fafc;
+            padding: 16px 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .proposal-container .budget-card .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f3460;
+        }
+
+        .proposal-container .budget-card .label {
+            font-size: 13px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+
+        .proposal-container .budget-card.total {
+            background: #0f3460;
+            color: #fff;
+            border-color: #0f3460;
+        }
+
+        .proposal-container .budget-card.total .amount {
+            color: #fff;
+        }
+
+        .proposal-container .budget-card.total .label {
+            color: #a0c4ff;
+        }
+
+        .proposal-container .signoff {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .proposal-container .signoff .field {
+            border-bottom: 1px solid #a0aec0;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            min-height: 30px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f3460;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background: #38a169;
+        }
+        .toast.error {
+            background: #e94560;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .proposal-container {
+                padding: 20px;
+            }
+            .proposal-container table {
+                font-size: 12px;
+            }
+            .proposal-container th,
+            .proposal-container td {
+                padding: 6px 8px;
+            }
+            .budget-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media print {
+            .controls,
+            .header .badge,
+            .btn-group {
+                display: none !important;
+            }
+            .header {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .proposal-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .proposal-container table th {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .proposal-container .budget-card.total {
+                background: #0f3460 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .toast {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div>
+            <h1>📄 Project Proposal <span>&amp; Budget</span></h1>
+            <div style="font-size:14px; opacity:0.8; margin-top:4px;">
+                Private Party Election Monitoring System · Bauchi State
+            </div>
+        </div>
+        <div class="badge">
+            ₦450,000 Budget · 8 Weeks
+        </div>
+    </header>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls">
+        <div style="font-size:14px; color:#4a5568;">
+            📄 Full proposal with budget breakdown
+        </div>
+        <div class="btn-group">
+            <button class="btn-pdf" onclick="exportProposal('pdf')">📄 Export PDF</button>
+            <button class="btn-docx" onclick="exportProposal('docx')">📝 Export DOCX</button>
+            <button class="btn-html" onclick="exportProposal('html')">🌐 Export HTML</button>
+            <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+        </div>
+    </div>
+
+    <!-- ===== PROPOSAL CONTENT ===== -->
+    <div class="proposal-container" id="proposalContent">
+
+        <h1>PROJECT PROPOSAL</h1>
+        <div class="subtitle">Private Party Election Monitoring System</div>
+        <div class="meta-info">
+            <span><strong>Bauchi State</strong></span>
+            <span>•</span>
+            <span><strong>20</strong> LGAs</span>
+            <span>•</span>
+            <span><strong>212</strong> Wards</span>
+            <span>•</span>
+            <span><strong>4,074</strong> Polling Units</span>
+            <span>•</span>
+            <span><strong>₦450,000</strong> Budget</span>
+            <span>•</span>
+            <span><strong>8</strong> Weeks</span>
+        </div>
+
+        <!-- ===== SECTION 1: EXECUTIVE SUMMARY ===== -->
+        <h2>1. Executive Summary</h2>
+        <p>
+            <strong>Project Name:</strong> Private Party Election Monitoring System – Bauchi State Rollout
+        </p>
+        <p>
+            <strong>Objective:</strong> Build a private, internal election monitoring system for a political party to track agents, monitor polling units, collate results, and detect problems in real-time – entirely independent of INEC or government systems.
+        </p>
+        <p>
+            <strong>Technology Stack:</strong> Firebase (Database, Auth, Storage) + Vercel (Hosting, Serverless Functions) + React Native (Mobile App) + React (Admin Dashboard)
+        </p>
+
+        <div class="highlight-box">
+            <strong>🔑 Key Distinction:</strong> This system is strictly for internal party use. It does not:
+            <ul style="margin-top:8px;">
+                <li>Interface with INEC systems or portals</li>
+                <li>Claim authority to declare official winners</li>
+                <li>Replace constitutionally mandated electoral processes</li>
+                <li>Publish results publicly or to external audiences</li>
+            </ul>
+        </div>
+
+        <!-- ===== SECTION 2: PROJECT OBJECTIVES ===== -->
+        <h2>2. Project Objectives</h2>
+
+        <h3>2.1 Primary Objectives</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Objective</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Agent Tracking</strong></td>
+                    <td>Track all 4,074 agents in real-time on an interactive map with GPS locations</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>Results Collation</strong></td>
+                    <td>Collate internal vote counts from PU → Ward → LGA → State levels</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Victory Dashboard</strong></td>
+                    <td>Display real-time victory probability across all levels</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Anomaly Detection</strong></td>
+                    <td>Automatically flag suspicious results (turnout variance, duplicates, missing evidence)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Incident Management</strong></td>
+                    <td>Receive, track, and resolve incidents reported by agents</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Coverage Optimization</strong></td>
+                    <td>Identify uncovered PUs and enable rapid reassignment</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Broadcast Communication</strong></td>
+                    <td>Send instant messages to agents via SMS and in-app notifications</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><strong>Device Approval</strong></td>
+                    <td>Ensure only authorized computers access the dashboard</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><strong>Audit Trail</strong></td>
+                    <td>Maintain complete logs of all admin actions</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2 Benefits</h3>
+        <ul>
+            <li><strong>Data-Driven Decision Making:</strong> Real-time information enables rapid strategic responses</li>
+            <li><strong>Independent Verification:</strong> Internal data provides verification against official results</li>
+            <li><strong>Enhanced Security:</strong> Device fingerprinting and approval system prevents unauthorized access</li>
+            <li><strong>Cost Efficiency:</strong> Firebase + Vercel free tiers keep hosting costs near zero</li>
+            <li><strong>Scalability:</strong> System architecture supports expansion to other states</li>
+        </ul>
+
+        <!-- ===== SECTION 3: SYSTEM COMPONENTS ===== -->
+        <h2>3. System Components</h2>
+
+        <h3>3.1 Agent Mobile App</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Authentication</strong></td><td>OTP via phone number – no passwords</td></tr>
+                <tr><td><strong>GPS Tracking</strong></td><td>Real-time location with check-in/out, timestamp, battery status</td></tr>
+                <tr><td><strong>Results Submission</strong></td><td>Submit internal vote counts per polling unit with photo evidence</td></tr>
+                <tr><td><strong>Incident Reporting</strong></td><td>Report problems with photos, GPS, and severity levels</td></tr>
+                <tr><td><strong>Offline Support</strong></td><td>Store data locally when network is unavailable</td></tr>
+                <tr><td><strong>Device Fingerprint</strong></td><td>One device per agent – prevents sharing</td></tr>
+                <tr><td><strong>Photo Capture</strong></td><td>Agent registration photo + tally sheet evidence</td></tr>
+                <tr><td><strong>Broadcast Inbox</strong></td><td>Receive messages from HQ</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.2 Admin Web Dashboard</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Live Summary</strong></td><td>Total agents, online agents, results submitted, incidents</td></tr>
+                <tr><td><strong>Interactive Map</strong></td><td>Bauchi State – zoom from LGAs → Wards → Polling Units</td></tr>
+                <tr><td><strong>Agent Tracking</strong></td><td>Live GPS dots with color coding (Online/Offline/No Check-in)</td></tr>
+                <tr><td><strong>Coverage Heatmap</strong></td><td>Visualize agent density – red zones = uncovered PUs</td></tr>
+                <tr><td><strong>Victory Dashboard</strong></td><td>Real-time collation from PU to State level with confidence scoring</td></tr>
+                <tr><td><strong>Anomaly Detection</strong></td><td>Auto-flag suspicious results (turnout variance, duplicates, no photo)</td></tr>
+                <tr><td><strong>Incident Management</strong></td><td>Report, assign, escalate, and resolve incidents</td></tr>
+                <tr><td><strong>Device Approval</strong></td><td>Approve/deny/block computers accessing the dashboard</td></tr>
+                <tr><td><strong>Broadcast Tool</strong></td><td>Send messages to all agents, specific LGAs, or roles</td></tr>
+                <tr><td><strong>Reports Export</strong></td><td>CSV, PDF, Excel exports of all data</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.3 Device Approval System</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rule</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Rule 1</strong></td><td>No computer can access any dashboard page until Super Admin approves it</td></tr>
+                <tr><td><strong>Rule 2</strong></td><td>Each computer has a specific assigned role (Lead Admin / Data Analyst / Ops Coordinator / Backup Admin)</td></tr>
+                <tr><td><strong>Rule 3</strong></td><td>Each role has access to specific pages only – no cross-role access</td></tr>
+                <tr><td><strong>Rule 4</strong></td><td>Unauthorized access attempts are logged and trigger alerts</td></tr>
+                <tr><td><strong>Rule 5</strong></td><td>Super Admin can approve, deny, block, or revoke any device at any time</td></tr>
+                <tr><td><strong>Rule 6</strong></td><td>3 unauthorized attempts = auto-block</td></tr>
+            </tbody>
+        </table>
+
+        <h3>3.4 4-Computer Command Center Setup</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Computer</th>
+                    <th>Role</th>
+                    <th>User</th>
+                    <th>Access</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>PC #1</strong></td>
+                    <td>Command Center Main</td>
+                    <td>Lead Admin / State Coordinator</td>
+                    <td>Full Access – all modules</td>
+                </tr>
+                <tr>
+                    <td><strong>PC #2</strong></td>
+                    <td>Data Analysis &amp; Anomaly Detection</td>
+                    <td>Data Analyst</td>
+                    <td>Results + Anomalies ONLY</td>
+                </tr>
+                <tr>
+                    <td><strong>PC #3</strong></td>
+                    <td>Agent Monitoring &amp; Dispatch</td>
+                    <td>Operations Coordinator</td>
+                    <td>Agents + Map + Dispatch ONLY</td>
+                </tr>
+                <tr>
+                    <td><strong>PC #4</strong></td>
+                    <td>Backup &amp; Incident Response</td>
+                    <td>Backup Admin</td>
+                    <td>Incidents + Broadcast ONLY</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 4: BUDGET ===== -->
+        <h2>4. Budget &amp; Expenditure Breakdown</h2>
+
+        <h3>4.1 Total Budget: ₦450,000</h3>
+
+        <div class="budget-summary">
+            <div class="budget-card">
+                <div class="amount">₦250,000</div>
+                <div class="label">Software Development</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦100,000</div>
+                <div class="label">Infrastructure &amp; Hosting</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦50,000</div>
+                <div class="label">APIs &amp; Services</div>
+            </div>
+            <div class="budget-card">
+                <div class="amount">₦50,000</div>
+                <div class="label">Contingency</div>
+            </div>
+            <div class="budget-card total">
+                <div class="amount">₦450,000</div>
+                <div class="label">TOTAL BUDGET</div>
+            </div>
+        </div>
+
+        <h3>4.2 Detailed Breakdown</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Cost (₦)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">A. Software Development</td>
+                </tr>
+                <tr>
+                    <td>Backend Development</td>
+                    <td>Vercel serverless functions, Firebase integration, API design</td>
+                    <td>120,000</td>
+                </tr>
+                <tr>
+                    <td>Mobile App Development</td>
+                    <td>React Native app for agents (check-in, submit results, incidents)</td>
+                    <td>130,000</td>
+                </tr>
+                <tr>
+                    <td>Admin Dashboard</td>
+                    <td>React dashboard with map, analytics, device approval system</td>
+                    <td>100,000</td>
+                </tr>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">B. Infrastructure &amp; Hosting</td>
+                </tr>
+                <tr>
+                    <td>Vercel Hosting (1 year)</td>
+                    <td>Pro plan for production deployment</td>
+                    <td>0 (free tier) – 12,000</td>
+                </tr>
+                <tr>
+                    <td>Firebase</td>
+                    <td>Firestore, Auth, Storage – free tier (Spark plan)</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Map Engine Credits</td>
+                    <td>Mapbox tiles for interactive maps</td>
+                    <td>20,000</td>
+                </tr>
+                <tr>
+                    <td>SMS API Credits</td>
+                    <td>Termii/Twilio for OTP, alerts, broadcasts</td>
+                    <td>20,000</td>
+                </tr>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td colspan="3">C. Contingency</td>
+                </tr>
+                <tr>
+                    <td>Miscellaneous / Buffer</td>
+                    <td>Unforeseen costs, testing, deployment support</td>
+                    <td>20,000 – 48,000</td>
+                </tr>
+                <tr style="background:#0f3460; color:#fff; font-weight:700;">
+                    <td colspan="2">TOTAL</td>
+                    <td>₦380,000 – ₦442,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4.3 What is NOT Included</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Estimated Cost</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>4 Command Center Computers</td>
+                    <td>₦1,400,000 – ₦2,200,000</td>
+                    <td>Use existing computers or rent/stagger</td>
+                </tr>
+                <tr>
+                    <td>UPS (3,000VA)</td>
+                    <td>₦150,000</td>
+                    <td>Power backup for 4 computers</td>
+                </tr>
+                <tr>
+                    <td>Large Screen Display</td>
+                    <td>₦200,000 – ₦400,000</td>
+                    <td>Optional – for team viewing</td>
+                </tr>
+                <tr>
+                    <td>Office Internet Setup</td>
+                    <td>₦50,000 – ₦100,000</td>
+                    <td>Fiber + 4G LTE backup</td>
+                </tr>
+                <tr>
+                    <td>Field Agent Stipends</td>
+                    <td>Variable</td>
+                    <td>Data bundles and allowances</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>4.4 Cost Optimization Options</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Option</th>
+                    <th>Savings</th>
+                    <th>Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Use existing computers</td>
+                    <td>₦1,400,000+</td>
+                    <td>No upfront hardware cost</td>
+                </tr>
+                <tr>
+                    <td>Use free map tiles (OpenStreetMap)</td>
+                    <td>₦20,000</td>
+                    <td>Slightly lower quality</td>
+                </tr>
+                <tr>
+                    <td>Start with 1 LGA pilot</td>
+                    <td>Reduces initial data load</td>
+                    <td>De-risks full rollout</td>
+                </tr>
+                <tr>
+                    <td>Use Vercel free tier</td>
+                    <td>₦12,000</td>
+                    <td>100GB bandwidth/month</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 5: TIMELINE ===== -->
+        <h2>5. Implementation Timeline</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Milestone</th>
+                    <th>Deliverable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Week 1</strong></td>
+                    <td>Firebase project setup, Firestore schema design, authentication system</td>
+                    <td>Database structure complete</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong></td>
+                    <td>Backend API development, device registration/approval logic</td>
+                    <td>API endpoints complete</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong></td>
+                    <td>Admin dashboard UI (login, summary, map skeleton)</td>
+                    <td>Frontend scaffolding</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 4</strong></td>
+                    <td>Mobile app UI + login + registration (photo + device fingerprint)</td>
+                    <td>Agent registration flow</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 5</strong></td>
+                    <td>Mobile app: GPS tracking, check-in/out, result submission</td>
+                    <td>Core agent functionality</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 6</strong></td>
+                    <td>Admin dashboard: Map integration, agent monitoring, device approval</td>
+                    <td>Command center view</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 7</strong></td>
+                    <td>Admin dashboard: Alerts, anomaly detection, broadcast system</td>
+                    <td>Full admin functionality</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 8</strong></td>
+                    <td>Testing, bug fixes, deployment, agent training</td>
+                    <td>Production-ready system</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5.1 Phased Rollout Recommendation</h3>
+        <div class="highlight-box">
+            <p><strong>Phase 1:</strong> Pilot with 1 LGA (e.g., Bauchi LGA – 493 PUs, ~500 agents)</p>
+            <ul>
+                <li>Test all features</li>
+                <li>Identify and fix issues</li>
+                <li>Train admin team</li>
+            </ul>
+            <p style="margin-top:8px;"><strong>Phase 2:</strong> Scale to all 20 LGAs</p>
+            <ul>
+                <li>Add remaining 3,581 PUs</li>
+                <li>Expand agent base to 4,074+</li>
+                <li>Full command center operational</li>
+            </ul>
+        </div>
+
+        <!-- ===== SECTION 6: BAUCHI STATE DATA ===== -->
+        <h2>6. Bauchi State Data Structure</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Local Government Areas (LGAs)</strong></td><td>20</td></tr>
+                <tr><td><strong>Wards (Registration Areas)</strong></td><td>212</td></tr>
+                <tr><td><strong>Polling Units</strong></td><td>4,074</td></tr>
+            </tbody>
+        </table>
+
+        <h3>6.1 Sample LGA Data</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>LGA Name</th>
+                    <th>Wards</th>
+                    <th>Polling Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Alkaleri</td><td>11</td><td>237</td></tr>
+                <tr><td>Bauchi</td><td>12</td><td>493</td></tr>
+                <tr><td>Katagum</td><td>11</td><td>274</td></tr>
+                <tr><td>Ningi</td><td>11</td><td>282</td></tr>
+                <tr><td>Toro</td><td>11</td><td>292</td></tr>
+                <tr style="background:#edf2f7; font-weight:600;">
+                    <td><em>...and 15 more LGAs</em></td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr style="background:#0f3460; color:#fff; font-weight:700;">
+                    <td>TOTAL</td>
+                    <td>212</td>
+                    <td>4,074</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 7: SUCCESS METRICS ===== -->
+        <h2>7. Success Metrics &amp; KPIs</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                    <th>Measurement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Agent coverage</td><td>100% of 4,074 PUs</td><td>Agents assigned to every PU</td></tr>
+                <tr><td>Online agents (election day)</td><td>&gt;80%</td><td>Real-time dashboard</td></tr>
+                <tr><td>Results submitted</td><td>&gt;95% of PUs</td><td>Submission rate</td></tr>
+                <tr><td>Incident response time</td><td>&lt;15 minutes</td><td>From report to assignment</td></tr>
+                <tr><td>Anomaly detection accuracy</td><td>&gt;90%</td><td>False positive rate</td></tr>
+                <tr><td>System uptime</td><td>99.5%</td><td>Vercel + Firebase SLA</td></tr>
+                <tr><td>Device approval time</td><td>&lt;1 hour</td><td>Super Admin response time</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 8: RISK ASSESSMENT ===== -->
+        <h2>8. Risk Assessment &amp; Mitigation</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Risk</th>
+                    <th>Likelihood</th>
+                    <th>Impact</th>
+                    <th>Mitigation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Developer delays</td>
+                    <td>Medium</td>
+                    <td>High</td>
+                    <td>Weekly progress reviews, clear milestones</td>
+                </tr>
+                <tr>
+                    <td>Network issues</td>
+                    <td>Medium</td>
+                    <td>High</td>
+                    <td>Offline support in mobile app</td>
+                </tr>
+                <tr>
+                    <td>Device issues</td>
+                    <td>Low</td>
+                    <td>Medium</td>
+                    <td>Multiple approved devices per role</td>
+                </tr>
+                <tr>
+                    <td>Agent non-compliance</td>
+                    <td>Medium</td>
+                    <td>Medium</td>
+                    <td>Training + clear communication</td>
+                </tr>
+                <tr>
+                    <td>Budget overrun</td>
+                    <td>Low</td>
+                    <td>Medium</td>
+                    <td>10% contingency buffer</td>
+                </tr>
+                <tr>
+                    <td>Security breach</td>
+                    <td>Low</td>
+                    <td>High</td>
+                    <td>Device approval, encryption, audit logs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ===== SECTION 9: LEGAL FRAMEWORK ===== -->
+        <h2>9. Political &amp; Legal Framework</h2>
+
+        <h3>9.1 System Purpose</h3>
+        <ul>
+            <li><strong>Internal Strategy:</strong> Understanding performance, identifying coverage gaps</li>
+            <li><strong>Agent Deployment:</strong> Ensuring party presence across all polling units</li>
+            <li><strong>Incident Response:</strong> Rapid reporting of problems to party coordinators</li>
+            <li><strong>Data Verification:</strong> Comparing internal data against official results for potential challenges</li>
+        </ul>
+
+        <h3>9.2 System Restrictions</h3>
+        <div class="highlight-box" style="background:#fef0f2; border-color:#e94560;">
+            <p>This system will <strong>NOT</strong>:</p>
+            <ul>
+                <li>Declare official election winners – Only INEC has constitutional authority</li>
+                <li>Publish results to the public or media – Internal party use only</li>
+                <li>Claim to be an "official" or "parallel" election result system – Avoids legal challenges</li>
+                <li>Interface with INEC's IReV portal or databases – System is private and independent</li>
+            </ul>
+        </div>
+
+        <!-- ===== SECTION 10: CONCLUSION ===== -->
+        <h2>10. Conclusion &amp; Recommendation</h2>
+
+        <p>
+            This ₦450,000 project will deliver a <strong>private, secure, and scalable election monitoring system</strong> for your party in Bauchi State. Using Firebase and Vercel reduces hosting costs while providing real-time capabilities essential for a command center.
+        </p>
+
+        <div class="highlight-box">
+            <p><strong>✅ Recommendation:</strong> <span style="color:#0f3460; font-weight:700;">APPROVE</span> the project for immediate implementation.</p>
+        </div>
+
+        <!-- ===== SECTION 11: SIGN-OFF ===== -->
+        <h2>11. Sign-Off</h2>
+
+        <div class="signoff">
+            <div>
+                <p><strong>Project Owner</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:13px; color:#718096;">Name &amp; Signature</p>
+            </div>
+            <div>
+                <p><strong>Lead Developer</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:13px; color:#718096;">Name &amp; Signature</p>
+            </div>
+            <div>
+                <p><strong>Lead Admin</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:13px; color:#718096;">Name &amp; Signature</p>
+            </div>
+            <div>
+                <p><strong>Date</strong></p>
+                <div class="field">&nbsp;</div>
+                <p style="font-size:13px; color:#718096;">dd/mm/yyyy</p>
+            </div>
+        </div>
+
+        <div style="margin-top:30px; padding-top:20px; border-top:1px solid #e2e8f0; text-align:center; color:#718096; font-size:13px;">
+            <p>
+                <strong>Prepared For:</strong> Party Command Center &bull;
+                <strong>Project:</strong> Private Party Election Monitoring System &bull;
+                <strong>Budget:</strong> ₦450,000 &bull;
+                <strong>Date:</strong> July 2026
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===================================================================== -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // =============================================
+        // 1. EXPORT FUNCTIONS
+        // =============================================
+
+        function getProposalHTML() {
+            const content = document.getElementById('proposalContent');
+            return `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Project Proposal – Election Monitoring System</title>
+            <style>
+                * { margin:0; padding:0; box-sizing:border-box; }
+                body { font-family:'Segoe UI',sans-serif; padding:40px; max-width:1100px; margin:0 auto; line-height:1.6; color:#1a1a2e; }
+                h1 { font-size:28px; color:#0f3460; text-align:center; }
+                h2 { font-size:22px; color:#0f3460; margin-top:30px; border-bottom:3px solid #e94560; padding-bottom:8px; }
+                h3 { font-size:18px; color:#16213e; margin-top:20px; }
+                .subtitle { text-align:center; color:#e94560; font-weight:600; font-size:18px; margin-bottom:20px; }
+                .meta-info { text-align:center; color:#4a5568; font-size:14px; margin-bottom:25px; padding:12px; background:#f7fafc; border-radius:8px; }
+                table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+                th { background:#0f3460; color:#fff; padding:10px 14px; text-align:left; }
+                td { border:1px solid #e2e8f0; padding:8px 14px; }
+                tr:nth-child(even) { background:#f7fafc; }
+                .highlight-box { background:#ebf8ff; border:1px solid #bee3f8; padding:16px 20px; border-radius:8px; margin:16px 0; }
+                .budget-summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:20px 0; }
+                .budget-card { background:#f7fafc; padding:16px; border-radius:10px; text-align:center; border:1px solid #e2e8f0; }
+                .budget-card .amount { font-size:24px; font-weight:700; color:#0f3460; }
+                .budget-card .label { font-size:13px; color:#4a5568; margin-top:4px; }
+                .budget-card.total { background:#0f3460; color:#fff; border-color:#0f3460; }
+                .budget-card.total .amount { color:#fff; }
+                .budget-card.total .label { color:#a0c4ff; }
+                .signoff { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:20px; margin-top:30px; padding-top:20px; border-top:2px solid #e2e8f0; }
+                .signoff .field { border-bottom:1px solid #a0aec0; padding-bottom:4px; margin-bottom:4px; min-height:30px; }
+                @media print { body { padding:20px; } .no-print { display:none; } }
+            </style>
+        </head>
+        <body>
+            ${content.innerHTML}
+        </body>
+        </html>`;
+        }
+
+        function exportProposal(format) {
+            const html = getProposalHTML();
+            const title = 'PROJECT_PROPOSAL_AND_BUDGET';
+
+            switch (format) {
+                case 'pdf':
+                    // Save as HTML – user can print to PDF
+                    downloadFile(html, `${title}.html`, 'text/html');
+                    showToast('📄 HTML saved – open in browser and print to PDF', 'success');
+                    break;
+
+                case 'docx':
+                    // Word-compatible HTML
+                    const wordHtml = `<!DOCTYPE html>
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                          xmlns:w='urn:schemas-microsoft-com:office:word'
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head><meta charset="UTF-8"><title>Project Proposal</title>
+                    <style>body{font-family:'Segoe UI',sans-serif;padding:40px;line-height:1.6;}
+                    h1{color:#0f3460;} h2{color:#0f3460;border-bottom:3px solid #e94560;padding-bottom:8px;}
+                    table{border-collapse:collapse;width:100%;margin:16px 0;}
+                    th,td{border:1px solid #ccc;padding:8px 12px;} th{background:#0f3460;color:#fff;}
+                    </style></head>
+                    <body>
+                        ${document.getElementById('proposalContent').innerHTML}
+                    </body></html>`;
+                    downloadFile(wordHtml, `${title}.doc`, 'application/msword');
+                    showToast('📝 DOCX downloaded', 'success');
+                    break;
+
+                case 'html':
+                    downloadFile(html, `${title}.html`, 'text/html');
+                    showToast('🌐 HTML downloaded', 'success');
+                    break;
+
+                default:
+                    showToast('❌ Unknown format', 'error');
+            }
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // =============================================
+        // 2. TOAST NOTIFICATION
+        // =============================================
+
+        function showToast(message, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // =============================================
+        // 3. INIT
+        // =============================================
+
+        // Show welcome message
+        setTimeout(() => {
+            showToast('📄 Proposal ready · Click Export PDF, DOCX, or HTML', '');
+        }, 500);
+    </script>
+
+</body>
+</html>
